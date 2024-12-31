@@ -6,6 +6,9 @@
   :root {
     --background: 190 75% 98%;    /* Light cool background */
     --foreground: 200 50% 10%;
+
+    --font-inter: 'Inter', sans-serif;
+    --font-space-grotesk: 'Space Grotesk', sans-serif;
     
     --card: 0 0% 100%;
     --card-foreground: 200 50% 10%;
@@ -63,6 +66,14 @@
     --border: 200 50% 15%;
     --input: 200 50% 15%;
     --ring: 196 100% 47%;
+  }
+
+  .font-inter {
+    font-family: var(--font-inter);
+  }
+  
+  .font-space-grotesk {
+    font-family: var(--font-space-grotesk);
   }
 }
  
