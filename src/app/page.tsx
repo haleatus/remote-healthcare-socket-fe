@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { MessageCircleDashed, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,12 +26,15 @@ export default function Home() {
             approachable, personalized, and simple.
           </p>
           <div className="flex justify-center md:justify-start space-x-4">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white pl-3 pr-6 py-3 rounded-full">
+            <Link
+              className="bg-blue-600 flex gap-2 items-center hover:bg-blue-700 text-white pl-3 pr-4 py-1.5 rounded-full"
+              href="/doctors"
+            >
               <span>
-                <MessageCircleDashed />
+                <MessageCircleDashed className="size-5" />
               </span>
               Find a Remote Doctor
-            </Button>
+            </Link>
             <Link
               href="/signup"
               className="inline-flex items-center text-blue-600 font-medium hover:underline"
