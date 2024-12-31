@@ -1,68 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 190 75% 98%;    /* Light cool background */
-    --foreground: 200 50% 10%;
+    --background: 210 75% 98%;    /* Light blue background */
+    --foreground: 210 50% 10%;
     
     --card: 0 0% 100%;
-    --card-foreground: 200 50% 10%;
+    --card-foreground: 210 50% 10%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 200 50% 10%;
+    --popover-foreground: 210 50% 10%;
     
-    --primary: 196 100% 47%;      /* Vibrant medical blue */
+    --primary: 210 100% 50%;      /* Standard blue */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 152 68% 56%;     /* Fresh mint green */
-    --secondary-foreground: 200 50% 10%;
+    --secondary: 152 68% 56%;     /* Keeping mint green */
+    --secondary-foreground: 210 50% 10%;
     
-    --muted: 200 33% 96%;
-    --muted-foreground: 200 40% 40%;
+    --muted: 210 33% 96%;
+    --muted-foreground: 210 40% 40%;
     
-    --accent: 196 100% 97%;       /* Super light medical blue */
-    --accent-foreground: 200 50% 10%;
+    --accent: 210 100% 97%;       /* Super light blue */
+    --accent-foreground: 210 50% 10%;
     
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 200 33% 90%;
-    --input: 200 33% 90%;
-    --ring: 196 100% 47%;
+    --border: 210 33% 90%;
+    --input: 210 33% 90%;
+    --ring: 210 100% 50%;
     
-    --radius: 1rem;               /* Increased border radius for playful feel */
+    --radius: 1rem;
   }
  
   .dark {
-    --background: 200 50% 5%;     /* Deep blue-grey background */
-    --foreground: 200 33% 98%;
+    --background: 210 50% 5%;     /* Deep blue background */
+    --foreground: 210 33% 98%;
     
-    --card: 200 50% 8%;
-    --card-foreground: 200 33% 98%;
+    --card: 210 50% 8%;
+    --card-foreground: 210 33% 98%;
     
-    --popover: 200 50% 8%;
-    --popover-foreground: 200 33% 98%;
+    --popover: 210 50% 8%;
+    --popover-foreground: 210 33% 98%;
     
-    --primary: 196 100% 47%;      /* Keep vibrant medical blue */
+    --primary: 210 100% 50%;      /* Standard blue */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 152 68% 56%;     /* Keep fresh mint green */
-    --secondary-foreground: 200 50% 10%;
+    --secondary: 152 68% 56%;     /* Keeping mint green */
+    --secondary-foreground: 210 50% 10%;
     
-    --muted: 200 50% 12%;
-    --muted-foreground: 200 33% 60%;
+    --muted: 210 50% 12%;
+    --muted-foreground: 210 33% 60%;
     
-    --accent: 196 100% 15%;
-    --accent-foreground: 200 33% 98%;
+    --accent: 210 100% 15%;
+    --accent-foreground: 210 33% 98%;
     
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 200 50% 15%;
-    --input: 200 50% 15%;
-    --ring: 196 100% 47%;
+    --border: 210 50% 15%;
+    --input: 210 50% 15%;
+    --ring: 210 100% 50%;
   }
 }
  
@@ -86,18 +86,15 @@
     background-attachment: fixed;
   }
 
-  /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
   }
 
-  /* Custom selection color */
   ::selection {
     background-color: hsl(var(--primary)/0.2);
     color: hsl(var(--primary));
   }
 
-  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
   }
@@ -116,7 +113,6 @@
   }
 }
 
-/* Custom utilities */
 @layer utilities {
   .text-shadow {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
