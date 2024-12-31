@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center font-space-grotesk">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 px-4 md:space-y-0 mt-10">
         {/* Left Section */}
         <div className="max-w-xl text-center md:text-left space-y-6">
@@ -22,7 +22,7 @@ export default function Home() {
           <h1 className="text-[76px] font-bold text-gray-900 leading-tight">
             Health for a new generation
           </h1>
-          <p className="text-lg text-gray-600 font-[Inter]">
+          <p className="text-lg text-gray-600 font-sans">
             At health connect, we believe health care should be easily
             approachable, personalized, and simple.
           </p>
