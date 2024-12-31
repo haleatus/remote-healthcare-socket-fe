@@ -17,7 +17,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="font-inter bg-transparent backdrop-blur-md p-3 sticky top-0 z-50">
+    <header className="bg-transparent backdrop-blur-md p-3 sticky top-0 z-50">
       <nav className="max-w-8xl mx-auto flex justify-between items-center">
         <Link href="/" className="flex gap-2 items-center">
           <Image
