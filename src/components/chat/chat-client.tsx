@@ -7,9 +7,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from "lucide-react";
 
 const doctors = [
-  { id: "1", name: "Dr. John Doe", specialty: "Telemedicine Specialist" },
-  { id: "2", name: "Dr. Jane Smith", specialty: "Remote Dermatologist" },
-  { id: "3", name: "Dr. Mike Johnson", specialty: "Virtual Pediatrician" },
+  { id: "1", name: "Dr. Alice Johnson", specialty: "Telemedicine Specialist" },
+  { id: "2", name: "Dr. Bob Smith", specialty: "Remote Dermatologist" },
+  { id: "3", name: "Dr. Chalie Brown", specialty: "Virtual Pediatrician" },
 ];
 
 const initialMessages = [
@@ -50,7 +50,7 @@ export default function Chat({ id }: { id: string }) {
     e.preventDefault();
     if (newMessage.trim()) {
       const userMessage = {
-        id: messages.length + 1,
+        id: Date.now(), // Use timestamp as unique ID
         sender: "You",
         text: newMessage,
       };
@@ -59,7 +59,7 @@ export default function Chat({ id }: { id: string }) {
 
       setTimeout(() => {
         const doctorResponse = {
-          id: messages.length + 2,
+          id: Date.now(), // Use timestamp as unique ID
           sender: "Doctor",
           text: generateDoctorResponse(newMessage),
         };
@@ -82,14 +82,14 @@ export default function Chat({ id }: { id: string }) {
   };
 
   return (
-    <div className="flex-grow container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-teal-800">
+    <div className="flex-grow container mx-auto px-4 py-8 font-sans">
+      <h1 className="text-3xl font-bold mb-4 text-teal-800">
         Remote Consultation with {doctor ? doctor.name : "Doctor"}
       </h1>
-      <p className="mb-4 text-gray-600">
+      <p className="mb-4 text-gray-600 font-space-grotesk font-semibold">
         {doctor && `Specialty: ${doctor.specialty}`}
       </p>
-      <div className="border rounded-lg p-4 h-[60vh] flex flex-col bg-white shadow-md">
+      <div className="border rounded-lg p-4 h-[67vh] flex flex-col bg-white shadow-md">
         <ScrollArea className="flex-grow mb-4">
           {messages.map((message) => (
             <div
@@ -105,7 +105,9 @@ export default function Chat({ id }: { id: string }) {
                     : "bg-gray-200 text-gray-800"
                 }`}
               >
-                <span className="font-bold">{message.sender}: </span>
+                <span className="font-bold font-space-grotesk">
+                  {message.sender}:{" "}
+                </span>
                 {message.text}
               </span>
             </div>

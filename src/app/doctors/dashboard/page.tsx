@@ -39,7 +39,7 @@ const appointments = [
 export default function DoctorDashboard() {
   return (
     <div className="container mx-auto px-6 py-8 font-sans">
-      <h1 className="text-4xl font-bold mb-8 text-gray-800 hover:text-teal-700 transition-colors duration-300">
+      <h1 className="text-3xl font-bold mb-4 text-teal-800">
         Remote Consultation Dashboard
       </h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
