@@ -2,13 +2,11 @@ import ChatServer from "@/app/_components/chat/chat-server";
 import React from "react";
 
 interface ChatPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-const ChatPage = ({ params }: ChatPageProps) => {
-  const id = params.id;
+const ChatPage = async ({ params }: ChatPageProps) => {
+  const { id } = await params;
   return (
     <div>
       <ChatServer id={id} />
