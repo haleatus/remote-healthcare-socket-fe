@@ -2,13 +2,11 @@ import BookAppointmentServer from "@/app/_components/book/book-appointment-serve
 import React from "react";
 
 interface BookAppointmentPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-const BookAppointmentPage = ({ params }: BookAppointmentPageProps) => {
-  const id = params.id;
+const BookAppointmentPage = async ({ params }: BookAppointmentPageProps) => {
+  const { id } = await params;
   return (
     <div>
       <BookAppointmentServer id={id} />
