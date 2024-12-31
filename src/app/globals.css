@@ -1,21 +1,128 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+ 
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 190 75% 98%;    /* Light cool background */
+    --foreground: 200 50% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 200 50% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 50% 10%;
+    
+    --primary: 196 100% 47%;      /* Vibrant medical blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 152 68% 56%;     /* Fresh mint green */
+    --secondary-foreground: 200 50% 10%;
+    
+    --muted: 200 33% 96%;
+    --muted-foreground: 200 40% 40%;
+    
+    --accent: 196 100% 97%;       /* Super light medical blue */
+    --accent-foreground: 200 50% 10%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 200 33% 90%;
+    --input: 200 33% 90%;
+    --ring: 196 100% 47%;
+    
+    --radius: 1rem;               /* Increased border radius for playful feel */
+  }
+ 
+  .dark {
+    --background: 200 50% 5%;     /* Deep blue-grey background */
+    --foreground: 200 33% 98%;
+    
+    --card: 200 50% 8%;
+    --card-foreground: 200 33% 98%;
+    
+    --popover: 200 50% 8%;
+    --popover-foreground: 200 33% 98%;
+    
+    --primary: 196 100% 47%;      /* Keep vibrant medical blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 152 68% 56%;     /* Keep fresh mint green */
+    --secondary-foreground: 200 50% 10%;
+    
+    --muted: 200 50% 12%;
+    --muted-foreground: 200 33% 60%;
+    
+    --accent: 196 100% 15%;
+    --accent-foreground: 200 33% 98%;
+    
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 200 50% 15%;
+    --input: 200 50% 15%;
+    --ring: 196 100% 47%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-image: radial-gradient(
+      circle at top right,
+      hsl(var(--secondary)/0.1),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      hsl(var(--primary)/0.1),
+      transparent 40%
+    );
+    background-attachment: fixed;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom selection color */
+  ::selection {
+    background-color: hsl(var(--primary)/0.2);
+    color: hsl(var(--primary));
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary)/0.3);
+    border-radius: var(--radius);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary)/0.5);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom utilities */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hover-card {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10;
+  }
 }
