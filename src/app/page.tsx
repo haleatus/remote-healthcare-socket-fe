@@ -1,101 +1,150 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import {
+  Wifi,
+  Clock,
+  MessageSquare,
+  Activity,
+  Stethoscope,
+} from "lucide-react";
+
+import { IconType } from "react-icons";
+
+const FeatureCard = ({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: IconType;
+  title: string;
+  description: string;
+}) => (
+  <motion.div
+    className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+  >
+    <Icon className="text-primary mb-4" size={48} />
+    <h2 className="text-xl font-semibold mb-2">{title}</h2>
+    <p className="text-center text-muted-foreground">{description}</p>
+  </motion.div>
+);
+
+interface HealthTipProps {
+  tip: string;
+}
+
+const HealthTip = ({ tip }: HealthTipProps) => (
+  <motion.div
+    className="bg-secondary p-4 rounded-lg mb-4"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    <p className="text-secondary-foreground text-center">{tip}</p>
+  </motion.div>
+);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [showHealthTip, setShowHealthTip] = useState(false);
+  const [healthTipIndex, setHealthTipIndex] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const healthTips = [
+    "Stay hydrated! Aim to drink at least 8 glasses of water a day.",
+    "Regular exercise can boost your mood and improve overall health.",
+    "Don't skip breakfast - it's the most important meal of the day!",
+    "Get 7-9 hours of sleep each night for optimal health.",
+    "Practice mindfulness or meditation to reduce stress.",
+  ];
+
+  const showNextHealthTip = () => {
+    setHealthTipIndex((prevIndex) => (prevIndex + 1) % healthTips.length);
+    setShowHealthTip(true);
+  };
+
+  return (
+    <div className="flex-grow container mx-auto px-4 py-8">
+      <motion.h1
+        className="text-4xl font-bold mb-6 text-primary"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Welcome
+      </motion.h1>
+      <motion.p
+        className="text-xl mb-8 text-muted-foreground"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        Bridging the gap between you and quality healthcare, no matter the
+        distance.
+      </motion.p>
+
+      <motion.div
+        className="grid md:grid-cols-3 gap-8 mb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <FeatureCard
+          icon={Wifi}
+          title="Remote Access"
+          description="Connect with top-rated doctors from the comfort of your home"
+        />
+        <FeatureCard
+          icon={Clock}
+          title="24/7 Availability"
+          description="Access healthcare professionals anytime, anywhere"
+        />
+        <FeatureCard
+          icon={MessageSquare}
+          title="Secure Messaging"
+          description="Communicate with your doctor securely through our platform"
+        />
+      </motion.div>
+
+      <motion.div
+        className="mb-8 flex justify-center flex-col"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
+        <div className="flex justify-center">
+          <Button onClick={showNextHealthTip} className="mb-4 w-fit">
+            Get a Health Tip
+          </Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        {showHealthTip && <HealthTip tip={healthTips[healthTipIndex]} />}
+      </motion.div>
+
+      <motion.div
+        className="space-y-4 flex gap-3 justify-center items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
+        <Button
+          asChild
+          className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <Link href="/doctors">
+            <Stethoscope className="mr-2 h-4 w-4" />
+            Find a Remote Doctor
+          </Link>
+        </Button>
+        <Button asChild variant="outline" className="w-full sm:w-auto">
+          <Link href="/signup">
+            <Activity className="mr-2 h-4 w-4" />
+            Start Your Health Journey
+          </Link>
+        </Button>
+      </motion.div>
     </div>
   );
 }
