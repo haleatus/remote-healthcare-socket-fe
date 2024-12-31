@@ -51,7 +51,6 @@ export default function Home() {
             alt="Cozy room"
             className="rounded-lg shadow-lg object-cover"
             fill
-            unoptimized
           />
         </div>
       </div>
