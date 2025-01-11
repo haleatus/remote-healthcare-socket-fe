@@ -40,7 +40,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );
