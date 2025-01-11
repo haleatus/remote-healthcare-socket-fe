@@ -47,6 +47,7 @@ function SignInForm() {
         setTimeout(() => router.push(redirectTo), 1000);
       } else if (result.error) {
         // Handle field-specific errors
+        console.log("Full error response:", result.error);
         const error = result.error as AuthErrorResponse;
         setErrors(error.error);
 
@@ -54,8 +55,11 @@ function SignInForm() {
         // console.log("Full error response:", result.error);
         // console.log("Processed errors:", error);
 
-        // Handle the error message
-        setErrors({ error: error.message });
+        if (error.message === "Email Dosent Exist") {
+          setErrors({ email: error.message });
+        } else if (error.message === "Incorrect Email or Password") {
+          setErrors({ other: error.message });
+        }
 
         // Show error toast
         toast.error(error.message || "Invalid email or password");
@@ -69,12 +73,18 @@ function SignInForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="flex-grow container mx-auto px-4 py-8 font-sans md:w-1/2">
-        <div className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${errors.error ? "border border-red-600" : ""}`}>
+    <div className="flex flex-col md:flex-row ">
+      <div className="flex-grow container mx-auto px-4 py-8 font-space-grotesk md:w-1/2">
+        <div
+          className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${
+            errors.email || errors.password || errors.other
+              ? "border border-red-600"
+              : ""
+          }`}
+        >
           <h1 className="text-3xl font-bold mb-6 text-primary">Sign In</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -83,9 +93,12 @@ function SignInForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className={`${errors.email ? "border-red-500" : ""}`}
+                className={errors.email ? "border-red-500" : ""}
                 placeholder="Enter your email"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
@@ -99,6 +112,9 @@ function SignInForm() {
                 className={errors.password ? "border-red-500" : ""}
                 placeholder="Enter your password"
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
 
             <Button

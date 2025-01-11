@@ -38,7 +38,7 @@ export async function userSignUp(
         error: {
           statusCode: 400,
           timestamp: new Date().toISOString(),
-          message: "Validation error",
+          message: error.errors.map((e) => `${e.message}`).join(", "),
           error: error.errors.reduce(
             (acc, curr) => ({
               ...acc,
@@ -140,7 +140,7 @@ export async function userSignIn(
         error: {
           statusCode: 400,
           timestamp: new Date().toISOString(),
-          message: "Validation error",
+          message: error.errors.map((e) => `${e.message}`).join(", "),
           error: error.errors.reduce(
             (acc, curr) => ({
               ...acc,

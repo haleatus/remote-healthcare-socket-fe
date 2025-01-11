@@ -49,7 +49,7 @@ export default function SignUpClient() {
         if (error.error.password) {
           toast.error(error.error.password);
         } else if (error.error.email) {
-          toast.error(error.error.email);
+          toast.error(error.error.email.toLowerCase());
         } else if (error.error.name) {
           toast.error(error.error.name);
         } else {
@@ -66,8 +66,14 @@ export default function SignUpClient() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="flex-grow container mx-auto px-4 py-8 font-sans md:w-1/2">
-        <div className="max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
+      <div className="flex-grow container mx-auto px-4 py-8 font-space-grotesk md:w-1/2">
+        <div
+          className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${
+            errors.email || errors.name || errors.password || errors.other
+              ? "border border-red-600"
+              : ""
+          }`}
+        >
           <h1 className="text-3xl font-bold mb-6 text-primary">Sign Up</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -97,7 +103,9 @@ export default function SignUpClient() {
                 className={errors.email ? "border-red-500" : ""}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.toLowerCase()}
+                </p>
               )}
             </div>
             <div>
