@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { Inter, Roboto_Mono, Space_Grotesk } from "next/font/google";
 import { UserProvider } from "@/context/user-context";
 import HeaderServer from "./_components/navigation/header-server";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,11 +40,13 @@ export default function RootLayout({
       <body
         className={`bg-gradient-to-br from-[#E6EBF9] to-[#F3F5F9] max-w-8xl mx-auto px-4 md:px-8 ${inter.variable} ${roboto_mono.variable} ${spaceGrotesk.variable}`}
       >
-        <UserProvider>
-          <HeaderServer />
-          {children}
-          <Toaster richColors />
-        </UserProvider>
+        <TooltipProvider>
+          <UserProvider>
+            <HeaderServer />
+            {children}
+            <Toaster richColors />
+          </UserProvider>
+        </TooltipProvider>
       </body>
     </html>
   );
