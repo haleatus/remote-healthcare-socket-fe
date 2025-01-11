@@ -44,7 +44,7 @@ export default function RootLayout({
           <UserProvider>
             <HeaderServer />
             {children}
-            <Toaster richColors />
+            <Toaster richColors position="bottom-left"/>
           </UserProvider>
         </TooltipProvider>
       </body>

@@ -50,14 +50,15 @@ function SignInForm() {
         const error = result.error as AuthErrorResponse;
         setErrors(error.error);
 
+        // // For debugging
+        // console.log("Full error response:", result.error);
+        // console.log("Processed errors:", error);
+
+        // Handle the error message
+        setErrors({ error: error.message });
+
         // Show error toast
-        if (error.error.password) {
-          toast.error(error.error.password);
-        } else if (error.error.email) {
-          toast.error(error.error.email);
-        } else {
-          toast.error(error.message || "Invalid email or password");
-        }
+        toast.error(error.message || "Invalid email or password");
       }
     } catch (error) {
       console.log("Error in Signin Client : ", error);
@@ -70,10 +71,10 @@ function SignInForm() {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-grow container mx-auto px-4 py-8 font-sans md:w-1/2">
-        <div className="max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
+        <div className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${errors.error ? "border border-red-600" : ""}`}>
           <h1 className="text-3xl font-bold mb-6 text-primary">Sign In</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+          <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -82,12 +83,9 @@ function SignInForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className={errors.email ? "border-red-500" : ""}
+                className={`${errors.email ? "border-red-500" : ""}`}
                 placeholder="Enter your email"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
@@ -101,10 +99,8 @@ function SignInForm() {
                 className={errors.password ? "border-red-500" : ""}
                 placeholder="Enter your password"
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-              )}
             </div>
+
             <Button
               type="submit"
               className="w-full"
