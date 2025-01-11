@@ -86,6 +86,7 @@ export default function SignUpClient() {
                 required
                 disabled={isLoading}
                 className={errors.name ? "border-red-500" : ""}
+                placeholder="Enter your name"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -101,6 +102,7 @@ export default function SignUpClient() {
                 required
                 disabled={isLoading}
                 className={errors.email ? "border-red-500" : ""}
+                placeholder="Enter your email"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -118,6 +120,7 @@ export default function SignUpClient() {
                 required
                 disabled={isLoading}
                 className={errors.password ? "border-red-500" : ""}
+                placeholder="Enter your password"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
