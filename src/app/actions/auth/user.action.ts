@@ -39,19 +39,21 @@ export const userSignUp = async (
       fieldErrors: {},
     };
   } catch (error: any) {
-    // If it's a backend error (from createUserService)
-    if (error.message) {
-      const errorMessage = error.message;
+    console.log("ashvsajlj", error);
+
+    // If it's a backend error with field-specific errors
+    if (error.fieldErrors) {
       return {
         success: false,
-        error: errorMessage, // Pass through the exact backend error message
+        error: error.message,
         fieldErrors: {
-          // Map specific backend errors to form fields
-          email: errorMessage.includes("email") ? [errorMessage] : undefined,
-          password: errorMessage.includes("password")
-            ? [errorMessage]
+          password: error.fieldErrors.password
+            ? [error.fieldErrors.password]
             : undefined,
-          name: errorMessage.includes("name") ? [errorMessage] : undefined,
+          email: error.fieldErrors.email
+            ? [error.fieldErrors.email]
+            : undefined,
+          name: error.fieldErrors.name ? [error.fieldErrors.name] : undefined,
         },
       };
     }
@@ -67,7 +69,7 @@ export const userSignUp = async (
 
       return {
         success: false,
-        error: (Object.values(zodErrors) as string[][])[0][0], // Show the first validation error message
+        error: (Object.values(zodErrors) as string[][])[0][0],
         fieldErrors: zodErrors,
       };
     }

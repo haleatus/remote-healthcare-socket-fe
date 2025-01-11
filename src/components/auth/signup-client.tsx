@@ -42,10 +42,18 @@ export default function SignUpClient() {
   useEffect(() => {
     if (state.success) {
       toast.success("Signup successful! Redirecting...");
-      setTimeout(() => router.push("/signin"), 1000); // Redirect to home after 1 seconds
+      setTimeout(() => router.push("/signin"), 1000);
     } else if (state.error) {
-      console.log("state.error", state);
-      toast.error(state.error); // Show error message
+      // Show the specific error message from the backend
+      if (state.fieldErrors?.password) {
+        toast.error(state.fieldErrors.password[0]);
+      } else if (state.fieldErrors?.email) {
+        toast.error(state.fieldErrors.email[0]);
+      } else if (state.fieldErrors?.name) {
+        toast.error(state.fieldErrors.name[0]);
+      } else {
+        toast.error(state.error);
+      }
     }
   }, [state, router]);
 
