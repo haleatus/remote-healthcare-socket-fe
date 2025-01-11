@@ -39,8 +39,6 @@ export const userSignUp = async (
       fieldErrors: {},
     };
   } catch (error: any) {
-    console.log("ashvsajlj", error);
-
     // If it's a backend error with field-specific errors
     if (error.fieldErrors) {
       return {

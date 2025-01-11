@@ -48,7 +48,7 @@ export default function SignUpClient() {
       if (state.fieldErrors?.password) {
         toast.error(state.fieldErrors.password[0]);
       } else if (state.fieldErrors?.email) {
-        toast.error(state.fieldErrors.email[0]);
+        toast.error(state.fieldErrors.email[0].toLowerCase());
       } else if (state.fieldErrors?.name) {
         toast.error(state.fieldErrors.name[0]);
       } else {
@@ -91,7 +91,7 @@ export default function SignUpClient() {
               />
               {state.fieldErrors?.email && (
                 <p className="text-red-500 text-sm mt-1">
-                  {state.fieldErrors.email[0]}
+                  {state.fieldErrors.email[0].toLowerCase()}
                 </p>
               )}
             </div>
