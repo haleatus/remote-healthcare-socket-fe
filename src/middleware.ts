@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  console.log("Middleware is running:", req.nextUrl.pathname);
-
   const authToken = req.cookies.get("accessToken");
   const adminAuthToken = req.cookies.get("adminAccessToken");
 
