@@ -3,7 +3,29 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["images.pexels.com", "docs.mapbox.com", "images.unsplash.com"],
+    localPatterns: [
+      {
+        pathname: "/public/**",
+        search: "",
+      },
+    ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "docs.mapbox.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

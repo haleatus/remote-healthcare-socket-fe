@@ -40,6 +40,7 @@ export default function Header() {
             alt="app-logo"
             height={24}
             width={24}
+            className="object-contain"
           />
           <span className="text-lg font-semibold">HealthConnect</span>
         </Link>
