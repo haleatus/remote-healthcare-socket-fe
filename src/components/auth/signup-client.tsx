@@ -1,118 +1,127 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { userSignUp } from "@/app/actions/auth/user.action";
 import { toast } from "sonner";
-
-// Define the state type explicitly
-type SignupState = {
-  success?: boolean;
-  error?: string | null;
-  fieldErrors?: {
-    name?: string[];
-    email?: string[];
-    password?: string[];
-  };
-  data?: any;
-};
+import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { userSignUp } from "@/app/actions/auth/user.action";
 
 export default function SignUpClient() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
-  // Provide explicit type for initial state
-  const initialState: SignupState = {
-    success: false,
-    error: null,
-    fieldErrors: {},
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors({});
 
-  // Type the action and state explicitly
-  const [state, formAction, isPending] = useActionState(
-    userSignUp as (prevState: SignupState, formData: FormData) => SignupState,
-    initialState
-  );
+    try {
+      const result = await userSignUp({
+        name,
+        email,
+        password,
+      });
 
-  useEffect(() => {
-    if (state.success) {
-      toast.success("Signup successful! Redirecting...");
-      setTimeout(() => router.push("/signin"), 1000);
-    } else if (state.error) {
-      // Show the specific error message from the backend
-      if (state.fieldErrors?.password) {
-        toast.error(state.fieldErrors.password[0]);
-      } else if (state.fieldErrors?.email) {
-        toast.error(state.fieldErrors.email[0].toLowerCase());
-      } else if (state.fieldErrors?.name) {
-        toast.error(state.fieldErrors.name[0]);
-      } else {
-        toast.error(state.error);
+      if (result.success && result.data) {
+        toast.success("Signup successful! Redirecting...");
+        // Reset form
+        setName("");
+        setEmail("");
+        setPassword("");
+        // Redirect after a short delay
+        setTimeout(() => router.push("/signin"), 1000);
+      } else if (result.error) {
+        // Handle field-specific errors
+        const error = result.error as AuthErrorResponse;
+        setErrors(error.error);
+
+        // Show error toast
+        if (error.error.password) {
+          toast.error(error.error.password);
+        } else if (error.error.email) {
+          toast.error(error.error.email);
+        } else if (error.error.name) {
+          toast.error(error.error.name);
+        } else {
+          toast.error(error.message);
+        }
       }
+    } catch (error: any) {
+      console.log("Error in Signup Client : ", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-  }, [state, router]);
+  };
 
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-grow container mx-auto px-4 py-8 font-sans md:w-1/2">
         <div className="max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300">
           <h1 className="text-3xl font-bold mb-6 text-primary">Sign Up</h1>
-          <form action={formAction} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="name">Name</Label>
               <Input
-                type="text"
                 id="name"
-                name="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full p-2 border rounded"
-                placeholder="Enter your name"
+                disabled={isLoading}
+                className={errors.name ? "border-red-500" : ""}
               />
-              {state.fieldErrors?.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {state.fieldErrors.name[0]}
-                </p>
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
               )}
             </div>
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
-                type="email"
                 id="email"
-                name="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full p-2 border rounded"
-                placeholder="Enter your email"
+                disabled={isLoading}
+                className={errors.email ? "border-red-500" : ""}
               />
-              {state.fieldErrors?.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {state.fieldErrors.email[0].toLowerCase()}
-                </p>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
               <Input
-                type="password"
                 id="password"
-                name="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full p-2 border rounded"
-                placeholder="Enter your password"
+                disabled={isLoading}
+                className={errors.password ? "border-red-500" : ""}
               />
-              {state.fieldErrors?.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {state.fieldErrors.password[0]}
-                </p>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "Signing up..." : "Sign Up"}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+              aria-disabled={isLoading}
+            >
+              {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
           <p className="mt-4 text-center">

@@ -1,18 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createUserSchema } from "@/app/schema/user";
+import { createUserSchema, signInUserSchema } from "@/app/schema/user";
 import { endpoints } from "@/core/contants/endpoints";
+import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { z } from "zod";
-
-interface ErrorResponse {
-  statusCode: number;
-  message: string;
-  error: {
-    password?: string;
-    email?: string;
-    name?: string;
-  };
-  data: any;
-}
 
 export const createUserService = async (
   data: z.infer<typeof createUserSchema>
@@ -25,7 +15,7 @@ export const createUserService = async (
     body: JSON.stringify(data),
   });
 
-  const newUser: ErrorResponse = await res.json();
+  const newUser: AuthErrorResponse = await res.json();
 
   if (!res.ok) {
     // Create a structured error object that includes both the message and specific field errors
@@ -35,4 +25,26 @@ export const createUserService = async (
   }
 
   return newUser;
+};
+
+export const signInUserService = async (
+  data: z.infer<typeof signInUserSchema>
+) => {
+  const res = await fetch(endpoints.auth.user.signin, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const user: AuthErrorResponse = await res.json();
+
+  if (!res.ok) {
+    const error = new Error(user.message);
+    (error as any).fieldErrors = user.error;
+    throw error;
+  }
+
+  return user;
 };

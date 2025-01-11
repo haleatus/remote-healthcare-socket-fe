@@ -8,12 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
+import { userSignIn } from "@/app/actions/auth/user.action";
+import { AuthErrorResponse } from "@/core/types/auth.interface";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
-
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -23,12 +26,45 @@ function SignInForm() {
     }
   }, [searchParams]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signing in:", { email, password });
-    // Here you would typically handle the sign-in logic
-    // For now, we'll just redirect to the home page
-    router.push("/");
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      const result = await userSignIn({
+        email,
+        password,
+      });
+
+      if (result.success && result.data) {
+        toast.success("Sign in successful! Redirecting...");
+        // Reset form
+        setEmail("");
+        setPassword("");
+        // Redirect to home or the intended destination
+        const redirectTo = searchParams.get("redirectTo") || "/";
+        setTimeout(() => router.push(redirectTo), 1000);
+      } else if (result.error) {
+        // Handle field-specific errors
+        const error = result.error as AuthErrorResponse;
+        setErrors(error.error);
+
+        // Show error toast
+        if (error.error.password) {
+          toast.error(error.error.password);
+        } else if (error.error.email) {
+          toast.error(error.error.email);
+        } else {
+          toast.error(error.message || "Invalid email or password");
+        }
+      }
+    } catch (error) {
+      console.log("Error in Signin Client : ", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -45,7 +81,13 @@ function SignInForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={isLoading}
+                className={errors.email ? "border-red-500" : ""}
+                placeholder="Enter your email"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="password">Password</Label>
@@ -55,10 +97,21 @@ function SignInForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                disabled={isLoading}
+                className={errors.password ? "border-red-500" : ""}
+                placeholder="Enter your password"
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+              aria-disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
           <p className="mt-4 text-center">
@@ -86,7 +139,13 @@ function SignInForm() {
 
 export default function SignInClient() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      }
+    >
       <SignInForm />
     </Suspense>
   );
