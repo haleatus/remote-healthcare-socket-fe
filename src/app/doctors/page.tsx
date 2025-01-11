@@ -85,7 +85,7 @@ const DoctorImage = ({ src, alt }: { src: string; alt: string }) => {
         sizes="(max-width: 64px) 100vw, 64px"
         priority={false}
         quality={75}
-        onLoadingComplete={() => setIsLoading(false)}
+        onLoad={() => setIsLoading(false)}
       />
     </div>
   );
