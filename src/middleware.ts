@@ -4,8 +4,8 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   console.log("Middleware is running:", req.nextUrl.pathname);
 
-  const authToken = req.cookies.get("authToken");
-  const adminAuthToken = req.cookies.get("adminAuthToken");
+  const authToken = req.cookies.get("accessToken");
+  const adminAuthToken = req.cookies.get("adminAccessToken");
 
   const protectedUserRoutes = ["/doctors", "/profile"];
   const protectedAdminRoutes = ["/admin"];

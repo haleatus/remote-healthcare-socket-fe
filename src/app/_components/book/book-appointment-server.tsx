@@ -1,7 +1,7 @@
 import BookAppointmentClient from "@/components/book/book-appointment-client";
 import React from "react";
 
-const BookAppointmentServer = ({ id }: { id: string }) => {
+const BookAppointmentServer = async ({ id }: { id: string }) => {
   return (
     <div>
       <BookAppointmentClient id={id} />

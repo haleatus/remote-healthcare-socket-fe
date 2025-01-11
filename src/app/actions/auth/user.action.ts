@@ -180,3 +180,30 @@ export async function userSignIn(
     };
   }
 }
+
+export async function userSignOut(): Promise<{
+  success: boolean;
+  error?: {
+    message: string;
+  };
+}> {
+  try {
+    const cookiesStore = await cookies();
+
+    // Remove both cookies by setting their maxAge to 0
+    cookiesStore.delete("accessToken");
+    cookiesStore.delete("userData");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error("Failed to sign out", error);
+    return {
+      success: false,
+      error: {
+        message: "Failed to sign out",
+      },
+    };
+  }
+}
