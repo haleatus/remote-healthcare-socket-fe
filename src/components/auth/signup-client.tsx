@@ -11,6 +11,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { userSignUp } from "@/app/actions/auth/user.action";
+import { UserCheck, UserPlus2Icon } from "lucide-react";
+import { Separator } from "../ui/seperator";
 
 export default function SignUpClient() {
   const [name, setName] = useState("");
@@ -135,12 +137,26 @@ export default function SignUpClient() {
               {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
-          <p className="mt-4 text-center">
-            Already have an account?{" "}
-            <Link href="/signin" className="text-primary hover:underline">
-              Sign In
-            </Link>
-          </p>
+
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-4">
+              <Link
+                href="/signin"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserCheck size={16} />
+                <span>Already have an account? Sign In</span>
+              </Link>
+              <Link
+                href="/doctor-signup"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserPlus2Icon size={16} />
+                <span>Sign Up as Doctor?</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">

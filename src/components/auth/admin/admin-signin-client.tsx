@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
-import { userSignIn } from "@/app/actions/auth/user.action";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { ShieldCheck, UserPlus } from "lucide-react";
-import { Separator } from "../ui/seperator";
+import { adminSignIn } from "@/app/actions/auth/admin.action";
+import { UserPlus2 } from "lucide-react";
+import { Separator } from "@/components/ui/seperator";
 
-function SignInForm() {
+function AdminSignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -23,8 +23,8 @@ function SignInForm() {
 
   useEffect(() => {
     const message = searchParams.get("message");
-    if (message === "unauthorized") {
-      toast.error("You are not signed in yet.");
+    if (message === "unauthorized-admin") {
+      toast.error("You are not signed in as admin yet.");
     }
   }, [searchParams]);
 
@@ -34,13 +34,13 @@ function SignInForm() {
     setErrors({});
 
     try {
-      const result = await userSignIn({
+      const result = await adminSignIn({
         email,
         password,
       });
 
       if (result.success && result.data) {
-        toast.success("Sign in successful! Redirecting...");
+        toast.success("Sign in as admin successful! Redirecting...");
         // Reset form
         setEmail("");
         setPassword("");
@@ -84,7 +84,9 @@ function SignInForm() {
               : ""
           }`}
         >
-          <h1 className="text-3xl font-bold mb-6 text-primary">Sign In</h1>
+          <h1 className="text-3xl font-bold mb-6 text-primary">
+            Admin Sign In
+          </h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -132,18 +134,11 @@ function SignInForm() {
             <Separator className="my-4" />
             <div className="flex flex-col space-y-4">
               <Link
-                href="/signup"
+                href="/admin-signup"
                 className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                <UserPlus size={16} />
-                <span>Don&apos;t have an account? Sign Up</span>
-              </Link>
-              <Link
-                href="/admin-signin"
-                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ShieldCheck size={16} />
-                <span>Sign In as Admin</span>
+                <UserPlus2 size={16} />
+                <span>Create an admin account?</span>
               </Link>
             </div>
           </div>
@@ -164,7 +159,7 @@ function SignInForm() {
   );
 }
 
-export default function SignInClient() {
+export default function AdminSignInClient() {
   return (
     <Suspense
       fallback={
@@ -173,7 +168,7 @@ export default function SignInClient() {
         </div>
       }
     >
-      <SignInForm />
+      <AdminSignInForm />
     </Suspense>
   );
 }
