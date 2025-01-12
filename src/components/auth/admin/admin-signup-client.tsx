@@ -10,9 +10,13 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { userSignUp } from "@/app/actions/auth/user.action";
+import { adminSignUp } from "@/app/actions/auth/admin.action";
 
-export default function AdminSignUpClient() {
+export default function AdminSignUpClient({
+  adminAccessToken,
+}: {
+  adminAccessToken: string;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,11 +30,14 @@ export default function AdminSignUpClient() {
     setErrors({});
 
     try {
-      const result = await userSignUp({
-        name,
-        email,
-        password,
-      });
+      const result = await adminSignUp(
+        {
+          name,
+          email,
+          password,
+        },
+        adminAccessToken
+      );
 
       if (result.success && result.data) {
         toast.success("Signup successful! Redirecting...");
@@ -39,7 +46,7 @@ export default function AdminSignUpClient() {
         setEmail("");
         setPassword("");
         // Redirect after a short delay
-        setTimeout(() => router.push("/signin"), 1000);
+        setTimeout(() => router.push("/admin-signin"), 1000);
       } else if (result.error) {
         // Handle field-specific errors
         const error = result.error as AuthErrorResponse;
@@ -138,8 +145,8 @@ export default function AdminSignUpClient() {
             </Button>
           </form>
           <p className="mt-4 text-center">
-            Already have an account?{" "}
-            <Link href="/signin" className="text-primary hover:underline">
+            Already an admin?{" "}
+            <Link href="/admin-signin" className="text-primary hover:underline">
               Sign In
             </Link>
           </p>

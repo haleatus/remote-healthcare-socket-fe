@@ -15,7 +15,7 @@ import { z } from "zod";
 
 export async function adminSignUp(
   formData: z.infer<typeof createAdminSchema>,
-  accessToken: string
+  adminAccessToken: string
 ): Promise<{
   success: boolean;
   data?: AuthSuccessResponse;
@@ -26,7 +26,7 @@ export async function adminSignUp(
     const validatedData = createAdminSchema.parse(formData);
 
     // Call the service
-    const response = await createAdminService(validatedData, accessToken);
+    const response = await createAdminService(validatedData, adminAccessToken);
 
     return {
       success: true,
