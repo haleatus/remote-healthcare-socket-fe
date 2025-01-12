@@ -3,9 +3,8 @@ import { cookies } from "next/headers";
 import React from "react";
 
 const AdminSignUpServer = async () => {
-  const adminAccessToken = JSON.parse(
-    (await cookies()).get("adminAccessToken")?.value || "null"
-  );
+  const cookieStore = await cookies();
+  const adminAccessToken = cookieStore.get("adminAccessToken")?.value;
 
   if (!adminAccessToken) {
     return <div>Login as admin to access this page</div>;
