@@ -25,7 +25,9 @@ export function middleware(req: NextRequest) {
   }
 
   if (isProtectedAdminRoute && !adminAuthToken) {
-    return NextResponse.redirect(new URL("/admin/signin", req.url));
+    const redirectAdminUrl = new URL("/admin-signin", req.url);
+    redirectAdminUrl.searchParams.set("message", "unauthorized-admin");
+    return NextResponse.redirect(redirectAdminUrl);
   }
 
   // Redirect authenticated users away from signin pages
@@ -33,7 +35,7 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (adminAuthToken && currentPath.startsWith("/admin/signin")) {
+  if (adminAuthToken && currentPath.startsWith("/admin-signin")) {
     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
 

@@ -40,7 +40,7 @@ export default function AdminSignUpClient({
       );
 
       if (result.success && result.data) {
-        toast.success("Signup successful! Redirecting...");
+        toast.success("Successfully created an admin! Redirecting...");
         // Reset form
         setName("");
         setEmail("");

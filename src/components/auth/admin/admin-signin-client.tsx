@@ -21,8 +21,8 @@ function AdminSignInForm() {
 
   useEffect(() => {
     const message = searchParams.get("message");
-    if (message === "unauthorized") {
-      toast.error("You are not signed in yet.");
+    if (message === "unauthorized-admin") {
+      toast.error("You are not signed in as admin yet.");
     }
   }, [searchParams]);
 
@@ -38,7 +38,7 @@ function AdminSignInForm() {
       });
 
       if (result.success && result.data) {
-        toast.success("Sign in successful! Redirecting...");
+        toast.success("Sign in as admin successful! Redirecting...");
         // Reset form
         setEmail("");
         setPassword("");
