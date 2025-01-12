@@ -12,7 +12,6 @@ export const endpoints = {
     },
     doctor: {
       signup: `${baseURL}/auth/users/doc/signup`,
-      signin: `${baseURL}/auth/users/signin`,
     },
   },
 };
