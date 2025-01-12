@@ -10,6 +10,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { userSignIn } from "@/app/actions/auth/user.action";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { ShieldCheck, UserPlus } from "lucide-react";
+import { Separator } from "../ui/seperator";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
@@ -126,12 +128,25 @@ function SignInForm() {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <p className="mt-4 text-center">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
-              Sign Up
-            </Link>
-          </p>
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-4">
+              <Link
+                href="/signup"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserPlus size={16} />
+                <span>Don&apos;t have an account? Sign Up</span>
+              </Link>
+              <Link
+                href="/admin-signin"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <ShieldCheck size={16} />
+                <span>Sign In as Admin</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">

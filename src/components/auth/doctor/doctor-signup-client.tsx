@@ -11,6 +11,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { doctorSignUp } from "@/app/actions/auth/doctor.action";
+import { UserCheck } from "lucide-react";
+import { Separator } from "@/components/ui/seperator";
 
 export default function DoctorSignUpClient({
   adminAccessToken,
@@ -144,12 +146,19 @@ export default function DoctorSignUpClient({
               {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
-          <p className="mt-4 text-center">
-            Already have a doctor account?{" "}
-            <Link href="/signin" className="text-primary hover:underline">
-              Sign In
-            </Link>
-          </p>
+
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-4">
+              <Link
+                href="/signin"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserCheck size={16} />
+                <span> Already have a doctor account?</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">

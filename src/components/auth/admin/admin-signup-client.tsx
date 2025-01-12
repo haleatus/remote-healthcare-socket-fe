@@ -11,6 +11,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { adminSignUp } from "@/app/actions/auth/admin.action";
+import { Separator } from "@/components/ui/seperator";
+import { UserCheck2 } from "lucide-react";
 
 export default function AdminSignUpClient({
   adminAccessToken,
@@ -144,12 +146,18 @@ export default function AdminSignUpClient({
               {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
-          <p className="mt-4 text-center">
-            Already an admin?{" "}
-            <Link href="/admin-signin" className="text-primary hover:underline">
-              Sign In
-            </Link>
-          </p>
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-4">
+              <Link
+                href="/admin-signin"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserCheck2 size={16} />
+                <span> Already an admin? Sign In</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">

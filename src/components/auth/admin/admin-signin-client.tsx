@@ -10,6 +10,8 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { adminSignIn } from "@/app/actions/auth/admin.action";
+import { UserPlus2 } from "lucide-react";
+import { Separator } from "@/components/ui/seperator";
 
 function AdminSignInForm() {
   const [email, setEmail] = useState("");
@@ -128,12 +130,18 @@ function AdminSignInForm() {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <p className="mt-4 text-center">
-            Create an admin account?{" "}
-            <Link href="/admin-signup" className="text-primary hover:underline">
-              Sign Up
-            </Link>
-          </p>
+          <div className="mt-6">
+            <Separator className="my-4" />
+            <div className="flex flex-col space-y-4">
+              <Link
+                href="/admin-signup"
+                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <UserPlus2 size={16} />
+                <span>Create an admin account?</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">
