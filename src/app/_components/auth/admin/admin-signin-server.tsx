@@ -1,8 +1,8 @@
-import SignInClient from "@/components/auth/signin-client";
+import AdminSignInClient from "@/components/auth/admin/admin-signin-client";
 import React from "react";
 
-const SignInServer = async () => {
-  return <SignInClient />;
+const AdminSignInServer = async () => {
+  return <AdminSignInClient />;
 };
 
-export default SignInServer;
+export default AdminSignInServer;
