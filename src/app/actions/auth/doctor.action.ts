@@ -10,7 +10,8 @@ import { createDoctorSchema } from "@/app/schema/doctor";
 import { createDoctorService } from "@/app/services/auth/doctor-auth.service";
 
 export async function doctorSignUp(
-  formData: z.infer<typeof createDoctorSchema>
+  formData: z.infer<typeof createDoctorSchema>,
+  adminAccessToken: string
 ): Promise<{
   success: boolean;
   data?: AuthSuccessResponse;
@@ -21,7 +22,7 @@ export async function doctorSignUp(
     const validatedData = createDoctorSchema.parse(formData);
 
     // Call the service
-    const response = await createDoctorService(validatedData);
+    const response = await createDoctorService(validatedData, adminAccessToken);
 
     return {
       success: true,

@@ -5,12 +5,14 @@ import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { z } from "zod";
 
 export const createDoctorService = async (
-  data: z.infer<typeof createDoctorSchema>
+  data: z.infer<typeof createDoctorSchema>,
+  adminAccessToken: string
 ) => {
   const res = await fetch(endpoints.auth.doctor.signup, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${adminAccessToken}`,
     },
     body: JSON.stringify(data),
   });

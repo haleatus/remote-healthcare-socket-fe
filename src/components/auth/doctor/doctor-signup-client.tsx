@@ -10,9 +10,13 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { userSignUp } from "@/app/actions/auth/user.action";
+import { doctorSignUp } from "@/app/actions/auth/doctor.action";
 
-export default function DoctorSignUpClient() {
+export default function DoctorSignUpClient({
+  adminAccessToken,
+}: {
+  adminAccessToken: string;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,14 +30,17 @@ export default function DoctorSignUpClient() {
     setErrors({});
 
     try {
-      const result = await userSignUp({
-        name,
-        email,
-        password,
-      });
+      const result = await doctorSignUp(
+        {
+          name,
+          email,
+          password,
+        },
+        adminAccessToken
+      );
 
       if (result.success && result.data) {
-        toast.success("Signup successful! Redirecting...");
+        toast.success("Signup as doctor successful! Redirecting...");
         // Reset form
         setName("");
         setEmail("");
@@ -138,7 +145,7 @@ export default function DoctorSignUpClient() {
             </Button>
           </form>
           <p className="mt-4 text-center">
-            Already have an account?{" "}
+            Already have a doctor account?{" "}
             <Link href="/signin" className="text-primary hover:underline">
               Sign In
             </Link>
