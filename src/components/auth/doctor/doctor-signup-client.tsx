@@ -1,32 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
-import { userSignIn } from "@/app/actions/auth/user.action";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { ShieldCheck, UserPlus } from "lucide-react";
-import { Separator } from "../ui/seperator";
+import { doctorSignUp } from "@/app/actions/auth/doctor.action";
+import { UserCheck } from "lucide-react";
+import { Separator } from "@/components/ui/seperator";
 
-function SignInForm() {
+export default function DoctorSignUpClient({
+  adminAccessToken,
+}: {
+  adminAccessToken: string;
+}) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const message = searchParams.get("message");
-    if (message === "unauthorized") {
-      toast.error("You are not signed in yet.");
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,40 +32,41 @@ function SignInForm() {
     setErrors({});
 
     try {
-      const result = await userSignIn({
-        email,
-        password,
-      });
+      const result = await doctorSignUp(
+        {
+          name,
+          email,
+          password,
+        },
+        adminAccessToken
+      );
 
       if (result.success && result.data) {
-        toast.success("Sign in successful! Redirecting...");
+        toast.success("Signup as doctor successful! Redirecting...");
         // Reset form
+        setName("");
         setEmail("");
         setPassword("");
-        // Redirect to home or the intended destination
-        const redirectTo = searchParams.get("redirectTo") || "/";
-        setTimeout(() => router.push(redirectTo), 1000);
+        // Redirect after a short delay
+        setTimeout(() => router.push("/signin"), 1000);
       } else if (result.error) {
         // Handle field-specific errors
-        console.log("Full error response:", result.error);
         const error = result.error as AuthErrorResponse;
         setErrors(error.error);
 
-        // // For debugging
-        // console.log("Full error response:", result.error);
-        // console.log("Processed errors:", error);
-
-        if (error.message === "Email Dosent Exist") {
-          setErrors({ email: error.message });
-        } else if (error.message === "Incorrect Email or Password") {
-          setErrors({ other: error.message });
-        }
-
         // Show error toast
-        toast.error(error.message || "Invalid email or password");
+        if (error.error.password) {
+          toast.error(error.error.password);
+        } else if (error.error.email) {
+          toast.error(error.error.email.toLowerCase());
+        } else if (error.error.name) {
+          toast.error(error.error.name);
+        } else {
+          toast.error(error.message);
+        }
       }
-    } catch (error) {
-      console.log("Error in Signin Client : ", error);
+    } catch (error: any) {
+      console.log("Error in Signup Client : ", error);
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -75,17 +74,35 @@ function SignInForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row ">
+    <div className="flex flex-col md:flex-row">
       <div className="flex-grow container mx-auto px-4 py-8 font-space-grotesk md:w-1/2">
         <div
           className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${
-            errors.email || errors.password || errors.other
+            errors.email || errors.name || errors.password || errors.other
               ? "border border-red-600"
               : ""
           }`}
         >
-          <h1 className="text-3xl font-bold mb-6 text-primary">Sign In</h1>
+          <h1 className="text-3xl font-bold mb-6 text-primary">
+            Doctor Sign Up
+          </h1>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={isLoading}
+                className={errors.name ? "border-red-500" : ""}
+                placeholder="Enter your name"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+              )}
+            </div>
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -99,7 +116,9 @@ function SignInForm() {
                 placeholder="Enter your email"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.toLowerCase()}
+                </p>
               )}
             </div>
             <div>
@@ -118,32 +137,25 @@ function SignInForm() {
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
             </div>
-
             <Button
               type="submit"
               className="w-full"
               disabled={isLoading}
               aria-disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? "Signing up..." : "Sign Up"}
             </Button>
           </form>
+
           <div className="mt-6">
             <Separator className="my-4" />
             <div className="flex flex-col space-y-4">
               <Link
-                href="/signup"
+                href="/signin"
                 className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                <UserPlus size={16} />
-                <span>Don&apos;t have an account? Sign Up</span>
-              </Link>
-              <Link
-                href="/admin-signin"
-                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ShieldCheck size={16} />
-                <span>Sign In as Admin</span>
+                <UserCheck size={16} />
+                <span> Already have a doctor account?</span>
               </Link>
             </div>
           </div>
@@ -161,19 +173,5 @@ function SignInForm() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function SignInClient() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      }
-    >
-      <SignInForm />
-    </Suspense>
   );
 }
