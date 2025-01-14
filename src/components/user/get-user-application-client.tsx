@@ -2,12 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { User } from "@/core/types/user.interface";
@@ -60,48 +55,62 @@ export default function GetUserApplicationsClient({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Data Cards</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h1 className="text-xl font-medium mb-6">Applications</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.data.map((entry) => (
-          <Card key={entry.id} className="relative">
-            <CardHeader className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Entry #{entry.id}</h2>
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={() => handleUpdate(entry.id)}
-                className="absolute top-2 right-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <p>
-                <strong>Status:</strong> {entry.status}
-              </p>
-              <p>
-                <strong>Note:</strong> {entry.note}
-              </p>
-              <p>
-                <strong>Created:</strong>{" "}
-                {new Date(entry.createdAt).toLocaleString()}
-              </p>
-              <p>
-                <strong>Updated:</strong>{" "}
-                {new Date(entry.updatedAt).toLocaleString()}
-              </p>
-              <p>
-                <strong>Request by Doc:</strong>{" "}
-                {entry.requestByDoc ? "Yes" : "No"}
-              </p>
-            </CardContent>
-            <CardFooter>
-              <div>
-                <h3 className="font-semibold">User Info:</h3>
-                <p>{entry.user.name}</p>
-                <p>{entry.user.email}</p>
+          <Card
+            key={entry.id}
+            className="relative bg-white shadow-sm hover:shadow-md transition-shadow"
+          >
+            <CardContent className="p-4">
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-sm text-gray-500">#{entry.id}</span>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => handleUpdate(entry.id)}
+                  className="h-8 w-8"
+                >
+                  <RefreshCw className="h-4 w-4 text-gray-500" />
+                </Button>
               </div>
-            </CardFooter>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Status</span>
+                  <span
+                    className={`text-sm px-2 py-1 rounded-full ${
+                      entry.status === "UPDATED"
+                        ? "bg-blue-50 text-blue-600"
+                        : "bg-gray-50 text-gray-600"
+                    }`}
+                  >
+                    {entry.status}
+                  </span>
+                </div>
+
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Note</p>
+                  <p className="text-sm">{entry.note}</p>
+                </div>
+
+                <div className="text-xs text-gray-500 space-y-1">
+                  <p>
+                    Created: {new Date(entry.createdAt).toLocaleDateString()}
+                  </p>
+                  <p>
+                    Updated: {new Date(entry.updatedAt).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-gray-100">
+                  <p className="text-sm font-medium text-gray-700">
+                    {entry.user.name}
+                  </p>
+                  <p className="text-sm text-gray-500">{entry.user.email}</p>
+                </div>
+              </div>
+            </CardContent>
           </Card>
         ))}
       </div>
