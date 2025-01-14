@@ -34,7 +34,7 @@ const CreateUserApplicationClient = ({
         // Reset form
         setNote("");
         // Redirect after a short delay
-        setTimeout(() => router.push("/dashboard"), 1000);
+        setTimeout(() => router.refresh(), 1000);
       } else if (result.error) {
         // Handle field-specific errors
         const error = result.error as ApplicationErrorResponse;
