@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { User } from "@/core/types/user.interface";
+import { useRouter } from "next/navigation";
 
 interface DataEntry {
   id: number;
@@ -37,6 +38,12 @@ export default function GetUserApplicationsClient({
   userApplications: DataResponse;
 }) {
   const [data, setData] = useState<DataResponse>(userApplications);
+  const router = useRouter();
+
+  // Update local state when userApplications prop changes
+  useEffect(() => {
+    setData(userApplications);
+  }, [userApplications]);
 
   const handleUpdate = (id: number) => {
     setData((prevData) => ({
@@ -47,6 +54,8 @@ export default function GetUserApplicationsClient({
           : entry
       ),
     }));
+    // Refresh the server components to get latest data
+    router.refresh();
   };
 
   return (

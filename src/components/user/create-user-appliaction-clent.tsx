@@ -33,8 +33,8 @@ const CreateUserApplicationClient = ({
         toast.success("Appliaction Created Successfully! Redirecting...");
         // Reset form
         setNote("");
-        // Redirect after a short delay
-        setTimeout(() => router.refresh(), 1000);
+        // Force a refresh of the server components
+        router.refresh();
       } else if (result.error) {
         // Handle field-specific errors
         const error = result.error as ApplicationErrorResponse;
