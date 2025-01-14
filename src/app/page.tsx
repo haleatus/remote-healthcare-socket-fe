@@ -1,10 +1,10 @@
-"use client";
-
 import { MessageCircleDashed, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getCurrentUser } from "./actions/user/get-current-user.action";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentUser();
   return (
     <div className="flex items-center justify-center font-space-grotesk">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 px-4 md:space-y-0 mt-10">
@@ -28,19 +28,28 @@ export default function Home() {
           <div className="flex justify-center md:justify-start space-x-4">
             <Link
               className="bg-blue-600 flex gap-2 items-center hover:bg-blue-700 text-white pl-3 pr-4 py-1.5 rounded-full"
-              href="/doctors"
+              href="/create-application"
             >
               <span>
                 <MessageCircleDashed className="size-5" />
               </span>
-              Find a Remote Doctor
+              Create an application
             </Link>
-            <Link
-              href="/signup"
-              className="inline-flex items-center text-blue-600 font-medium hover:underline"
-            >
-              Start your Health Journey &rarr;
-            </Link>
+            {user ? (
+              <Link
+                href="/my-applications"
+                className="inline-flex items-center text-blue-600 font-medium hover:underline"
+              >
+                View your applications &rarr;
+              </Link>
+            ) : (
+              <Link
+                href="/signup"
+                className="inline-flex items-center text-blue-600 font-medium hover:underline"
+              >
+                Start your Health Journey &rarr;
+              </Link>
+            )}
           </div>
         </div>
 
