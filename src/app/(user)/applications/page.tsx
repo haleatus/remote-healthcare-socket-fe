@@ -2,10 +2,12 @@ import CreateUserApplicationServer from "@/app/_components/user/applications/cre
 import GetUserApplicationServer from "@/app/_components/user/applications/get-user-applications-server";
 import React from "react";
 
-const CreateUserApplicationPage = () => {
+const UserApplicationPage = () => {
   return (
     <div>
-      <CreateUserApplicationServer />
+      <div className="absolute bottom-4 right-10 z-20">
+        <CreateUserApplicationServer />
+      </div>
       <div>
         <GetUserApplicationServer />
       </div>
@@ -13,4 +15,4 @@ const CreateUserApplicationPage = () => {
   );
 };
 
-export default CreateUserApplicationPage;
+export default UserApplicationPage;
