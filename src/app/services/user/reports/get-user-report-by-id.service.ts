@@ -19,7 +19,7 @@ export const getUserReportByIdService = async (
 
   if (!res.ok) {
     const error = new Error(userReport.message);
-    throw error;
+    console.error("Error fetching report:", error);
   }
 
   return userReport;

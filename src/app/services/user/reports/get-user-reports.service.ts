@@ -13,7 +13,7 @@ export const getUserReportsService = async (accessToken: string) => {
 
   if (!res.ok) {
     const error = new Error(userReports.message);
-    throw error;
+    console.error("Error fetching user reports:", error);
   }
 
   return userReports;
