@@ -1,14 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { createUserApplication } from "@/app/actions/user/applications/create-user-application.action";
-import { ApplicationErrorResponse } from "@/core/types/application.interface";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { createUserApplication } from "@/app/actions/user/applications/create-user-application.action";
 
 const CreateUserApplicationClient = ({
   accessToken,
@@ -16,9 +28,9 @@ const CreateUserApplicationClient = ({
   accessToken: string;
 }) => {
   const [note, setNote] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,58 +42,73 @@ const CreateUserApplicationClient = ({
       const result = await createUserApplication({ note }, accessToken);
 
       if (result.success && result.data) {
-        toast.success("Appliaction Created Successfully! Redirecting...");
-        // Reset form
+        toast.success("Application Created Successfully!");
         setNote("");
-        // Force a refresh of the server components
+        setOpen(false);
         router.refresh();
       } else if (result.error) {
-        // Handle field-specific errors
-        const error = result.error as ApplicationErrorResponse;
+        const error = result.error;
         setErrors(error.error);
-
-        // Show error toast
-
         toast.error(error.message);
       }
-    } catch (error: any) {
-      console.log("Error in User Create Application Client : ", error);
+    } catch (error) {
+      console.error("Error in User Create Application:", error);
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-  return (
-    <div>
-      <h1>Create User Application</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="note">Appliaction Note</Label>
-          <Input
-            id="note"
-            type="text"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            required
-            disabled={isLoading}
-            className={errors.note ? "border-red-500" : ""}
-            placeholder="Enter your issue here"
-          />
-          {errors.note && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-          )}
-        </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={isLoading}
-          aria-disabled={isLoading}
-        >
-          {isLoading ? "Creating application..." : "Create Application"}
-        </Button>
-      </form>
-    </div>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full w-10 h-10 bg-blue-400 text-white"
+              >
+                <PlusCircle className="h-5 w-5" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Create New Application</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Create Application</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="note">Application Note</Label>
+            <Input
+              id="note"
+              type="text"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              required
+              disabled={isLoading}
+              className={errors.note ? "border-red-500" : ""}
+              placeholder="Enter your issue here"
+            />
+            {errors.note && (
+              <p className="text-red-500 text-sm mt-1">{errors.note}</p>
+            )}
+          </div>
+
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Creating application..." : "Create Application"}
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

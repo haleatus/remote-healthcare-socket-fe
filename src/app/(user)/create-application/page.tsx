@@ -5,7 +5,9 @@ import React from "react";
 const CreateUserApplicationPage = () => {
   return (
     <div>
-      <CreateUserApplicationServer />
+      <div className="absolute bottom-4 right-10 z-20">
+        <CreateUserApplicationServer />
+      </div>
       <div>
         <GetUserApplicationServer />
       </div>
