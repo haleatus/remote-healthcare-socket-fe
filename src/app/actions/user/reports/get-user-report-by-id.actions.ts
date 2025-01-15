@@ -6,22 +6,23 @@ import { Report } from "@/core/types/reports.interface";
 export async function getUserReportById(
   accessToken: string,
   id: number
-): Promise<Report | null> {
+): Promise<{ data: Report | null; error?: string }> {
   try {
     const response = await getUserReportByIdService(accessToken, id);
 
     if (!response) {
-      return null;
+      return { data: null, error: "Report not found" };
     }
 
-    // Check if response matches our ReportResponse interface
     if ("data" in response && response.statusCode === 200) {
-      return response.data;
+      return { data: response.data };
     }
 
-    return null;
+    return { data: null, error: "Unable to load report" };
   } catch (error) {
-    console.error("Error fetching report:", error);
-    return null;
+    return {
+      data: null,
+      error: error instanceof Error ? error.message : "Report not found",
+    };
   }
 }

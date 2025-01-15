@@ -3,20 +3,29 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Report } from "@/core/types/reports.interface";
+import Link from "next/link";
 
 interface ReportDetailProps {
   report: Report | null;
+  error?: string;
 }
-
-const GetReportByIdClient = ({ report }: ReportDetailProps) => {
-  if (!report) {
+const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
+  if (error || !report) {
     return (
       <Card className="w-full max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>Report Not Found</CardTitle>
+          <CardTitle>{error || "Report Not Found"}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <p>The requested report could not be found or loaded.</p>
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/reports"
+              className="text-blue-600 hover:underline flex items-center"
+            >
+              ← Back to Reports
+            </Link>
+          </div>
         </CardContent>
       </Card>
     );

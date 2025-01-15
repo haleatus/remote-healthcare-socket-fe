@@ -1,6 +1,6 @@
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getUserReportById } from "@/app/actions/user/reports/get-user-report-by-id.actions";
-import GetReportByIdClient from "@/components/user/reports/get-reports-by-id";
+import GetReportByIdClient from "@/components/user/reports/get-reports-by-id-client";
 import Link from "next/link";
 import React from "react";
 
@@ -15,10 +15,15 @@ const GetUserReportById = async ({ id }: { id: number }) => {
       </div>
     );
   }
-  const userReportData = await getUserReportById(accessToken, id);
+
+  const { data: userReportData, error } = await getUserReportById(
+    accessToken,
+    id
+  );
+
   return (
     <div>
-      <GetReportByIdClient report={userReportData} />
+      <GetReportByIdClient report={userReportData} error={error} />
     </div>
   );
 };

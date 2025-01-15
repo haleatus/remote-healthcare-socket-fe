@@ -1,20 +1,39 @@
 import { endpoints } from "@/core/contants/endpoints";
 
 export const getUserReportsService = async (accessToken: string) => {
-  const res = await fetch(endpoints.user.reports.getAllReports, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  try {
+    const res = await fetch(endpoints.user.reports.getAllReports, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-  const userReports = await res.json();
+    if (!res.ok) {
+      if (res.status === 404) {
+        return {
+          statusCode: 404,
+          message: "No reports found",
+          data: null,
+        };
+      }
+      return null;
+    }
 
-  if (!res.ok) {
-    const error = new Error(userReports.message);
-    console.error("Error fetching user reports:", error);
+    // Safely parse JSON
+    let data;
+    try {
+      data = await res.json();
+    } catch (parseError) {
+      console.error("Error parsing response:", parseError);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    // Log network errors but don't throw
+    console.error("Network error in getUserReportsService:", error);
+    return null;
   }
-
-  return userReports;
 };
