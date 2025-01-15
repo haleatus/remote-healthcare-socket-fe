@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "server-only";
 import { createAdminSchema, signInAdminSchema } from "@/app/schema/admin";
 import { endpoints } from "@/core/contants/endpoints";
 import { AuthErrorResponse } from "@/core/types/auth.interface";

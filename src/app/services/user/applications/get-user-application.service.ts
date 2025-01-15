@@ -1,3 +1,4 @@
+import "server-only";
 import { endpoints } from "@/core/contants/endpoints";
 
 export const getUserApplicationService = async (accessToken: string) => {
