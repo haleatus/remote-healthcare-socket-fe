@@ -56,25 +56,12 @@ export default function GetUserApplicationsClient({
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Status</span>
-                  <span
-                    className={`text-sm px-2 py-1 rounded-full ${
-                      entry.status === "UPDATED"
-                        ? "bg-blue-50 text-blue-600"
-                        : "bg-gray-50 text-gray-600"
-                    }`}
-                  >
-                    {entry.status}
-                  </span>
-                </div>
-
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Note</p>
-                  <p className="text-sm">{entry.note}</p>
+                  <p className="text-sm text-gray-500 mb-1">Issue</p>
+                  <p className="text-sm pl-4">{entry.note}</p>
                 </div>
 
-                <div className="text-xs text-gray-500 space-y-1">
+                <div className="text-xs text-gray-500 flex justify-between items-center">
                   <p>
                     Created: {new Date(entry.createdAt).toLocaleDateString()}
                   </p>
@@ -83,7 +70,7 @@ export default function GetUserApplicationsClient({
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-gray-100">
+                <div className="border-t border-gray-100 flex flex-wrap items-center justify-between py-2">
                   <p className="text-sm font-medium text-gray-700">
                     {entry.user.name}
                   </p>
