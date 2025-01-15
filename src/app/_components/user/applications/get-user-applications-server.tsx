@@ -18,7 +18,10 @@ const GetUserApplicationServer = async () => {
   const userApplicationData = await getUserApplications({ accessToken });
   return (
     <div>
-      <GetUserApplicationsClient userApplications={userApplicationData} />
+      <GetUserApplicationsClient
+        userApplications={userApplicationData}
+        accessToken={accessToken}
+      />
     </div>
   );
 };

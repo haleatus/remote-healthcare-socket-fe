@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -20,11 +20,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createUserApplication } from "@/app/actions/user/applications/create-user-application.action";
+import { updateUserApplication } from "@/app/actions/user/applications/update-user-application.action";
 
-const CreateUserApplicationClient = ({
+const UpdateUserApplicationClient = ({
+  id,
   accessToken,
 }: {
+  id: number;
   accessToken: string;
 }) => {
   const [note, setNote] = useState("");
@@ -33,34 +35,48 @@ const CreateUserApplicationClient = ({
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrors({});
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsLoading(true);
+      setErrors({});
 
-    try {
-      const result = await createUserApplication({ note }, accessToken);
+      updateUserApplication({ id, note }, accessToken)
+        .then((result) => {
+          if (result.success && result.data) {
+            toast.success("Note Updated Successfully!");
+            setNote("");
+            setOpen(false);
+            router.refresh();
+          } else if (result.error) {
+            setErrors(result.error.error || {});
+            toast.error(result.error.message || "An error occurred");
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating application:", error);
+          toast.error("An unexpected error occurred. Please try again.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [id, note, accessToken, router]
+  );
 
-      if (result.success && result.data) {
-        toast.success("Application Created Successfully!");
-        setNote("");
-        setOpen(false);
-        router.refresh();
-      } else if (result.error) {
-        const error = result.error;
-        setErrors(error.error);
-        toast.error(error.message);
-      }
-    } catch (error) {
-      console.error("Error in User Create Application:", error);
-      toast.error("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleNoteChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setNote(e.target.value);
+    },
+    []
+  );
+
+  const handleOpenChange = useCallback((newOpen: boolean) => {
+    setOpen(newOpen);
+  }, []);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -68,21 +84,21 @@ const CreateUserApplicationClient = ({
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full w-10 h-10 bg-blue-400 text-white"
+                className="rounded-full w-10 h-10 bg-blue-400 hover:bg-blue-500 text-white"
               >
                 <PlusCircle className="h-5 w-5" />
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Create New Application</p>
+            <p>Update Application</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Application</DialogTitle>
+          <DialogTitle>Update Application</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -92,11 +108,11 @@ const CreateUserApplicationClient = ({
               id="note"
               type="text"
               value={note}
-              onChange={(e) => setNote(e.target.value)}
+              onChange={handleNoteChange}
               required
               disabled={isLoading}
               className={errors.note ? "border-red-500" : ""}
-              placeholder="Enter your issue here"
+              placeholder="Enter your note here"
             />
             {errors.note && (
               <p className="text-red-500 text-sm mt-1">{errors.note}</p>
@@ -104,7 +120,7 @@ const CreateUserApplicationClient = ({
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Creating application..." : "Create Application"}
+            {isLoading ? "Updating note..." : "Update Note"}
           </Button>
         </form>
       </DialogContent>
@@ -112,4 +128,4 @@ const CreateUserApplicationClient = ({
   );
 };
 
-export default CreateUserApplicationClient;
+export default UpdateUserApplicationClient;

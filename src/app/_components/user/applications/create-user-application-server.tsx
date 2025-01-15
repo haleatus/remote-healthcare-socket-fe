@@ -1,5 +1,5 @@
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import CreateUserApplicationClient from "@/components/user/create-user-appliaction-clent";
+import CreateUserApplicationClient from "@/components/user/create-user-application-clent";
 import Link from "next/link";
 import React from "react";
 

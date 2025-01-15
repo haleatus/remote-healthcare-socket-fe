@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
 import { User } from "@/core/types/user.interface";
-import { useRouter } from "next/navigation";
+import UpdateUserApplicationClient from "./update-user-application-client";
 
 interface DataEntry {
   id: number;
@@ -29,29 +26,12 @@ interface DataResponse {
 
 export default function GetUserApplicationsClient({
   userApplications,
+  accessToken,
 }: {
   userApplications: DataResponse;
+  accessToken: string;
 }) {
-  const [data, setData] = useState<DataResponse>(userApplications);
-  const router = useRouter();
-
-  // Update local state when userApplications prop changes
-  useEffect(() => {
-    setData(userApplications);
-  }, [userApplications]);
-
-  const handleUpdate = (id: number) => {
-    setData((prevData) => ({
-      ...prevData,
-      data: prevData.data.map((entry) =>
-        entry.id === id
-          ? { ...entry, updatedAt: new Date().toISOString(), status: "UPDATED" }
-          : entry
-      ),
-    }));
-    // Refresh the server components to get latest data
-    router.refresh();
-  };
+  const data = userApplications;
 
   return (
     <div className="container mx-auto p-4">
@@ -67,14 +47,12 @@ export default function GetUserApplicationsClient({
             <CardContent className="p-4">
               <div className="flex justify-between items-start mb-4">
                 <span className="text-sm text-gray-500">#{entry.id}</span>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => handleUpdate(entry.id)}
-                  className="h-8 w-8"
-                >
-                  <RefreshCw className="h-4 w-4 text-gray-500" />
-                </Button>
+                <div>
+                  <UpdateUserApplicationClient
+                    id={entry.id}
+                    accessToken={accessToken}
+                  />
+                </div>
               </div>
 
               <div className="space-y-3">
