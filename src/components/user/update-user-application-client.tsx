@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
+import { Edit } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -84,9 +84,9 @@ const UpdateUserApplicationClient = ({
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full w-10 h-10 bg-blue-400 hover:bg-blue-500 text-white"
+                className="rounded-full size-6 bg-blue-200 hover:bg-black text-black hover:text-white"
               >
-                <PlusCircle className="h-5 w-5" />
+                <Edit className="h-5 w-5" />
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
