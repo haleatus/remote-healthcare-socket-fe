@@ -20,9 +20,9 @@ export const endpoints = {
       updateUserApplication: `${baseURL}/user/user-application/update/application`,
       getUserApplications: `${baseURL}/user/user-application/applications`,
     },
-    recordings: {
-      getAllRecordings: `${baseURL}/user/user-records/records`,
-      getRecordingById: `${baseURL}/user/user-records/record/:id`,
+    reports: {
+      getAllReports: `${baseURL}/user/user-records/records`,
+      getReportById: `${baseURL}/user/user-records/record/:id`,
     },
     generalapi: {
       getAllUsers: `${baseURL}/user/general/get-all`,
