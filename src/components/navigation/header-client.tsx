@@ -24,6 +24,7 @@ export default function HeaderClient({ user }: { user: User | null }) {
     { href: "/doctors/dashboard", label: "Dashboard" },
     { href: "/book", label: "Bookings" },
     { href: "/applications", label: "Applications" },
+    { href: "/reports", label: "Reports" },
     { href: "/profile", label: "Profile" },
   ];
 
