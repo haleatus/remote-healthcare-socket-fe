@@ -31,7 +31,7 @@ const GetUserReportsClient = ({ reports }: ReportListProps) => {
 
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="font-space-grotesk">
         <TableRow>
           <TableHead>ID</TableHead>
           <TableHead>Problem</TableHead>
@@ -42,7 +42,7 @@ const GetUserReportsClient = ({ reports }: ReportListProps) => {
           <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="font-sans">
         {reportsArray.map((report) => (
           <TableRow key={report.id}>
             <TableCell>{report.id}</TableCell>

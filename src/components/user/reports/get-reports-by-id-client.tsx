@@ -12,7 +12,7 @@ interface ReportDetailProps {
 const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
   if (error || !report) {
     return (
-      <Card className="w-full max-w-3xl mx-auto">
+      <Card className="w-full max-w-3xl mx-auto font-space-grotesk">
         <CardHeader>
           <CardTitle>{error || "Report Not Found"}</CardTitle>
         </CardHeader>
@@ -32,26 +32,30 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-3xl mx-auto font-sans">
       <CardHeader>
-        <CardTitle>Report Details</CardTitle>
+        <CardTitle className="font-space-grotesk">Report Details</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div>
-            <h3 className="text-lg font-semibold">Problem</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">
+              Problem
+            </h3>
             <p>{report.problem || "No problem description available"}</p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Solution</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">
+              Solution
+            </h3>
             <p>{report.solution || "No solution provided yet"}</p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Status</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">Status</h3>
             <p>{report.status || "Status not set"}</p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">User</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">User</h3>
             <p>
               {report.user ? (
                 <>
@@ -64,7 +68,7 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Doctor</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">Doctor</h3>
             <p>
               {report.doc ? (
                 <>
@@ -77,7 +81,9 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Created At</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">
+              Created At
+            </h3>
             <p>
               {report.createdAt
                 ? new Date(report.createdAt).toLocaleString()
@@ -85,7 +91,9 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold">Updated At</h3>
+            <h3 className="text-lg font-semibold font-space-grotesk">
+              Updated At
+            </h3>
             <p>
               {report.updatedAt
                 ? new Date(report.updatedAt).toLocaleString()

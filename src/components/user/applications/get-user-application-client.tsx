@@ -38,7 +38,7 @@ export default function GetUserApplicationsClient({
       <h1 className="text-xl font-medium mb-6 font-space-grotesk">
         My Applications
       </h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 font-sans">
         {data.data.map((entry) => (
           <Card
             key={entry.id}
