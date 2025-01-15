@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserApplicationService } from "@/app/services/user/applications/get-user-application";
+import { getUserApplicationService } from "@/app/services/user/applications/get-user-application.service";
 
 export async function getUserApplications({
   accessToken,

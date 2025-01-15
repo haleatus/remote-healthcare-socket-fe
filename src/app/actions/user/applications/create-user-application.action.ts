@@ -10,7 +10,7 @@ import {
   ApplicationErrorResponse,
 } from "@/core/types/application.interface";
 
-import { createuserApplicationService } from "@/app/services/user/applications/create-user-application";
+import { createuserApplicationService } from "@/app/services/user/applications/create-user-application.service";
 
 export async function createUserApplication(
   formData: z.infer<typeof createUserApplicationSchema>,

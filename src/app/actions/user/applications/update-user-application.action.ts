@@ -10,7 +10,7 @@ import {
   ApplicationErrorResponse,
 } from "@/core/types/application.interface";
 
-import { updateUserApplicationService } from "@/app/services/user/applications/update-user-application";
+import { updateUserApplicationService } from "@/app/services/user/applications/update-user-application.service";
 
 export async function updateUserApplication(
   formData: z.infer<typeof updateUserApplicationSchema>,
