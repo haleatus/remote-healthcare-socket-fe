@@ -36,7 +36,7 @@ export const endpoints = {
       updateDoctorApplication: `${baseURL}/doc/application-controller/update/application`,
       deleteDoctorApplication: `${baseURL}/doc/application-controller/application/:id`,
     },
-    records: {
+    reports: {
       getAllRecords: `${baseURL}/doc/report-controller/records`,
       createRecord: `${baseURL}/doc/report-controller/record`,
       updateRecord: `${baseURL}/doc/report-controller/update-record`,
