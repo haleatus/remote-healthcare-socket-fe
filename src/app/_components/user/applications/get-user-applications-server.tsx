@@ -16,6 +16,7 @@ const GetUserApplicationServer = async () => {
     );
   }
   const userApplicationData = await getUserApplications({ accessToken });
+
   return (
     <div>
       <GetUserApplicationsClient

@@ -67,7 +67,7 @@
 }
  
 @layer base {
-  * {
+  *, *::before, *::after {
     @apply border-border;
   }
   

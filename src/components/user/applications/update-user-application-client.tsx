@@ -25,11 +25,13 @@ import { updateUserApplication } from "@/app/actions/user/applications/update-us
 const UpdateUserApplicationClient = ({
   id,
   accessToken,
+  initialNote,
 }: {
   id: number;
   accessToken: string;
+  initialNote: string;
 }) => {
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState(initialNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
