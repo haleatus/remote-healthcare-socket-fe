@@ -57,7 +57,6 @@ export default function AdminsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Admins</h1>
       <Table>
         <TableHeader>
           <TableRow>

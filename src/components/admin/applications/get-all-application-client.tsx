@@ -27,7 +27,6 @@ const GetAllApplicationClient = ({
 }) => {
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Applications</h1>
       <Table>
         <TableHeader>
           <TableRow>
