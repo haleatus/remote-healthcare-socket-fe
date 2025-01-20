@@ -42,7 +42,7 @@ const mockUsers: User[] = [
     name: "Admin1",
     email: "admin1@example.com",
     isVerified: true,
-    isAdmin: true,
+    isAdmin: false,
     createdAt: "2025-01-02T11:00:00Z",
   },
   // Add more mock users here...
@@ -65,7 +65,6 @@ export default function UsersPage() {
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Verified</TableHead>
-            <TableHead>Admin</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -102,9 +101,6 @@ export default function UsersPage() {
                         <p>
                           <strong>Verified:</strong>{" "}
                           {user.isVerified ? "Yes" : "No"}
-                        </p>
-                        <p>
-                          <strong>Admin:</strong> {user.isAdmin ? "Yes" : "No"}
                         </p>
                         <p>
                           <strong>Created At:</strong>{" "}
