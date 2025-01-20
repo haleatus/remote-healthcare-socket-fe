@@ -3,15 +3,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { Separator } from "@/components/ui/seperator";
-import { UserCheck2 } from "lucide-react";
 import { createAdmin } from "@/app/actions/admin/create-admin.action";
 
 export default function CreateAdminClient({
@@ -48,7 +44,7 @@ export default function CreateAdminClient({
         setEmail("");
         setPassword("");
         // Redirect after a short delay
-        setTimeout(() => router.push("/admin-signin"), 1000);
+        setTimeout(() => router.push("/admin/admins"), 1000);
       } else if (result.error) {
         // Handle field-specific errors
         const error = result.error as AuthErrorResponse;
@@ -74,19 +70,22 @@ export default function CreateAdminClient({
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="flex-grow container mx-auto px-4 py-8 font-space-grotesk md:w-1/2">
+    <div className="w-full h-full flex justify-center ">
+      <div className="flex-grow container mx-auto px-4 font-space-grotesk md:w-1/2">
         <div
-          className={`max-w-full mx-auto bg-white p-8 rounded-lg drop-shadow-md hover:drop-shadow-xl transition-all duration-300 ${
+          className={`max-w-full flex items-center flex-col mx-auto p-8 rounded-lg transition-all duration-300 ${
             errors.email || errors.name || errors.password || errors.other
               ? "border border-red-600"
               : ""
           }`}
         >
-          <h1 className="text-3xl font-bold mb-6 text-primary">
-            Admin Sign Up
+          <h1 className="text-2xl font-bold font-sans mb-6 text-primary">
+            CREATE ADMIN
           </h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 md:w-[400px] lg:w-[500px]"
+          >
             <div>
               <Label htmlFor="name">Name</Label>
               <Input
@@ -96,8 +95,8 @@ export default function CreateAdminClient({
                 onChange={(e) => setName(e.target.value)}
                 required
                 disabled={isLoading}
-                className={errors.name ? "border-red-500" : ""}
-                placeholder="Enter your name"
+                className={errors.name ? "border-red-500" : "border-black"}
+                placeholder="Enter admins' name"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -112,8 +111,8 @@ export default function CreateAdminClient({
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className={errors.email ? "border-red-500" : ""}
-                placeholder="Enter your email"
+                className={errors.email ? "border-red-500" : "border-black"}
+                placeholder="Enter admins' email"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -130,8 +129,8 @@ export default function CreateAdminClient({
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
-                className={errors.password ? "border-red-500" : ""}
-                placeholder="Enter your password"
+                className={errors.password ? "border-red-500" : "border-black"}
+                placeholder="Enter admins' password"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -143,32 +142,9 @@ export default function CreateAdminClient({
               disabled={isLoading}
               aria-disabled={isLoading}
             >
-              {isLoading ? "Signing up..." : "Sign Up"}
+              {isLoading ? "creating Admin..." : "Create Admin"}
             </Button>
           </form>
-          <div className="mt-6">
-            <Separator className="my-4" />
-            <div className="flex flex-col space-y-4">
-              <Link
-                href="/admin-signin"
-                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <UserCheck2 size={16} />
-                <span> Already an admin? Sign In</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="hidden md:block md:w-1/2">
-        <div className="flex justify-center items-center h-full">
-          <Image
-            src="/auth-images/Balloonbox.png" // Replace with your image path
-            alt="Illustration"
-            className="object-cover"
-            width={500}
-            height={500}
-          />
         </div>
       </div>
     </div>

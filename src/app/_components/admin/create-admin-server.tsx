@@ -1,4 +1,4 @@
-import AdminSignUpClient from "@/components/admin/create-admin-client";
+import CreateAdminClient from "@/components/admin/create-admin-client";
 import { cookies } from "next/headers";
 import React from "react";
 
@@ -12,7 +12,7 @@ const CreateAdminServer = async () => {
 
   return (
     <div>
-      <AdminSignUpClient adminAccessToken={adminAccessToken} />
+      <CreateAdminClient adminAccessToken={adminAccessToken} />
     </div>
   );
 };
