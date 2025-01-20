@@ -55,6 +55,7 @@ export default function GetDoctorApplicationsClient({
                     userId={entry.user.id}
                     accessToken={accessToken}
                     docId={currentDoctor.id}
+                    patientsNote={entry.note}
                   />
                 </div>
               </div>

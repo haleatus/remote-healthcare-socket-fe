@@ -28,14 +28,16 @@ const CreateDoctorApplicationClient = ({
   accessToken,
   userId,
   docId,
+  patientsNote,
 }: {
   applicationId: number;
   accessToken: string;
   userId: number;
   docId: number;
+  patientsNote: string;
 }) => {
   const [date, setDate] = useState("");
-  const [note, setNote] = useState("");
+  const [note, setNote] = useState(patientsNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
@@ -81,6 +83,7 @@ const CreateDoctorApplicationClient = ({
         .finally(() => {
           setIsLoading(false);
           deleteApplication({ applicationId: applicationId, accessToken });
+          router.refresh();
         });
     },
     [date, userId, docId, note, accessToken, router, applicationId]
