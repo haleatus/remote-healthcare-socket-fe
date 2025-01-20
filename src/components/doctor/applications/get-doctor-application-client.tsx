@@ -3,7 +3,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "@/core/types/user.interface";
-import UpdateUserApplicationClient from "./update-doctor-application-client";
 import CreateDoctorApplicationServer from "@/app/_components/doctor/applications/create-doctor-application-server";
 
 interface DataEntry {
@@ -28,9 +27,11 @@ interface DataResponse {
 export default function GetDoctorApplicationsClient({
   userApplications,
   accessToken,
+  currentDoctor,
 }: {
   userApplications: DataResponse;
   accessToken: string;
+  currentDoctor: User;
 }) {
   const data = userApplications;
 
@@ -49,14 +50,11 @@ export default function GetDoctorApplicationsClient({
               <div className="flex justify-between items-start mb-4">
                 <span className="text-sm text-gray-500">#{entry.id}</span>
                 <div>
-                  <UpdateUserApplicationClient
-                    id={entry.id}
+                  <CreateDoctorApplicationServer
+                    userId={entry.user.id}
                     accessToken={accessToken}
-                    initialNote={entry.note}
+                    docId={currentDoctor.id}
                   />
-                </div>
-                <div>
-                  <CreateDoctorApplicationServer userId={entry.user.id} />
                 </div>
               </div>
 
