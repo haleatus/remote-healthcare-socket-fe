@@ -21,12 +21,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createDoctorApplication } from "@/app/actions/doctor/applications/create-doctor-application.action";
+import { deleteApplication } from "@/app/actions/doctor/applications/delete-application.action";
 
 const CreateDoctorApplicationClient = ({
+  applicationId,
   accessToken,
   userId,
   docId,
 }: {
+  applicationId: number;
   accessToken: string;
   userId: number;
   docId: number;
@@ -77,9 +80,10 @@ const CreateDoctorApplicationClient = ({
         })
         .finally(() => {
           setIsLoading(false);
+          deleteApplication({ applicationId: applicationId, accessToken });
         });
     },
-    [date, userId, docId, note, accessToken, router]
+    [date, userId, docId, note, accessToken, router, applicationId]
   );
 
   const handleNoteChange = useCallback(

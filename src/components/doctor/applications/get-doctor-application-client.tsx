@@ -51,6 +51,7 @@ export default function GetDoctorApplicationsClient({
                 <span className="text-sm text-gray-500">#{entry.id}</span>
                 <div>
                   <CreateDoctorApplicationClient
+                    applicationId={entry.id}
                     userId={entry.user.id}
                     accessToken={accessToken}
                     docId={currentDoctor.id}

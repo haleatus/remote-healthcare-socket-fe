@@ -8,7 +8,7 @@ export async function deleteApplication({
   applicationId,
   accessToken,
 }: {
-  applicationId: string;
+  applicationId: number;
   accessToken: string;
 }) {
   try {

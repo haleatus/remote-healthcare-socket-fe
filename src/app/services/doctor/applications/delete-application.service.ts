@@ -3,13 +3,13 @@ import "server-only";
 import { endpoints } from "@/core/contants/endpoints";
 
 export const deleteApplicationService = async (
-  applicationId: string,
+  applicationId: number,
   accessToken: string
 ) => {
   const res = await fetch(
     endpoints.doctor.applications.deleteDoctorApplication.replace(
       ":id",
-      applicationId
+      applicationId.toString()
     ),
     {
       method: "DELETE",
