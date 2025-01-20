@@ -3,7 +3,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "@/core/types/user.interface";
-import CreateDoctorApplicationServer from "@/app/_components/doctor/applications/create-doctor-application-server";
+import CreateDoctorApplicationClient from "./create-doctor-application-clent";
 
 interface DataEntry {
   id: number;
@@ -50,7 +50,7 @@ export default function GetDoctorApplicationsClient({
               <div className="flex justify-between items-start mb-4">
                 <span className="text-sm text-gray-500">#{entry.id}</span>
                 <div>
-                  <CreateDoctorApplicationServer
+                  <CreateDoctorApplicationClient
                     userId={entry.user.id}
                     accessToken={accessToken}
                     docId={currentDoctor.id}
