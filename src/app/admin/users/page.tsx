@@ -41,7 +41,7 @@ const mockUsers: User[] = [
     id: 2,
     name: "Admin1",
     email: "admin1@example.com",
-    isVerified: true,
+    isVerified: false,
     isAdmin: false,
     createdAt: "2025-01-02T11:00:00Z",
   },
@@ -74,7 +74,6 @@ export default function UsersPage() {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.isVerified ? "Yes" : "No"}</TableCell>
-              <TableCell>{user.isAdmin ? "Yes" : "No"}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
                   <Dialog>

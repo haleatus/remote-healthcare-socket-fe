@@ -3,7 +3,6 @@ export const baseURL: string = "http://localhost:8080/api";
 export const endpoints = {
   auth: {
     admin: {
-      signup: `${baseURL}/admin/admin-user`,
       signin: `${baseURL}/auth/admin/signin`,
     },
     user: {
