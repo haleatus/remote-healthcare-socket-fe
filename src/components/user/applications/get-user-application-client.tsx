@@ -34,7 +34,7 @@ export default function GetUserApplicationsClient({
   const data = userApplications;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <h1 className="text-xl font-medium mb-6 font-space-grotesk">
         My Applications
       </h1>
@@ -51,6 +51,7 @@ export default function GetUserApplicationsClient({
                   <UpdateUserApplicationClient
                     id={entry.id}
                     accessToken={accessToken}
+                    initialNote={entry.note}
                   />
                 </div>
               </div>
