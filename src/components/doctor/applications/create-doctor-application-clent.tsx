@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createDoctorApplication } from "@/app/actions/doctor/applications/create-doctor-application.action";
-import DatePicker from "react-datepicker";
 
 const CreateDoctorApplicationClient = ({
   accessToken,
@@ -32,7 +31,7 @@ const CreateDoctorApplicationClient = ({
   userId: number;
   docId: number;
 }) => {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState("");
   const [note, setNote] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -46,13 +45,19 @@ const CreateDoctorApplicationClient = ({
       setErrors({});
 
       if (!date) {
-        setErrors({ date: "Please select a date" });
+        setErrors((prev) => ({ ...prev, date: "Please select a date" }));
         setIsLoading(false);
         return;
       }
 
       createDoctorApplication(
-        { userId, docId, note, date: date.toString(), requestByDoc: true },
+        {
+          userId: userId,
+          docId: docId,
+          note: note,
+          date: date,
+          requestByDoc: true,
+        },
         accessToken
       )
         .then((result) => {
@@ -84,13 +89,18 @@ const CreateDoctorApplicationClient = ({
     []
   );
 
-  const handleDateChange = useCallback((date: Date | null) => {
-    setDate(date);
-  }, []);
+  const handleDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setDate(e.target.value);
+    },
+    []
+  );
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
     setOpen(newOpen);
   }, []);
+
+  const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -137,17 +147,15 @@ const CreateDoctorApplicationClient = ({
           </div>
           <div>
             <Label htmlFor="date">Visit Date</Label>
-            <DatePicker
-              selected={date}
+            <Input
+              id="date"
+              type="date"
+              value={date}
               onChange={handleDateChange}
-              minDate={new Date()}
-              dateFormat="MMMM d, yyyy"
-              placeholderText="Select a date"
+              min={today}
               required
               disabled={isLoading}
-              className={`w-full p-2 border rounded-md ${
-                errors.date ? "border-red-500" : "border-gray-300"
-              }`}
+              className={errors.date ? "border-red-500" : ""}
             />
             {errors.date && (
               <p className="text-red-500 text-sm mt-1">{errors.date}</p>
