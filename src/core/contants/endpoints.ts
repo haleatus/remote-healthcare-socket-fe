@@ -3,7 +3,6 @@ export const baseURL: string = "http://localhost:8080/api";
 export const endpoints = {
   auth: {
     admin: {
-      signup: `${baseURL}/admin/admin-user`,
       signin: `${baseURL}/auth/admin/signin`,
     },
     user: {
@@ -32,11 +31,12 @@ export const endpoints = {
   },
   doctor: {
     applications: {
-      createDoctorApplication: `${baseURL}/admin/admin-application/application`,
+      createDoctorApplication: `${baseURL}/doc/application-controller/application`,
+      getPatientApplications: `${baseURL}/doc/application-controller/applications?status=CREATED`,
       updateDoctorApplication: `${baseURL}/doc/application-controller/update/application`,
       deleteDoctorApplication: `${baseURL}/doc/application-controller/application/:id`,
     },
-    records: {
+    reports: {
       getAllRecords: `${baseURL}/doc/report-controller/records`,
       createRecord: `${baseURL}/doc/report-controller/record`,
       updateRecord: `${baseURL}/doc/report-controller/update-record`,
@@ -52,6 +52,7 @@ export const endpoints = {
     applications: {
       getAllApplications: `${baseURL}/doc/application-controller/applications?status=CREATED`,
     },
+    createAdmin: `${baseURL}/admin/admin-user`,
   },
   messages: {},
 };

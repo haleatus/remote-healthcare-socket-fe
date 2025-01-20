@@ -23,9 +23,12 @@ export default function HeaderClient({ user }: { user: User | null }) {
     // { href: "/dashboard", label: "Dashboard" },
     { href: "/doctors/dashboard", label: "Dashboard" },
     { href: "/book", label: "Bookings" },
-    { href: "/applications", label: "Applications" },
+    { href: "/my-applications", label: "My Applications" },
     { href: "/reports", label: "Reports" },
     { href: "/profile", label: "Profile" },
+    ...(user?.isAdmin
+      ? [{ href: "/patient-applications", label: "Patient Applications" }]
+      : []),
   ];
 
   const isActiveLink = (href: string) => {

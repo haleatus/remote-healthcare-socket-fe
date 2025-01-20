@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "server-only";
 import { createUserApplicationSchema } from "@/app/schema/applications";
 
 import { endpoints } from "@/core/contants/endpoints";
