@@ -4,6 +4,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { User } from "@/core/types/user.interface";
 import UpdateUserApplicationClient from "./update-doctor-application-client";
+import CreateDoctorApplicationServer from "@/app/_components/doctor/applications/create-doctor-application-server";
 
 interface DataEntry {
   id: number;
@@ -36,7 +37,7 @@ export default function GetDoctorApplicationsClient({
   return (
     <div className="p-4">
       <h1 className="text-xl font-medium mb-6 font-space-grotesk">
-        My Applications
+        Patient Applications
       </h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 font-sans">
         {data.data.map((entry) => (
@@ -53,6 +54,9 @@ export default function GetDoctorApplicationsClient({
                     accessToken={accessToken}
                     initialNote={entry.note}
                   />
+                </div>
+                <div>
+                  <CreateDoctorApplicationServer userId={entry.user.id} />
                 </div>
               </div>
 

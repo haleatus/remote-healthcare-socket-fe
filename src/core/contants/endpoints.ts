@@ -31,7 +31,7 @@ export const endpoints = {
   },
   doctor: {
     applications: {
-      createDoctorApplication: `${baseURL}/admin/admin-application/application`,
+      createDoctorApplication: `${baseURL}/doc/application-controller/application`,
       updateDoctorApplication: `${baseURL}/doc/application-controller/update/application`,
       deleteDoctorApplication: `${baseURL}/doc/application-controller/application/:id`,
     },
