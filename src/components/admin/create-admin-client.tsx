@@ -10,11 +10,11 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/types/auth.interface";
-import { adminSignUp } from "@/app/actions/auth/admin.action";
 import { Separator } from "@/components/ui/seperator";
 import { UserCheck2 } from "lucide-react";
+import { createAdmin } from "@/app/actions/admin/create-admin.action";
 
-export default function AdminSignUpClient({
+export default function CreateAdminClient({
   adminAccessToken,
 }: {
   adminAccessToken: string;
@@ -32,7 +32,7 @@ export default function AdminSignUpClient({
     setErrors({});
 
     try {
-      const result = await adminSignUp(
+      const result = await createAdmin(
         {
           name,
           email,

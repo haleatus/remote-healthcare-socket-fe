@@ -7,7 +7,9 @@ import { LayoutDashboard, Users, FileText } from "lucide-react";
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/applications", icon: FileText, label: "Applications" },
+  { href: "/admin/admins", icon: FileText, label: "Admins" },
   { href: "/admin/users", icon: Users, label: "Users" },
+  { href: "/admin/create-admin", icon: Users, label: "Create Admin" },
 ];
 
 export default function AdminSidebar() {
