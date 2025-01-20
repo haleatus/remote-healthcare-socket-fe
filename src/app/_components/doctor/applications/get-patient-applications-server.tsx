@@ -1,11 +1,11 @@
-import { getUserApplications } from "@/app/actions/user/applications/get-user-application.action";
+import { getPatientApplications } from "@/app/actions/doctor/applications/get-patient-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUser } from "@/app/actions/user/get-current-user.action";
 import GetDoctorApplicationsClient from "@/components/doctor/applications/get-doctor-application-client";
 import Link from "next/link";
 import React from "react";
 
-const GetDoctorApplicationServer = async () => {
+const GetPatientApplicationServer = async () => {
   const accessToken = await getCurrentUserAccessToken();
 
   const currentDoctor = await getCurrentUser();
@@ -27,11 +27,11 @@ const GetDoctorApplicationServer = async () => {
       </div>
     );
   }
-  const userApplicationData = await getUserApplications({ accessToken });
+  const patientApplicationsData = await getPatientApplications({ accessToken });
   return (
     <div>
       <GetDoctorApplicationsClient
-        userApplications={userApplicationData}
+        userApplications={patientApplicationsData}
         accessToken={accessToken}
         currentDoctor={currentDoctor}
       />
@@ -39,4 +39,4 @@ const GetDoctorApplicationServer = async () => {
   );
 };
 
-export default GetDoctorApplicationServer;
+export default GetPatientApplicationServer;
