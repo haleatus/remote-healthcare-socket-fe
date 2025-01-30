@@ -6,7 +6,7 @@ import UpdateUserApplicationClient from "./update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
-import CreateUserApplicationClient from "./create-user-application-clent";
+import CreateUserApplicationClient from "./create-user-application-client";
 import {
   ApplicationSuccessResponse,
   IApplication,

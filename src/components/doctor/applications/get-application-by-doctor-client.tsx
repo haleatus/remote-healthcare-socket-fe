@@ -9,7 +9,6 @@ import type {
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
-import CreateUserApplicationClient from "@/components/user/applications/create-user-application-clent";
 import { memo, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import UpdateDoctorApplicationClient from "./update-doctor-application-client";
+import CreateDoctorApplicationBaseClient from "./create-doctor-application-base-client";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -183,12 +183,14 @@ interface GetApplicationByDoctorClientProps {
   doctorApplications: ApplicationSuccessResponse;
   accessToken: string;
   userData: IUser;
+  allUsersData: IUser[];
 }
 
 export default function GetApplicationByDoctorClient({
   doctorApplications,
   accessToken,
   userData,
+  allUsersData,
 }: GetApplicationByDoctorClientProps) {
   const { data } = doctorApplications;
 
@@ -204,6 +206,7 @@ export default function GetApplicationByDoctorClient({
         userData={userData}
         accessToken={accessToken}
         statusFilter={statusFilter}
+        allUsersData={allUsersData}
         onFilterChange={setStatusFilter}
       />
       {filteredApplications.length === 0 ? (
@@ -223,9 +226,11 @@ const Header = memo(
     userData,
     accessToken,
     statusFilter,
+    allUsersData,
     onFilterChange,
   }: {
     userData: IUser;
+    allUsersData: IUser[];
     accessToken: string;
     statusFilter: string;
     onFilterChange: (status: string) => void;
@@ -239,7 +244,11 @@ const Header = memo(
             onFilterChange={onFilterChange}
           />
           {userData && userData?.isAdmin && (
-            <CreateUserApplicationClient accessToken={accessToken} />
+            <CreateDoctorApplicationBaseClient
+              allUsersData={allUsersData}
+              accessToken={accessToken}
+              docId={userData.id}
+            />
           )}
         </div>
       </div>
