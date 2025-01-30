@@ -20,8 +20,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createDoctorApplication } from "@/app/actions/doctor/applications/create-doctor-application.action";
-import { deleteApplication } from "@/app/actions/doctor/applications/delete-application.action";
+import { createDoctorApplication } from "@/app/actions/doctor/applications/doctor/create-doctor-application.action";
+import { deleteApplication } from "@/app/actions/doctor/applications/doctor/delete-application.action";
 
 const CreateDoctorApplicationClient = ({
   applicationId,
