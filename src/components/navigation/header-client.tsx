@@ -13,9 +13,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"; // Make sure you have this utility function
 import SignoutButton from "../auth/signout-button";
-import { User } from "@/core/types/user.interface";
+import { IUser } from "@/core/types/user.interface";
 
-export default function HeaderClient({ user }: { user: User | null }) {
+export default function HeaderClient({ user }: { user: IUser | null }) {
   const pathname = usePathname();
 
   const navLinks = [

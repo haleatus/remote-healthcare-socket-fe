@@ -1,12 +1,12 @@
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import { getCurrentUser } from "@/app/actions/user/get-current-user.action";
+import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
 import CreateUserApplicationClient from "@/components/user/applications/create-user-application-clent";
 import Link from "next/link";
 import React from "react";
 
 const CreateUserApplicationServer = async () => {
   const accessToken = await getCurrentUserAccessToken();
-  const userData = await getCurrentUser();
+  const userData = await getCurrentUserFromCookie();
 
   if (!accessToken) {
     return (

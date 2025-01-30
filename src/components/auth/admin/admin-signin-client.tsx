@@ -12,6 +12,8 @@ import { AuthErrorResponse } from "@/core/types/auth.interface";
 import { adminSignIn } from "@/app/actions/auth/admin.action";
 import { UserPlus2 } from "lucide-react";
 import { Separator } from "@/components/ui/seperator";
+import { useAdmin } from "@/context/admin-context";
+import { useUser } from "@/context/user-context";
 
 function AdminSignInForm() {
   const [email, setEmail] = useState("");
@@ -20,6 +22,8 @@ function AdminSignInForm() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { refetchAdmin } = useAdmin();
+  const { refetchUser } = useUser();
 
   useEffect(() => {
     const message = searchParams.get("message");
@@ -44,6 +48,11 @@ function AdminSignInForm() {
         // Reset form
         setEmail("");
         setPassword("");
+
+        // Refetch user and admin data
+        refetchUser();
+        refetchAdmin();
+
         // Redirect to home or the intended destination
         const redirectTo = searchParams.get("redirectTo") || "/";
         setTimeout(() => router.push(redirectTo), 1000);

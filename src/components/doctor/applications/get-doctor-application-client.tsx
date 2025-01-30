@@ -2,7 +2,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User } from "@/core/types/user.interface";
+import { IUser } from "@/core/types/user.interface";
 import CreateDoctorApplicationClient from "./create-doctor-application-clent";
 import { ClockIcon, UserIcon } from "lucide-react";
 
@@ -14,7 +14,7 @@ interface DataEntry {
   note: string;
   visitDate: string | null;
   requestByDoc: boolean;
-  user: User;
+  user: IUser;
   doc: any;
 }
 
@@ -32,7 +32,7 @@ export default function GetDoctorApplicationsClient({
 }: {
   userApplications: DataResponse;
   accessToken: string;
-  currentDoctor: User;
+  currentDoctor: IUser;
 }) {
   const data = userApplications;
 
