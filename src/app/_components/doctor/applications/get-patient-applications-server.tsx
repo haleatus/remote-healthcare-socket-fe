@@ -1,7 +1,7 @@
 import { getPatientApplications } from "@/app/actions/doctor/applications/get-patient-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
-import GetDoctorApplicationsClient from "@/components/doctor/applications/get-doctor-application-client";
+import GetDoctorApplicationsClient from "@/components/doctor/applications/get-patient-application-client";
 import Link from "next/link";
 import React from "react";
 
@@ -31,7 +31,7 @@ const GetPatientApplicationServer = async () => {
   return (
     <div>
       <GetDoctorApplicationsClient
-        userApplications={patientApplicationsData}
+        patientApplications={patientApplicationsData}
         accessToken={accessToken}
         currentDoctor={currentDoctor}
       />

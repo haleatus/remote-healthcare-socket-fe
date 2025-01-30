@@ -1,40 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IUser } from "@/core/types/user.interface";
 import CreateDoctorApplicationClient from "./create-doctor-application-clent";
 import { ClockIcon, UserIcon } from "lucide-react";
+import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 
-interface DataEntry {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
-  note: string;
-  visitDate: string | null;
-  requestByDoc: boolean;
-  user: IUser;
-  doc: any;
-}
-
-interface DataResponse {
-  statusCode: number;
-  timestamp: string;
-  message: string;
-  data: DataEntry[];
-}
-
-export default function GetDoctorApplicationsClient({
-  userApplications,
+export default function GetPatientApplicationsClient({
+  patientApplications,
   accessToken,
   currentDoctor,
 }: {
-  userApplications: DataResponse;
+  patientApplications: ApplicationSuccessResponse;
   accessToken: string;
   currentDoctor: IUser;
 }) {
-  const data = userApplications;
+  const data = patientApplications;
 
   return (
     <div className="p-6">
