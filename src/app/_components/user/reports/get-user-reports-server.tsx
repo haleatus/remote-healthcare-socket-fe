@@ -19,11 +19,7 @@ const GetUserReportsServer = async () => {
 
   return (
     <div>
-      {userReportsData ? (
-        <GetUserReportsClient reports={userReportsData} />
-      ) : (
-        <div>No reports available</div>
-      )}
+      <GetUserReportsClient reports={userReportsData} />
     </div>
   );
 };

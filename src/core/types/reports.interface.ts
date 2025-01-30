@@ -1,6 +1,6 @@
 // NOTE: In backend, reports are written as recordings
 
-import { User } from "./user.interface";
+import { IUser } from "./user.interface";
 
 export interface Report {
   id: number;
@@ -9,8 +9,8 @@ export interface Report {
   problem: string;
   solution: string;
   status: string;
-  user: User;
-  doc: User;
+  user: IUser;
+  doc: IUser;
 }
 
 export interface SpecificReportResponse {
@@ -31,8 +31,8 @@ export interface ReportSuccessResponse {
     problem?: string;
     solution?: string;
     status?: string;
-    user?: User;
-    doc?: User;
+    user?: IUser;
+    doc?: IUser;
   }[];
 }
 

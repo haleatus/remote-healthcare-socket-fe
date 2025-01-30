@@ -12,56 +12,71 @@ import { Report } from "@/core/types/reports.interface";
 import Link from "next/link";
 
 interface ReportListProps {
-  reports: Report[];
+  reports: Report[] | null;
 }
 
 const GetUserReportsClient = ({ reports }: ReportListProps) => {
-  // Handle null reports
-  if (!reports) {
-    return <p>Error loading reports.</p>;
-  }
+  const tableHeaders = [
+    "ID",
+    "Problem",
+    "Status",
+    "Doctor",
+    "Doctor Email",
+    "Created At",
+    "Action",
+  ];
 
-  // Handle empty reports array
-  if (reports.length === 0) {
-    return <p>No reports available.</p>;
-  }
+  const renderTableContent = () => {
+    if (!reports) {
+      return (
+        <TableRow>
+          <TableCell colSpan={tableHeaders.length} className="text-center">
+            Loading...
+          </TableCell>
+        </TableRow>
+      );
+    }
 
-  // Ensure reports is actually an array
-  const reportsArray = Array.isArray(reports) ? reports : [reports];
+    if (reports.length === 0) {
+      return (
+        <TableRow>
+          <TableCell colSpan={tableHeaders.length} className="text-center">
+            No Reports Found
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return reports.map((report) => (
+      <TableRow key={report.id}>
+        <TableCell>{report.id}</TableCell>
+        <TableCell>{report.problem}</TableCell>
+        <TableCell>{report.status}</TableCell>
+        <TableCell>{report.doc.name}</TableCell>
+        <TableCell>{report.doc.email}</TableCell>
+        <TableCell>{new Date(report.createdAt).toLocaleString()}</TableCell>
+        <TableCell>
+          <Link
+            href={`/reports/${report.id}`}
+            className="text-blue-600 hover:underline"
+          >
+            View Details
+          </Link>
+        </TableCell>
+      </TableRow>
+    ));
+  };
 
   return (
     <Table>
       <TableHeader className="font-space-grotesk">
         <TableRow>
-          <TableHead>ID</TableHead>
-          <TableHead>Problem</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Doctor</TableHead>
-          <TableHead>Doctor Email</TableHead>
-          <TableHead>Created At</TableHead>
-          <TableHead>Action</TableHead>
+          {tableHeaders.map((header) => (
+            <TableHead key={header}>{header}</TableHead>
+          ))}
         </TableRow>
       </TableHeader>
-      <TableBody className="font-sans">
-        {reportsArray.map((report) => (
-          <TableRow key={report.id}>
-            <TableCell>{report.id}</TableCell>
-            <TableCell>{report.problem}</TableCell>
-            <TableCell>{report.status}</TableCell>
-            <TableCell>{report.doc.name}</TableCell>
-            <TableCell>{report.doc.email}</TableCell>
-            <TableCell>{new Date(report.createdAt).toLocaleString()}</TableCell>
-            <TableCell>
-              <Link
-                href={`/reports/${report.id}`}
-                className="text-blue-600 hover:underline"
-              >
-                View Details
-              </Link>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
+      <TableBody className="font-sans">{renderTableContent()}</TableBody>
     </Table>
   );
 };
