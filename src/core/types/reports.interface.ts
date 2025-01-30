@@ -24,16 +24,7 @@ export interface ReportSuccessResponse {
   statusCode: number;
   timestamp: string;
   message: string;
-  data: {
-    id?: number;
-    createdAt?: string;
-    updatedAt?: string;
-    problem?: string;
-    solution?: string;
-    status?: string;
-    user?: IUser;
-    doc?: IUser;
-  }[];
+  data: Report[];
 }
 
 export interface ReportErrorResponse {

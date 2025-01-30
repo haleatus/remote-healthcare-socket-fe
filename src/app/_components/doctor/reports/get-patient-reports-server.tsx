@@ -1,10 +1,10 @@
+import { getPatientReports } from "@/app/actions/doctor/reports/get-patient-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import { getUserReports } from "@/app/actions/user/reports/get-user-reports.action";
-import GetUserReportsClient from "@/components/user/reports/get-user-reports-client";
+import GetPatientReportsClient from "@/components/doctor/reports/get-patient-reports-client";
 import Link from "next/link";
 import React from "react";
 
-const GetDoctorReportsServer = async () => {
+const GetPatientReportsServer = async () => {
   const accessToken = await getCurrentUserAccessToken();
 
   if (!accessToken) {
@@ -15,12 +15,12 @@ const GetDoctorReportsServer = async () => {
       </div>
     );
   }
-  const userReportsData = await getUserReports(accessToken);
+  const userReportsData = await getPatientReports(accessToken);
 
   return (
     <div>
       {userReportsData ? (
-        <GetUserReportsClient reports={userReportsData} />
+        <GetPatientReportsClient reports={userReportsData} />
       ) : (
         <div>No reports available</div>
       )}
@@ -28,4 +28,4 @@ const GetDoctorReportsServer = async () => {
   );
 };
 
-export default GetDoctorReportsServer;
+export default GetPatientReportsServer;

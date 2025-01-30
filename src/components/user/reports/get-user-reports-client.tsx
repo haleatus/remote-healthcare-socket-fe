@@ -8,14 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Report } from "@/core/types/reports.interface";
+import { ReportSuccessResponse } from "@/core/types/reports.interface";
 import Link from "next/link";
 
-interface ReportListProps {
-  reports: Report[] | null;
-}
-
-const GetUserReportsClient = ({ reports }: ReportListProps) => {
+const GetUserReportsClient = ({
+  reports,
+}: {
+  reports: ReportSuccessResponse;
+}) => {
   const tableHeaders = [
     "ID",
     "Problem",
@@ -37,7 +37,7 @@ const GetUserReportsClient = ({ reports }: ReportListProps) => {
       );
     }
 
-    if (reports.length === 0) {
+    if (reports.data.length === 0) {
       return (
         <TableRow>
           <TableCell colSpan={tableHeaders.length} className="text-center">
@@ -47,7 +47,7 @@ const GetUserReportsClient = ({ reports }: ReportListProps) => {
       );
     }
 
-    return reports.map((report) => (
+    return reports.data.map((report) => (
       <TableRow key={report.id}>
         <TableCell>{report.id}</TableCell>
         <TableCell>{report.problem}</TableCell>
