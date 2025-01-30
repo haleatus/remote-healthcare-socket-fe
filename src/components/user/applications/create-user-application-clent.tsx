@@ -81,10 +81,9 @@ const CreateUserApplicationClient = ({
             <DialogTrigger asChild>
               <Button
                 variant="outline"
-                size="icon"
-                className="rounded-full w-10 h-10 bg-blue-400 text-white"
+                className="rounded-[7px] h-10 bg-blue-400 text-white flex items-center justify-center"
               >
-                <PlusCircle className="h-5 w-5" />
+                <PlusCircle className="h-5 w-5" /> Create Application
               </Button>
             </DialogTrigger>
           </TooltipTrigger>

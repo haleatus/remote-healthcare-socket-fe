@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-gradient-to-br from-[#E6EBF9] to-[#F3F5F9] max-w-8xl mx-auto px-4 md:px-8 ${inter.variable} ${roboto_mono.variable} ${spaceGrotesk.variable}`}
+        className={`bg-gradient-to-br from-[#E6EBF9] to-[#F3F5F9] max-w-8xl mx-auto ${inter.variable} ${roboto_mono.variable} ${spaceGrotesk.variable}`}
       >
         <TooltipProvider>
           <UserProvider>

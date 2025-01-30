@@ -1,45 +1,33 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { User } from "@/core/types/user.interface";
+import type { IUser } from "@/core/types/user.interface";
 import UpdateUserApplicationClient from "./update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
-
-interface DataEntry {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
-  note: string;
-  visitDate: string | null;
-  requestByDoc: boolean;
-  user: User;
-  doc: User;
-}
-
-interface DataResponse {
-  statusCode: number;
-  timestamp: string;
-  message: string;
-  data: DataEntry[];
-}
+import CreateUserApplicationClient from "./create-user-application-clent";
+import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 
 export default function GetUserApplicationsClient({
   userApplications,
   accessToken,
+  userData,
 }: {
-  userApplications: DataResponse;
+  userApplications: ApplicationSuccessResponse;
   accessToken: string;
+  userData: IUser;
 }) {
   const data = userApplications;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-8 font-space-grotesk text-gray-800">
-        My Applications
-      </h1>
+    <div className="p-2">
+      <div className="sticky top-[56px] flex justify-between items-center font-sans p-2">
+        <h1 className="font-bold">MY APPLICATIONS</h1>
+        {userData && !userData?.isAdmin && (
+          <CreateUserApplicationClient accessToken={accessToken} />
+        )}
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
         {data.data.map((entry) => (
           <Card

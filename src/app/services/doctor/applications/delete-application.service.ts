@@ -7,7 +7,7 @@ export const deleteApplicationService = async (
   accessToken: string
 ) => {
   const res = await fetch(
-    endpoints.doctor.applications.deleteDoctorApplication.replace(
+    endpoints.doctor.applications.deleteApplication.replace(
       ":id",
       applicationId.toString()
     ),

@@ -18,12 +18,10 @@ export const getNavLinks = (
 
   if (authState.isUser) {
     return [
-      { href: "/doctors", label: "Doctors" },
-      { href: "/doctors/dashboard", label: "Dashboard" },
-      { href: "/book", label: "Bookings" },
+      // { href: "/doctors", label: "Doctors" },
+      // { href: "/doctors/dashboard", label: "Dashboard" },
       { href: "/my-applications", label: "My Applications" },
       { href: "/reports", label: "Reports" },
-      { href: "/profile", label: "Profile" },
       ...(isDoctor
         ? [{ href: "/patient-applications", label: "Patient Applications" }]
         : []),
