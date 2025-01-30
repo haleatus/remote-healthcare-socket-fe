@@ -1,4 +1,4 @@
-import { User } from "./user.interface";
+import { IUser } from "./user.interface";
 
 export interface AuthSuccessResponse {
   statusCode: number;
@@ -6,7 +6,7 @@ export interface AuthSuccessResponse {
   message: string;
   data: {
     accessToken?: string;
-    user?: User;
+    user?: IUser;
     name?: string;
     email?: string;
     password?: string;

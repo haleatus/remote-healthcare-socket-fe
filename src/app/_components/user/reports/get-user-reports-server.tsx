@@ -17,13 +17,17 @@ const GetUserReportsServer = async () => {
   }
   const userReportsData = await getUserReports(accessToken);
 
+  if (!userReportsData) {
+    return (
+      <div className="flex flex-col">
+        <span>No reports found</span>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {userReportsData ? (
-        <GetUserReportsClient reports={userReportsData} />
-      ) : (
-        <div>No reports available</div>
-      )}
+      <GetUserReportsClient reports={userReportsData} />
     </div>
   );
 };

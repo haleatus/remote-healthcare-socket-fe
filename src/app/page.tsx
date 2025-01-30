@@ -1,10 +1,10 @@
 import { MessageCircleDashed, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getCurrentUser } from "./actions/user/get-current-user.action";
+import { getCurrentUserFromCookie } from "./actions/user/get-current-user-from-cookie.action";
 
 export default async function Home() {
-  const user = await getCurrentUser();
+  const user = await getCurrentUserFromCookie();
   return (
     <div className="flex items-center justify-center font-space-grotesk">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 px-4 md:space-y-0 mt-10">
