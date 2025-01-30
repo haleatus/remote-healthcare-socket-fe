@@ -46,7 +46,7 @@ export const endpoints = {
       deleteRecord: `${baseURL}/doc/report-controller/record/:id`,
     },
     generalapi: {
-      // getAllDoctors: `${baseURL}/doc/general/get-all`,
+      getAllDoctors: `${baseURL}/doc/general/get-all`,
       // getAllOnlineDoctors: `${baseURL}/doc/general/get-online`,
       // getAllOfflineDoctors: `${baseURL}/doc/general/get-offline`,
     },

@@ -7,7 +7,6 @@ export const getNavLinks = (
   if (authState.isAdmin) {
     return [
       { href: "/admin", label: "Dashboard" },
-      { href: "/admin/doctors", label: "Doctors" },
       { href: "/admin/applications", label: "Applications" },
       { href: "/admin/reports", label: "Reports" },
       { href: "/admin/admins", label: "Admins" },
@@ -22,6 +21,7 @@ export const getNavLinks = (
         ? [
             { href: "/patient-applications", label: "Patient Applications" },
             { href: "/doctor-applications", label: "My Applications" },
+            { href: "/doctors", label: "Doctors" },
           ]
         : [
             { href: "/my-applications", label: "My Applications" },
