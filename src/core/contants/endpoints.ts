@@ -53,6 +53,7 @@ export const endpoints = {
       getAllApplications: `${baseURL}/doc/application-controller/applications?status=CREATED`,
     },
     createAdmin: `${baseURL}/admin/admin-user`,
+    getMeAdmin: `${baseURL}/auth/admin/me`,
   },
   messages: {},
 };

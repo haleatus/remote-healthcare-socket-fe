@@ -1,4 +1,4 @@
-import { getAllApplications } from "@/app/actions/admin/get-all-application.action";
+import { getAllApplications } from "@/app/actions/admin/applications/get-all-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUser } from "@/app/actions/user/get-current-user.action";
 import GetAllApplicationClient from "@/components/admin/applications/get-all-application-client";

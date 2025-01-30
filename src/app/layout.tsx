@@ -6,6 +6,7 @@ import { Inter, Roboto_Mono, Space_Grotesk } from "next/font/google";
 import { UserProvider } from "@/context/user-context";
 import HeaderServer from "./_components/navigation/header-server";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AdminProvider } from "@/context/admin-context";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -42,9 +43,11 @@ export default function RootLayout({
       >
         <TooltipProvider>
           <UserProvider>
-            <HeaderServer />
-            {children}
-            <Toaster richColors position="bottom-left"/>
+            <AdminProvider>
+              <HeaderServer />
+              {children}
+              <Toaster richColors position="bottom-left" />
+            </AdminProvider>
           </UserProvider>
         </TooltipProvider>
       </body>

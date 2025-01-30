@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Users, FileText } from "lucide-react";
+import { useAdmin } from "@/context/admin-context";
 
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
@@ -15,8 +16,13 @@ const navItems = [
 export default function AdminSidebar() {
   const pathname = usePathname();
 
+  const { admin } = useAdmin();
+
   return (
     <aside className="w-64 border-t border-black">
+      <div>
+        {admin?.name} | {admin?.role}
+      </div>
       <nav className="space-y-2 pt-2">
         {navItems.map((item) => (
           <Link
