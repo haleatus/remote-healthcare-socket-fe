@@ -17,6 +17,14 @@ const GetUserReportsServer = async () => {
   }
   const userReportsData = await getUserReports(accessToken);
 
+  if (!userReportsData) {
+    return (
+      <div className="flex flex-col">
+        <span>No reports found</span>
+      </div>
+    );
+  }
+
   return (
     <div>
       <GetUserReportsClient reports={userReportsData} />
