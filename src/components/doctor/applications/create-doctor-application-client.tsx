@@ -42,6 +42,7 @@ const CreateDoctorApplicationClient = ({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const status = "PENDING";
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -61,6 +62,7 @@ const CreateDoctorApplicationClient = ({
           docId: docId,
           note: note,
           date: date,
+          status: status,
           requestByDoc: true,
         },
         accessToken

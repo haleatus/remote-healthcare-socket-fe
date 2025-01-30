@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IUser } from "@/core/types/user.interface";
-import CreateDoctorApplicationClient from "./create-doctor-application-clent";
+import CreateDoctorApplicationClient from "./create-doctor-application-client";
 import { ClockIcon, UserIcon } from "lucide-react";
 import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 

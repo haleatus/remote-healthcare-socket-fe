@@ -17,20 +17,48 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateUserApplication } from "@/app/actions/user/applications/update-user-application.action";
+import { updateDoctorApplication } from "@/app/actions/doctor/applications/update-doctor-application.action";
+
+enum ReportStatusEnum {
+  CREATED = "CREATED",
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  RESOLVED = "RESOLVED",
+  CANCELLED = "CANCELLED",
+}
+
+const formatDateForInput = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().split("T")[0];
+};
 
 const UpdateDoctorApplicationClient = ({
   id,
   accessToken,
   initialNote,
+  initialDate,
+  initialStatus,
+  docId,
 }: {
   id: number;
   accessToken: string;
   initialNote: string;
+  initialDate: string;
+  initialStatus: string;
+  docId: number;
 }) => {
+  const [date, setDate] = useState(formatDateForInput(initialDate));
+  const [status, setStatus] = useState(initialStatus);
   const [note, setNote] = useState(initialNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -43,11 +71,19 @@ const UpdateDoctorApplicationClient = ({
       setIsLoading(true);
       setErrors({});
 
-      updateUserApplication({ id, note }, accessToken)
+      updateDoctorApplication(
+        {
+          docId: docId,
+          id: id,
+          note: note,
+          date: date,
+          status: status,
+        },
+        accessToken
+      )
         .then((result) => {
           if (result.success && result.data) {
-            toast.success("Note Updated Successfully!");
-            setNote("");
+            toast.success("Application Updated Successfully!");
             setOpen(false);
             router.refresh();
           } else if (result.error) {
@@ -63,7 +99,7 @@ const UpdateDoctorApplicationClient = ({
           setIsLoading(false);
         });
     },
-    [id, note, accessToken, router]
+    [docId, id, note, date, status, accessToken, router]
   );
 
   const handleNoteChange = useCallback(
@@ -72,6 +108,17 @@ const UpdateDoctorApplicationClient = ({
     },
     []
   );
+
+  const handleDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setDate(e.target.value);
+    },
+    []
+  );
+
+  const handleStatusChange = useCallback((value: string) => {
+    setStatus(value);
+  }, []);
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
     setOpen(newOpen);
@@ -121,8 +168,43 @@ const UpdateDoctorApplicationClient = ({
             )}
           </div>
 
+          <div>
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              value={date}
+              onChange={handleDateChange}
+              required
+              disabled={isLoading}
+              className={errors.date ? "border-red-500" : ""}
+            />
+            {errors.date && (
+              <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select value={status} onValueChange={handleStatusChange}>
+              <SelectTrigger className={errors.status ? "border-red-500" : ""}>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(ReportStatusEnum).map((statusOption) => (
+                  <SelectItem key={statusOption} value={statusOption}>
+                    {statusOption.replace(/_/g, " ")}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.status && (
+              <p className="text-red-500 text-sm mt-1">{errors.status}</p>
+            )}
+          </div>
+
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Updating note..." : "Update Note"}
+            {isLoading ? "Updating application..." : "Update Application"}
           </Button>
         </form>
       </DialogContent>

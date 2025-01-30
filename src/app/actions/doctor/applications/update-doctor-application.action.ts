@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { updateUserApplicationSchema } from "@/app/schema/applications";
+import { updateDoctorApplicationSchema } from "@/app/schema/applications";
 
 import { z } from "zod";
 
@@ -10,10 +10,10 @@ import {
   ApplicationErrorResponse,
 } from "@/core/types/application.interface";
 
-import { updateUserApplicationService } from "@/app/services/user/applications/update-user-application.service";
+import { updateDoctorApplicationService } from "@/app/services/doctor/applications/update-doctor-application.service";
 
 export async function updateDoctorApplication(
-  formData: z.infer<typeof updateUserApplicationSchema>,
+  formData: z.infer<typeof updateDoctorApplicationSchema>,
   accessToken: string
 ): Promise<{
   success: boolean;
@@ -22,10 +22,10 @@ export async function updateDoctorApplication(
 }> {
   try {
     // Validate the input data
-    const validatedData = updateUserApplicationSchema.parse(formData);
+    const validatedData = updateDoctorApplicationSchema.parse(formData);
 
     // Call the service
-    const response = await updateUserApplicationService(
+    const response = await updateDoctorApplicationService(
       validatedData,
       accessToken
     );

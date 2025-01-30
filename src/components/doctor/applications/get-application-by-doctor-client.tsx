@@ -6,12 +6,20 @@ import type {
   ApplicationSuccessResponse,
   IApplication,
 } from "@/core/types/application.interface";
-import UpdateUserApplicationClient from "@/components/user/applications/update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 import CreateUserApplicationClient from "@/components/user/applications/create-user-application-clent";
-import { memo } from "react";
+import { memo, useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import UpdateDoctorApplicationClient from "./update-doctor-application-client";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -25,10 +33,27 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => (
         <CardTitle className="text-lg font-semibold text-gray-700">
           Application #{entry.id}
         </CardTitle>
-        <UpdateUserApplicationClient
+        {entry.status !== "CREATED" && (
+          <span
+            className={cn(
+              "px-3 py-1 text-sm font-medium rounded-full",
+              entry.status === "RESOLVED" && "bg-green-100 text-green-600",
+              entry.status === "PENDING" && "bg-yellow-100 text-yellow-600",
+              entry.status === "CANCELLED" && "bg-red-100 text-red-600",
+              entry.status === "IN_PROGRESS" && "bg-blue-100 text-blue-600"
+            )}
+          >
+            {entry.status}
+          </span>
+        )}
+
+        <UpdateDoctorApplicationClient
           id={entry.id}
           accessToken={accessToken}
           initialNote={entry.note}
+          initialDate={entry.visitDate || ""}
+          initialStatus={entry.status}
+          docId={entry.doc?.id || 0}
         />
       </div>
     </CardHeader>
@@ -36,7 +61,7 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => (
       <div className="space-y-4">
         <div>
           <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
-          <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md">
+          <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md max-h-16 overflow-auto">
             {entry.note}
           </p>
         </div>
@@ -126,6 +151,34 @@ const PendingRequest = memo(() => (
 
 PendingRequest.displayName = "PendingRequest";
 
+const StatusFilter = memo(
+  ({
+    onFilterChange,
+    currentFilter,
+  }: {
+    onFilterChange: (status: string) => void;
+    currentFilter: string;
+  }) => (
+    <div>
+      <Select value={currentFilter} onValueChange={onFilterChange}>
+        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded shadow-sm">
+          <SelectValue placeholder="Filter by status" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="ALL">All Applications</SelectItem>
+          <SelectItem value="CREATED">Created</SelectItem>
+          <SelectItem value="PENDING">Pending</SelectItem>
+          <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+          <SelectItem value="RESOLVED">Resolved</SelectItem>
+          <SelectItem value="CANCELLED">Cancelled</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  )
+);
+
+StatusFilter.displayName = "StatusFilter";
+
 interface GetApplicationByDoctorClientProps {
   doctorApplications: ApplicationSuccessResponse;
   accessToken: string;
@@ -139,31 +192,62 @@ export default function GetApplicationByDoctorClient({
 }: GetApplicationByDoctorClientProps) {
   const { data } = doctorApplications;
 
+  const [statusFilter, setStatusFilter] = useState("ALL");
+
+  const filteredApplications = data.filter((application) =>
+    statusFilter === "ALL" ? true : application.status === statusFilter
+  );
+
   return (
-    <div className="p-2">
-      <Header userData={userData} accessToken={accessToken} />
-      {data.length === 0 ? (
+    <div className="p-4">
+      <Header
+        userData={userData}
+        accessToken={accessToken}
+        statusFilter={statusFilter}
+        onFilterChange={setStatusFilter}
+      />
+      {filteredApplications.length === 0 ? (
         <EmptyState />
       ) : (
-        <ApplicationGrid applications={data} accessToken={accessToken} />
+        <ApplicationGrid
+          applications={filteredApplications}
+          accessToken={accessToken}
+        />
       )}
     </div>
   );
 }
 
 const Header = memo(
-  ({ userData, accessToken }: { userData: IUser; accessToken: string }) => (
-    <div className="sticky top-[56px] flex justify-between items-center font-sans p-2 z-30 bg-white">
-      <h1 className="font-bold">MY APPLICATIONS</h1>
-      {userData && !userData?.isAdmin && (
-        <CreateUserApplicationClient accessToken={accessToken} />
-      )}
+  ({
+    userData,
+    accessToken,
+    statusFilter,
+    onFilterChange,
+  }: {
+    userData: IUser;
+    accessToken: string;
+    statusFilter: string;
+    onFilterChange: (status: string) => void;
+  }) => (
+    <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
+      <div className="flex justify-between items-center">
+        <h1 className="font-bold">MY APPLICATIONS</h1>
+        <div className="flex items-center gap-2">
+          <StatusFilter
+            currentFilter={statusFilter}
+            onFilterChange={onFilterChange}
+          />
+          {userData && userData?.isAdmin && (
+            <CreateUserApplicationClient accessToken={accessToken} />
+          )}
+        </div>
+      </div>
     </div>
   )
 );
 
 Header.displayName = "Header";
-
 const EmptyState = () => (
   <div className="flex items-center justify-center h-full">
     <p className="text-sm text-gray-500">No Applications Found</p>
