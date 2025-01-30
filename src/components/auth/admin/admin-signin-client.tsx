@@ -50,8 +50,8 @@ function AdminSignInForm() {
         setPassword("");
 
         // Refetch user and admin data
-        refetchUser();
-        refetchAdmin();
+        await refetchUser();
+        await refetchAdmin();
 
         // Redirect to home or the intended destination
         const redirectTo = searchParams.get("redirectTo") || "/";

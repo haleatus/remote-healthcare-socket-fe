@@ -1,25 +1,29 @@
 "use client";
 
-import { userSignOut } from "@/app/actions/auth/user.action";
 import { useRouter } from "next/navigation";
 
 import React from "react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { IoLogOut } from "react-icons/io5";
 import { useAdmin } from "@/context/admin-context";
 import { useUser } from "@/context/user-context";
+import { adminSignOut } from "@/app/actions/auth/admin.action";
 
-const SignoutButton = () => {
+const AdminSignoutButton = () => {
   const router = useRouter();
-  const { refetchUser } = useUser();
   const { refetchAdmin } = useAdmin();
+  const { refetchUser } = useUser();
 
   const handleSignOut = async () => {
-    const result = await userSignOut();
+    const result = await adminSignOut();
     if (result.success) {
-      toast.success("Sign out successful! Redirecting...");
+      toast.success("Admin Sign out successful! Redirecting...");
       // Reset user and admin context
       await refetchUser();
       await refetchAdmin();
@@ -42,11 +46,11 @@ const SignoutButton = () => {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <span className="text-red-600">SignOut</span>
+          <span className="text-red-600">Admin SignOut</span>
         </TooltipContent>
       </Tooltip>
     </div>
   );
 };
 
-export default SignoutButton;
+export default AdminSignoutButton;

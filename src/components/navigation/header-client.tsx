@@ -14,9 +14,21 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"; // Make sure you have this utility function
 import SignoutButton from "../auth/signout-button";
 import { IUser } from "@/core/types/user.interface";
+import { useAdmin } from "@/context/admin-context";
+import { useUser } from "@/context/user-context";
+import AdminSignoutButton from "../auth/admin/admin-signout-button";
 
-export default function HeaderClient({ user }: { user: IUser | null }) {
+export default function HeaderClient({
+  userFromCookie,
+}: {
+  userFromCookie: IUser | null;
+}) {
   const pathname = usePathname();
+  const { admin } = useAdmin();
+  const { user } = useUser();
+
+  console.log("user", user);
+  console.log("admin", admin);
 
   const navLinks = [
     { href: "/doctors", label: "Doctors" },
@@ -26,7 +38,7 @@ export default function HeaderClient({ user }: { user: IUser | null }) {
     { href: "/my-applications", label: "My Applications" },
     { href: "/reports", label: "Reports" },
     { href: "/profile", label: "Profile" },
-    ...(user?.isAdmin
+    ...(userFromCookie?.isAdmin // here is Admin implies is doctor
       ? [{ href: "/patient-applications", label: "Patient Applications" }]
       : []),
   ];
@@ -71,8 +83,8 @@ export default function HeaderClient({ user }: { user: IUser | null }) {
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-6">
-          {user ? (
-            <SignoutButton />
+          {user || admin ? (
+            <>{user ? <SignoutButton /> : <AdminSignoutButton />}</>
           ) : (
             <>
               <Link

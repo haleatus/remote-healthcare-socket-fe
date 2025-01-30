@@ -3,10 +3,10 @@ import HeaderClient from "@/components/navigation/header-client";
 import React from "react";
 
 const HeaderServer = async () => {
-  const user = await getCurrentUserFromCookie();
+  const userFromCookie = await getCurrentUserFromCookie();
   return (
     <>
-      <HeaderClient user={user} />
+      <HeaderClient userFromCookie={userFromCookie} />
     </>
   );
 };
