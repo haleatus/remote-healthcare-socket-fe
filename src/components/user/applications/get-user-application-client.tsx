@@ -23,7 +23,7 @@ export default function GetUserApplicationsClient({
   if (data.data.length === 0) {
     return (
       <div className="p-2">
-        <div className="sticky top-[56px] flex justify-between items-center font-sans p-2">
+        <div className="sticky top-[56px] flex justify-between items-center font-sans p-2 z-30">
           <h1 className="font-bold">MY APPLICATIONS</h1>
           {userData && !userData?.isAdmin && (
             <CreateUserApplicationClient accessToken={accessToken} />
@@ -38,7 +38,7 @@ export default function GetUserApplicationsClient({
 
   return (
     <div className="p-2">
-      <div className="sticky top-[56px] flex justify-between items-center font-sans p-2">
+      <div className="sticky top-[56px] flex justify-between items-center font-sans p-2 z-30">
         <h1 className="font-bold">MY APPLICATIONS</h1>
         {userData && !userData?.isAdmin && (
           <CreateUserApplicationClient accessToken={accessToken} />
