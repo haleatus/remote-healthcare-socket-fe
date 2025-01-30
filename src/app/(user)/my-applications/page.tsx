@@ -4,9 +4,7 @@ import React from "react";
 const UserApplicationPage = () => {
   return (
     <div>
-      <div>
-        <GetUserApplicationServer />
-      </div>
+      <GetUserApplicationServer />
     </div>
   );
 };

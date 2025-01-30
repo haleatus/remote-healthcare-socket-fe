@@ -16,9 +16,6 @@ export const createDoctorApplicationSchema = z.object({
   docId: z.number().int().positive(),
   note: z.string().min(2, "Application note must be at least 2 characters."),
   date: z.string().min(2, "Application date must be at least 2 characters."),
-  status: z
-    .string()
-    .min(2, "Application status must be at least 2 characters."),
   requestByDoc: z.boolean(),
 });
 
