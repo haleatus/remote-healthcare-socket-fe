@@ -1,21 +1,22 @@
-import { User } from "./user.interface";
+import { IUser } from "./user.interface";
 
-export interface AdminApplicationSuccessResponse {
+export interface IApplication {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  note: string;
+  visitDate: string | null;
+  requestByDoc: boolean;
+  user: IUser;
+  doc: IUser;
+}
+
+export interface ApplicationSuccessResponse {
   statusCode: number;
   timestamp: string;
   message: string;
-  data: {
-    user?: User;
-    note?: string;
-    requestByDoc?: boolean;
-    status?: string;
-    deletedAt?: string | null;
-    visitDate?: string | null;
-    id?: number;
-    createdAt?: string;
-    updatedAt?: string;
-    doc?: User;
-  }[];
+  data: IApplication[];
 }
 
 export interface DoctorApplicationSuccessResponse {
@@ -39,24 +40,6 @@ export interface DoctorApplicationSuccessResponse {
     createdAt?: string;
     updatedAt?: string;
   }[];
-}
-
-export interface ApplicationSuccessResponse {
-  statusCode: number;
-  timestamp: string;
-  message: string;
-  data: {
-    user?: User;
-    note?: string;
-    requestByDoc?: boolean;
-    status?: string;
-    deletedAt?: string | null;
-    visitDate?: string | null;
-    id?: number;
-    createdAt?: string;
-    updatedAt?: string;
-    doc?: User;
-  };
 }
 
 export interface ApplicationErrorResponse {

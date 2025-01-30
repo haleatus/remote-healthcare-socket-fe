@@ -87,6 +87,10 @@ export async function userSignIn(
   error?: AuthErrorResponse;
 }> {
   try {
+    const cookiesStore = await cookies();
+    cookiesStore.delete("adminAccessToken");
+    cookiesStore.delete("adminData");
+
     // Validate the input data
     const validatedData = signInUserSchema.parse(formData);
 
@@ -189,7 +193,6 @@ export async function userSignOut(): Promise<{
 }> {
   try {
     const cookiesStore = await cookies();
-
     // Remove both cookies by setting their maxAge to 0
     cookiesStore.delete("accessToken");
     cookiesStore.delete("userData");

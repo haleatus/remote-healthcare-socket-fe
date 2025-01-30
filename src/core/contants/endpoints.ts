@@ -28,13 +28,16 @@ export const endpoints = {
       getAllOnlineUsers: `${baseURL}/user/general/get-online`,
       getAllOfflineUsers: `${baseURL}/user/general/get-offline`,
     },
+    getMeUser: `${baseURL}/auth/users/me`,
   },
   doctor: {
     applications: {
       createDoctorApplication: `${baseURL}/doc/application-controller/application`,
       getPatientApplications: `${baseURL}/doc/application-controller/applications?status=CREATED`,
-      updateDoctorApplication: `${baseURL}/doc/application-controller/update/application`,
-      deleteDoctorApplication: `${baseURL}/doc/application-controller/application/:id`,
+      updateApplication: `${baseURL}/doc/application-controller/update/application`,
+      deleteApplication: `${baseURL}/doc/application-controller/application/:id`,
+      getApplicationsByDoctor: `${baseURL}/doc/application-controller/applications/doc`,
+      finishAppointment: `${baseURL}/doc/application-controller/finish-appoinement/:appointmentId`,
     },
     reports: {
       getAllRecords: `${baseURL}/doc/report-controller/records`,
@@ -43,7 +46,7 @@ export const endpoints = {
       deleteRecord: `${baseURL}/doc/report-controller/record/:id`,
     },
     generalapi: {
-      // getAllDoctors: `${baseURL}/doc/general/get-all`,
+      getAllDoctors: `${baseURL}/doc/general/get-all`,
       // getAllOnlineDoctors: `${baseURL}/doc/general/get-online`,
       // getAllOfflineDoctors: `${baseURL}/doc/general/get-offline`,
     },
@@ -53,6 +56,7 @@ export const endpoints = {
       getAllApplications: `${baseURL}/doc/application-controller/applications?status=CREATED`,
     },
     createAdmin: `${baseURL}/admin/admin-user`,
+    getMeAdmin: `${baseURL}/auth/admin/me`,
   },
   messages: {},
 };

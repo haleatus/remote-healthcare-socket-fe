@@ -1,13 +1,13 @@
-import { getAllApplications } from "@/app/actions/admin/get-all-application.action";
+import { getAllApplications } from "@/app/actions/admin/applications/get-all-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import { getCurrentUser } from "@/app/actions/user/get-current-user.action";
+import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
 import GetAllApplicationClient from "@/components/admin/applications/get-all-application-client";
 import React from "react";
 
 const GetAllApplicationsServer = async () => {
   // This needs to be changed
   const adminAccessToken = await getCurrentUserAccessToken();
-  const userData = await getCurrentUser();
+  const userData = await getCurrentUserFromCookie();
 
   // Handle unauthenticated or unauthorized users
   if (!userData) {

@@ -21,9 +21,10 @@ export const createDoctorApplicationSchema = z.object({
 
 export const updateDoctorApplicationSchema = z.object({
   id: z.number().int().positive(),
-  userId: z.number().int().positive(),
-  docId: z.number().int().positive(),
   note: z.string().min(2, "Application note must be at least 2 characters."),
   date: z.string().min(2, "Application date must be at least 2 characters."),
-  requestByDoc: z.boolean(),
+  status: z
+    .string()
+    .min(2, "Application status must be at least 2 characters."),
+  docId: z.number().int().positive(),
 });

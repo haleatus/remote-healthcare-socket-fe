@@ -18,6 +18,9 @@ export async function adminSignIn(
   error?: AuthErrorResponse;
 }> {
   try {
+    const cookiesStore = await cookies();
+    cookiesStore.delete("accessToken");
+    cookiesStore.delete("userData");
     // Validate the input data
     const validatedData = signInAdminSchema.parse(formData);
 

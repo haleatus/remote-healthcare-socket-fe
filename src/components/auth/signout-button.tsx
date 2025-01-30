@@ -6,16 +6,23 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { IoMdLogOut } from "react-icons/io";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { IoLogOut } from "react-icons/io5";
+import { useAdmin } from "@/context/admin-context";
+import { useUser } from "@/context/user-context";
 
 const SignoutButton = () => {
   const router = useRouter();
+  const { refetchUser } = useUser();
+  const { refetchAdmin } = useAdmin();
 
   const handleSignOut = async () => {
     const result = await userSignOut();
     if (result.success) {
       toast.success("Sign out successful! Redirecting...");
+      // Reset user and admin context
+      await refetchUser();
+      await refetchAdmin();
       // Redirect to login page or update UI
       router.push("/signin");
     } else {
@@ -29,9 +36,9 @@ const SignoutButton = () => {
         <TooltipTrigger asChild>
           <Button
             onClick={handleSignOut}
-            className="bg-red-200 text-black hover:text-white rounded-full size-7 p-0.5 hover:bg-red-800 transition-colors duration-300"
+            className="bg-red-500 text-black hover:text-white rounded-full size-7 p-0.5 hover:bg-red-800 transition-colors duration-300"
           >
-            <IoMdLogOut size={22} />
+            <IoLogOut size={22} className="pl-[1px]" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>

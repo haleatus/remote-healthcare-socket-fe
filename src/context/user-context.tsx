@@ -6,38 +6,56 @@ import React, {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
-import { getCurrentUser } from "@/app/actions/user/get-current-user.action";
-import { User } from "@/core/types/user.interface";
+import { useRouter } from "next/navigation";
+import { IUser } from "@/core/types/user.interface";
+import { getMeUser } from "@/app/actions/user/get-me-user.action";
 
 interface UserContextValue {
-  user: User | null;
+  user: IUser | null;
   loading: boolean;
+  refetchUser: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  const fetchUser = useCallback(async () => {
+    setLoading(true);
+    try {
+      const fetchedUser = await getMeUser();
+      if (fetchedUser?.data) {
+        setUser(fetchedUser.data);
+      } else {
+        // If no data or error, set ambulance to null
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      setUser(null);
+      router.push("/signin"); // Optional: redirect on auth failure
+    } finally {
+      setLoading(false);
+    }
+  }, [router]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const fetchedUser = await getCurrentUser();
-        setUser(fetchedUser);
-      } catch (error) {
-        console.error("Failed to fetch user:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
-  }, []);
+  }, [fetchUser]);
 
   return (
-    <UserContext.Provider value={{ user, loading }}>
+    <UserContext.Provider
+      value={{
+        user,
+        loading,
+        refetchUser: fetchUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
