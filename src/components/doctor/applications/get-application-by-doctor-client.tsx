@@ -201,7 +201,7 @@ export default function GetApplicationByDoctorClient({
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 pt-0">
       <Header
         userData={userData}
         accessToken={accessToken}

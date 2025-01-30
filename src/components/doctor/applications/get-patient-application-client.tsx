@@ -18,11 +18,11 @@ export default function GetPatientApplicationsClient({
   const data = patientApplications;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-8 font-space-grotesk text-gray-800">
-        Patients&apos; Application
+    <div className="p-4 font-sans">
+      <h1 className="font-bold pb-4 pl-2 text-gray-800">
+        PATIENTS&apos; APPLICATION
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
         {data.data.map((entry) => (
           <Card
             key={entry.id}

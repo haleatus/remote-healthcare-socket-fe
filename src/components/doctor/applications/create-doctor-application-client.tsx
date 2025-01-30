@@ -125,7 +125,7 @@ const CreateDoctorApplicationClient = ({
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Create New Application For this patient</p>
+            <p>Create New Application for this patient</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
