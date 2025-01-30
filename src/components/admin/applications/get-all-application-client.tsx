@@ -1,6 +1,5 @@
 "use client";
 
-import { AdminApplicationSuccessResponse } from "@/core/types/application.interface";
 import React from "react";
 import { Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,11 +18,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 
 const GetAllApplicationClient = ({
   allApplicationData,
 }: {
-  allApplicationData: AdminApplicationSuccessResponse;
+  allApplicationData: ApplicationSuccessResponse;
 }) => {
   return (
     <div>

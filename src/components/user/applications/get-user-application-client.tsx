@@ -20,6 +20,22 @@ export default function GetUserApplicationsClient({
 }) {
   const data = userApplications;
 
+  if (data.data.length === 0) {
+    return (
+      <div className="p-2">
+        <div className="sticky top-[56px] flex justify-between items-center font-sans p-2">
+          <h1 className="font-bold">MY APPLICATIONS</h1>
+          {userData && !userData?.isAdmin && (
+            <CreateUserApplicationClient accessToken={accessToken} />
+          )}
+        </div>
+        <div className="flex items-center justify-center h-full">
+          <p className="text-sm text-gray-500">No Applications Found</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-2">
       <div className="sticky top-[56px] flex justify-between items-center font-sans p-2">
