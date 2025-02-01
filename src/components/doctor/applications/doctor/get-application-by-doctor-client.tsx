@@ -36,7 +36,11 @@ const ApplicationCard = memo(
   ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
     <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <div className="absolute bottom-2 right-2">
-        <CreateReportForPatientApplicationClient />
+        <CreateReportForPatientApplicationClient
+          accessToken={accessToken}
+          applicationId={entry.id}
+          userId={entry.user.id || 0}
+        />
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">

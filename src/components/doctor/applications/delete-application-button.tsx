@@ -37,22 +37,24 @@ const DeleteApplicationButton: React.FC<DeleteApplicationButtonProps> = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full size-6 text-red-500 hover:text-black"
-            >
-              <Trash className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p className="text-red-700">Delete Application</p>
-          </TooltipContent>
-        </Tooltip>
+        <div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full size-6 text-red-500 hover:text-black"
+              >
+                <Trash className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-red-700">Delete Application</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="font-sans">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>

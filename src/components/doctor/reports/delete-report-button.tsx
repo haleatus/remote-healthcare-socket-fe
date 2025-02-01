@@ -10,6 +10,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Trash } from "lucide-react";
 
 interface DeleteReportButtonProps {
@@ -32,15 +37,24 @@ const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-        >
-          <Trash size={14} />
-        </Button>
+        <div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full size-6 text-red-500 hover:text-black"
+              >
+                <Trash className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-red-700">Delete Report</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="font-sans">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
