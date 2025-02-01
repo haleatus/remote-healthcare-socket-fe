@@ -12,18 +12,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 
-interface DeleteReportButtonProps {
-  reportId: number;
+interface DeleteApplicationButtonProps {
+  applicaitonId: number;
   onDelete: (reportId: number) => Promise<void>;
 }
 
-const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({
-  reportId,
+const DeleteApplicationButton: React.FC<DeleteApplicationButtonProps> = ({
+  applicaitonId,
   onDelete,
 }) => {
   const handleDelete = async () => {
     try {
-      await onDelete(reportId);
+      await onDelete(applicaitonId);
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +45,7 @@ const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the
-            report and remove all associated data.
+            application and remove all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -62,4 +62,4 @@ const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({
   );
 };
 
-export default DeleteReportButton;
+export default DeleteApplicationButton;

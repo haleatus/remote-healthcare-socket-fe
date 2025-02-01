@@ -21,64 +21,76 @@ import UpdateDoctorApplicationClient from "./update-doctor-application-client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base-client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
 import CreateReportForPatientApplicationClient from "../reports/create-report-for-patient-application.client";
+import { deleteApplicationAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/delete-application.action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import DeleteApplicationButton from "./delete-application-button";
 
 interface ApplicationCardProps {
   entry: IApplication;
   accessToken: string;
+  handleDeleteApplication: (applicationId: number) => Promise<void>;
 }
 
-const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => (
-  <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
-    <CardHeader className="pb-2">
-      <div className="flex justify-between items-center">
-        <CardTitle className="text-lg font-semibold text-gray-700">
-          Application #{entry.id}
-        </CardTitle>
-        <ApplicationStatus status={entry.status} />
+const ApplicationCard = memo(
+  ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
+    <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-lg font-semibold text-gray-700">
+            Application #{entry.id}
+          </CardTitle>
+          <ApplicationStatus status={entry.status} />
 
-        <div className="flex items-center gap-1">
-          <CreateReportForPatientApplicationClient />
+          <div className="flex items-center gap-1">
+            <CreateReportForPatientApplicationClient />
 
-          <UpdateDoctorApplicationClient
-            id={entry.id}
-            accessToken={accessToken}
-            initialNote={entry.note}
-            initialDate={entry.visitDate || ""}
-            initialStatus={entry.status}
-            docId={entry.doc?.id || 0}
-          />
-        </div>
-      </div>
-    </CardHeader>
-    <CardContent className="pt-2">
-      <div className="space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
-          <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md max-h-16 overflow-auto">
-            {entry.note}
-          </p>
-        </div>
+            <UpdateDoctorApplicationClient
+              id={entry.id}
+              accessToken={accessToken}
+              initialNote={entry.note}
+              initialDate={entry.visitDate || ""}
+              initialStatus={entry.status}
+              docId={entry.doc?.id || 0}
+            />
 
-        <div className="flex justify-between items-center text-xs text-gray-500">
-          <TimeInfo label="Created" date={entry.createdAt} />
-          <TimeInfo label="Updated" date={entry.updatedAt} />
+            <DeleteApplicationButton
+              applicaitonId={entry.id}
+              onDelete={handleDeleteApplication}
+            />
+          </div>
         </div>
+      </CardHeader>
+      <CardContent className="pt-2">
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
+            <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md max-h-16 overflow-auto">
+              {entry.note}
+            </p>
+          </div>
 
-        <div className="border-t border-gray-100 pt-3">
-          <UserInfo user={entry.user} />
-          {entry.doc ? (
-            <>
-              <DoctorInfo doctor={entry.doc} />
-              <VisitDateInfo date={entry.visitDate} />
-            </>
-          ) : (
-            <PendingRequest />
-          )}
+          <div className="flex justify-between items-center text-xs text-gray-500">
+            <TimeInfo label="Created" date={entry.createdAt} />
+            <TimeInfo label="Updated" date={entry.updatedAt} />
+          </div>
+
+          <div className="border-t border-gray-100 pt-3">
+            <UserInfo user={entry.user} />
+            {entry.doc ? (
+              <>
+                <DoctorInfo doctor={entry.doc} />
+                <VisitDateInfo date={entry.visitDate} />
+              </>
+            ) : (
+              <PendingRequest />
+            )}
+          </div>
         </div>
-      </div>
-    </CardContent>
-  </Card>
-));
+      </CardContent>
+    </Card>
+  )
+);
 
 ApplicationCard.displayName = "ApplicationCard";
 
@@ -187,11 +199,24 @@ export default function GetApplicationByDoctorClient({
 }: GetApplicationByDoctorClientProps) {
   const { data } = doctorApplications;
 
+  const router = useRouter();
+
   const [statusFilter, setStatusFilter] = useState("ALL");
 
   const filteredApplications = data.filter((application) =>
     statusFilter === "ALL" ? true : application.status === statusFilter
   );
+
+  const handleDeleteApplication = async (applicationId: number) => {
+    try {
+      await deleteApplicationAction(accessToken, applicationId);
+      toast.success("Application deleted successfully");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete application");
+    }
+  };
 
   return (
     <div className="p-4 pt-0">
@@ -208,6 +233,7 @@ export default function GetApplicationByDoctorClient({
         <ApplicationGrid
           applications={filteredApplications}
           accessToken={accessToken}
+          handleDeleteApplication={handleDeleteApplication}
         />
       )}
     </div>
@@ -260,9 +286,11 @@ const ApplicationGrid = memo(
   ({
     applications,
     accessToken,
+    handleDeleteApplication,
   }: {
     applications: IApplication[];
     accessToken: string;
+    handleDeleteApplication: (applicationId: number) => Promise<void>;
   }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
       {applications.map((entry) => (
@@ -270,6 +298,7 @@ const ApplicationGrid = memo(
           key={entry.id}
           entry={entry}
           accessToken={accessToken}
+          handleDeleteApplication={handleDeleteApplication}
         />
       ))}
     </div>

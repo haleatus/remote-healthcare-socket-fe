@@ -19,6 +19,7 @@ export async function updatePatientApplicationAction(
   data?: DoctorApplicationSuccessResponse;
   error?: ApplicationErrorResponse;
 }> {
+  console.log("formData", formData);
   try {
     // Validate the input data
     const validatedData = updateDoctorApplicationSchema.parse(formData);

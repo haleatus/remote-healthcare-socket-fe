@@ -4,13 +4,10 @@
 import { deleteApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/delete-application.service";
 import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 
-export async function deleteApplication({
-  applicationId,
-  accessToken,
-}: {
-  applicationId: number;
-  accessToken: string;
-}) {
+export async function deleteApplicationAction(
+  accessToken: string,
+  applicationId: number
+) {
   try {
     const deleteApplication = await deleteApplicationService(
       applicationId,

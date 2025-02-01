@@ -20,7 +20,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { deleteApplication } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/delete-application.action";
 import { updatePatientApplicationAction } from "@/app/(doctor)/(applications)/patient-applications/_server-actions/update-patient-application.action";
 
 const UpdatePatientApplicationClient = ({
@@ -66,7 +65,7 @@ const UpdatePatientApplicationClient = ({
       )
         .then((result) => {
           if (result.success && result.data) {
-            toast.success("Application For Patient Created Successfully!");
+            toast.success("Application For Patient Update Successfully!");
             setNote("");
             setOpen(false);
             router.refresh();
@@ -76,12 +75,11 @@ const UpdatePatientApplicationClient = ({
           }
         })
         .catch((error) => {
-          console.error("Error in Doctor Create Application:", error);
+          console.error("Error in Doctor Updating Application:", error);
           toast.error("An unexpected error occurred. Please try again.");
         })
         .finally(() => {
           setIsLoading(false);
-          deleteApplication({ applicationId: applicationId, accessToken });
           router.refresh();
         });
     },
