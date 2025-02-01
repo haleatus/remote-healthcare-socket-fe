@@ -4,6 +4,7 @@ import { useUser } from "@/context/user-context";
 import type { ReportSuccessResponse } from "@/core/types/reports.interface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock } from "lucide-react";
+import ReportStatus from "@/components/reports/ReportStatus";
 
 const GetPatientReportsClient = ({
   reports,
@@ -35,7 +36,7 @@ const GetPatientReportsClient = ({
             <CardTitle className="text-sm font-semibold text-gray-700">
               Report #{report.id}
             </CardTitle>
-            <div>{report.status}</div>
+            <ReportStatus status={report.status} />
             <div>Actions</div>
           </div>
         </CardHeader>
