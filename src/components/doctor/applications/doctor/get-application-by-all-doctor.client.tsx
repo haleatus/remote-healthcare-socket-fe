@@ -20,11 +20,11 @@ import {
 import UpdateDoctorApplicationClient from "./update-doctor-application-client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base-client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
-import CreateReportForPatientApplicationClient from "../reports/create-report-for-patient-application.client";
+import CreateReportForPatientApplicationClient from "../../reports/create-report-for-patient-application.client";
 import { deleteApplicationAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/delete-application.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import DeleteApplicationButton from "./delete-application-button";
+import DeleteApplicationButton from "../delete-application-button";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -191,7 +191,7 @@ interface GetApplicationByDoctorClientProps {
   allUsersData: IUser[];
 }
 
-export default function GetApplicationByDoctorClient({
+export default function GetApplicationByAllDoctorClient({
   doctorApplications,
   accessToken,
   userData,
@@ -256,7 +256,7 @@ const Header = memo(
   }) => (
     <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold">APPLICATIONS APPROVED BY ME</h1>
+        <h1 className="font-bold">APPLICATIONS APPROVED BY ALL DOCTOR</h1>
         <div className="flex items-center gap-2">
           <StatusFilter
             currentFilter={statusFilter}

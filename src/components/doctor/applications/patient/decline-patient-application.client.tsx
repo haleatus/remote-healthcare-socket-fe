@@ -55,17 +55,16 @@ const DeclinePatientApplicationClient = ({
       )
         .then((result) => {
           if (result.success && result.data) {
-            toast.success("Application For Patient Update Successfully!");
+            toast.success("Application For Patient Declined Successfully!");
             setNote("");
             setOpen(false);
-            router.refresh();
           } else if (result.error) {
             setErrors(result.error.error || {});
             toast.error(result.error.message || "An error occurred");
           }
         })
         .catch((error) => {
-          console.error("Error in Doctor Updating Application:", error);
+          console.error("Error in Doctor Declining Application:", error);
           toast.error("An unexpected error occurred. Please try again.");
         })
         .finally(() => {

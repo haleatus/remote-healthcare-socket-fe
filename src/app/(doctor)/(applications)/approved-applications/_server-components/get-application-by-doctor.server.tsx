@@ -2,7 +2,7 @@ import { getApplicationByDoctorAction } from "@/app/(doctor)/(applications)/appr
 import { getAllUser } from "@/app/actions/user/general/get-all-user.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
-import GetApplicationByDoctorClient from "@/components/doctor/applications/get-application-by-doctor-client";
+import GetApplicationByDoctorClient from "@/components/doctor/applications/doctor/get-application-by-doctor-client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
