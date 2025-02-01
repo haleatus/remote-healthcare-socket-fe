@@ -19,8 +19,9 @@ export const getNavLinks = (
     return [
       ...(isDoctor
         ? [
-            { href: "/patient-applications", label: "Patient Applications" },
-            { href: "/patient-logs", label: "Patient Logs" },
+            { href: "/patient-applications", label: "Patients' Applications" },
+            { href: "/patient-logs", label: "Patients' Logs" },
+            { href: "/doctor-reports", label: "My Logs" },
             { href: "/doctor-applications", label: "My Applications" },
             { href: "/doctors", label: "Doctors" },
           ]

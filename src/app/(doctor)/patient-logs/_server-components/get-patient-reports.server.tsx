@@ -1,4 +1,4 @@
-import { getPatientReports } from "@/app/actions/doctor/reports/get-patient-application.action";
+import { getPatientReportsAction } from "@/app/(doctor)/patient-logs/_server-actions/get-patient-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import GetPatientReportsClient from "@/components/doctor/reports/get-patient-reports-client";
 import Link from "next/link";
@@ -15,7 +15,7 @@ const GetPatientReportsServer = async () => {
       </div>
     );
   }
-  const userReportsData = await getPatientReports(accessToken);
+  const userReportsData = await getPatientReportsAction(accessToken);
 
   return (
     <div>
