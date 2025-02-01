@@ -2,9 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IUser } from "@/core/types/user.interface";
-import CreateDoctorApplicationClient from "./create-doctor-application-client";
 import { ClockIcon, UserIcon } from "lucide-react";
 import { ApplicationSuccessResponse } from "@/core/types/application.interface";
+import UpdatePatientApplicationClient from "./update-patient-application.client";
 
 export default function GetPatientApplicationsClient({
   patientApplications,
@@ -33,9 +33,8 @@ export default function GetPatientApplicationsClient({
                 <CardTitle className="text-lg font-semibold text-gray-700">
                   Application #{entry.id}
                 </CardTitle>
-                <CreateDoctorApplicationClient
+                <UpdatePatientApplicationClient
                   applicationId={entry.id}
-                  userId={entry.user.id}
                   accessToken={accessToken}
                   docId={currentDoctor.id}
                   patientsNote={entry.note}

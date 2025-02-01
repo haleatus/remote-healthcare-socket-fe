@@ -20,19 +20,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createDoctorApplication } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/doctor/create-doctor-application.action";
-import { deleteApplication } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/doctor/delete-application.action";
+import { deleteApplication } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/delete-application.action";
+import { updatePatientApplicationAction } from "@/app/(doctor)/(applications)/patient-applications/_server-actions/update-patient-application.action";
 
-const CreateDoctorApplicationClient = ({
+const UpdatePatientApplicationClient = ({
   applicationId,
   accessToken,
-  userId,
   docId,
   patientsNote,
 }: {
   applicationId: number;
   accessToken: string;
-  userId: number;
   docId: number;
   patientsNote: string;
 }) => {
@@ -55,13 +53,14 @@ const CreateDoctorApplicationClient = ({
         return;
       }
 
-      createDoctorApplication(
+      updatePatientApplicationAction(
         {
-          userId: userId,
+          id: applicationId,
           docId: docId,
           note: note,
           date: date,
           requestByDoc: true,
+          status: "PENDING",
         },
         accessToken
       )
@@ -86,7 +85,7 @@ const CreateDoctorApplicationClient = ({
           router.refresh();
         });
     },
-    [date, userId, docId, note, accessToken, router, applicationId]
+    [date, docId, note, accessToken, router, applicationId]
   );
 
   const handleNoteChange = useCallback(
@@ -178,4 +177,4 @@ const CreateDoctorApplicationClient = ({
   );
 };
 
-export default CreateDoctorApplicationClient;
+export default UpdatePatientApplicationClient;

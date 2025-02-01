@@ -1,6 +1,6 @@
 "use server";
 
-import { getPatientApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/patient/get-patient-application.service";
+import { getPatientApplicationService } from "@/app/(doctor)/(applications)/patient-applications/_services/get-patient-application.service";
 
 export async function getPatientApplications({
   accessToken,
