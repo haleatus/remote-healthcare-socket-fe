@@ -3,7 +3,7 @@
 import { useUser } from "@/context/user-context";
 import type { ReportSuccessResponse } from "@/core/types/reports.interface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, Edit, Trash } from "lucide-react";
+import { Clock, Edit } from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
 import Link from "next/link";
 import {
@@ -11,17 +11,35 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { deletePatientReportAction } from "@/app/(doctor)/patient-logs/_server-actions/delete-patient-application.action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import DeleteReportButton from "./delete-report-button";
 
 const GetPatientReportsClient = ({
   reports,
+  accessToken,
 }: {
   reports: ReportSuccessResponse;
+  accessToken: string;
 }) => {
   const { user } = useUser();
+  const router = useRouter();
 
   const filteredReports = reports.data.filter(
     (report) => report.doc.id === user?.id
   );
+
+  const handleDeleteReport = async (reportId: number) => {
+    try {
+      await deletePatientReportAction(accessToken, reportId);
+      toast.success("Report deleted successfully");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete report");
+    }
+  };
 
   const renderReportCards = () => {
     if (!reports) {
@@ -57,19 +75,10 @@ const GetPatientReportsClient = ({
                   </TooltipContent>
                 </Tooltip>
               </Link>
-              <Link
-                href={`#`}
-                className="text-red-500 hover:text-red-700 hover:underline"
-              >
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Trash size={14} />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-red-600">Delete</p>
-                  </TooltipContent>
-                </Tooltip>
-              </Link>
+              <DeleteReportButton
+                reportId={report.id}
+                onDelete={handleDeleteReport}
+              />
             </div>
           </div>
         </CardHeader>

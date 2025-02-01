@@ -20,7 +20,10 @@ const GetPatientReportsServer = async () => {
   return (
     <div>
       {userReportsData ? (
-        <GetPatientReportsClient reports={userReportsData} />
+        <GetPatientReportsClient
+          reports={userReportsData}
+          accessToken={accessToken}
+        />
       ) : (
         <div>No reports available</div>
       )}
