@@ -1,4 +1,4 @@
-import GetDoctorReportsServer from "@/app/_components/doctor/reports/get-patient-reports-server";
+import GetDoctorReportsServer from "@/app/(doctor)/patient-logs/_server-components/get-patient-reports-server";
 
 const DoctorReportsPage = () => {
   return (

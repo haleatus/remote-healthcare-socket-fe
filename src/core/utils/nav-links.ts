@@ -26,7 +26,7 @@ export const getNavLinks = (
           ]
         : [
             { href: "/my-applications", label: "My Applications" },
-            { href: "/reports", label: "Reports" },
+            { href: "/reports", label: "My Reports" },
           ]),
     ];
   }

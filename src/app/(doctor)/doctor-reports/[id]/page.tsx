@@ -1,4 +1,4 @@
-import GetDoctorReportById from "@/app/_components/doctor/reports/get-doctor-report-by-id-server";
+import GetDoctorReportById from "@/app/(doctor)/doctor-reports/[id]/_server-components/get-doctor-report-by-id-server";
 import React from "react";
 
 interface PageProps {
