@@ -8,7 +8,7 @@ import { z } from "zod";
 import {
   ApplicationSuccessResponse,
   ApplicationErrorResponse,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 
 import { createuserApplicationService } from "@/app/services/user/applications/create-user-application.service";
 

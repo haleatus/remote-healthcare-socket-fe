@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 
 import { Inter, Roboto_Mono, Space_Grotesk } from "next/font/google";
 import { UserProvider } from "@/context/user-context";
-import HeaderServer from "./_components/navigation/header-server";
+import HeaderServer from "./_server-components/navigation/header-server";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AdminProvider } from "@/context/admin-context";
 

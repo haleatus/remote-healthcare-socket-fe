@@ -1,4 +1,4 @@
-import { AuthState, NavLink } from "../types/auth-state.inteface";
+import { AuthState, NavLink } from "../interface/auth-state.inteface";
 
 export const getNavLinks = (
   authState: AuthState,
@@ -19,14 +19,18 @@ export const getNavLinks = (
     return [
       ...(isDoctor
         ? [
-            { href: "/patient-applications", label: "Patient Applications" },
-            { href: "/patient-logs", label: "Patient Logs" },
-            { href: "/doctor-applications", label: "My Applications" },
+            { href: "/patient-applications", label: "Patients' Applications" },
+            { href: "/patient-logs", label: "Patients' Logs" },
+            { href: "/approved-applications", label: "Approved Applications" },
+            {
+              href: "/all-doctor-applications",
+              label: "All Doctor Applications",
+            },
             { href: "/doctors", label: "Doctors" },
           ]
         : [
             { href: "/my-applications", label: "My Applications" },
-            { href: "/reports", label: "Reports" },
+            { href: "/reports", label: "My Reports" },
           ]),
     ];
   }

@@ -1,4 +1,4 @@
-import DoctorSignUpServer from "@/app/_components/auth/doctor/doctor-signup-server";
+import DoctorSignUpServer from "@/app/_server-components/auth/doctor/doctor-signup-server";
 import React from "react";
 
 const DoctorSignUpPage = () => {

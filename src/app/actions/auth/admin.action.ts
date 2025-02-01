@@ -6,7 +6,7 @@ import { signInAdminService } from "@/app/services/auth/admin-auth.service";
 import {
   AuthErrorResponse,
   AuthSuccessResponse,
-} from "@/core/types/auth.interface";
+} from "@/core/interface/auth.interface";
 import { cookies } from "next/headers";
 import { z } from "zod";
 

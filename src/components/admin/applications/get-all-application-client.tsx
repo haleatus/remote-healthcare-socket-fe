@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ApplicationSuccessResponse } from "@/core/types/application.interface";
+import { ApplicationSuccessResponse } from "@/core/interface/application.interface";
 
 const GetAllApplicationClient = ({
   allApplicationData,
