@@ -1,4 +1,4 @@
-import { getPatientReportsAction } from "@/app/(doctor)/patient-logs/_server-actions/get-patient-application.action";
+import { getPatientReportsAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/get-patient-application.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import GetPatientReportsClient from "@/components/doctor/reports/get-patient-reports.client";
 import Link from "next/link";

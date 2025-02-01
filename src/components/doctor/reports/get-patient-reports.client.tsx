@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { deletePatientReportAction } from "@/app/(doctor)/patient-logs/_server-actions/delete-patient-application.action";
+import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/delete-patient-application.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteReportButton from "./delete-report-button";

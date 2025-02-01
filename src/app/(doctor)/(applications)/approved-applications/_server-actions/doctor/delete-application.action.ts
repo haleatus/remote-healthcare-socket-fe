@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { deleteApplicationService } from "@/app/(doctor)/approved-applications/_services/delete-application.service";
+import { deleteApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/delete-application.service";
 import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 
 export async function deleteApplication({

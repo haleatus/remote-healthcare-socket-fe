@@ -1,37 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { createDoctorApplicationSchema } from "@/app/schema/applications";
+import { updateDoctorApplicationSchema } from "@/app/schema/applications";
 
 import { z } from "zod";
 
 import {
+  ApplicationSuccessResponse,
   ApplicationErrorResponse,
-  DoctorApplicationSuccessResponse,
 } from "@/core/types/application.interface";
-import { createDoctorApplicationService } from "@/app/(doctor)/approved-applications/_services/create-doctor-application.service";
 
-export async function createDoctorApplication(
-  formData: z.infer<typeof createDoctorApplicationSchema>,
+import { updateDoctorApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/update-doctor-application.service";
+
+export async function updateDoctorApplication(
+  formData: z.infer<typeof updateDoctorApplicationSchema>,
   accessToken: string
 ): Promise<{
   success: boolean;
-  data?: DoctorApplicationSuccessResponse;
+  data?: ApplicationSuccessResponse;
   error?: ApplicationErrorResponse;
 }> {
   try {
     // Validate the input data
-    const validatedData = createDoctorApplicationSchema.parse(formData);
+    const validatedData = updateDoctorApplicationSchema.parse(formData);
 
     // Call the service
-    const response = await createDoctorApplicationService(
+    const response = await updateDoctorApplicationService(
       validatedData,
       accessToken
     );
 
     return {
       success: true,
-      data: response as DoctorApplicationSuccessResponse,
+      data: response as ApplicationSuccessResponse,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

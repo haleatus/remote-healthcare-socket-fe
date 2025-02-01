@@ -1,4 +1,4 @@
-import { getApplicationByDoctor } from "@/app/(doctor)/approved-applications/_server-actions/doctor/get-application-by-doctor.action";
+import { getApplicationByDoctor } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/doctor/get-application-by-doctor.action";
 import { getAllUser } from "@/app/actions/user/general/get-all-user.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
