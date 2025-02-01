@@ -10,7 +10,6 @@ import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 import { memo, useState } from "react";
-import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -20,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import UpdateDoctorApplicationClient from "./update-doctor-application-client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base-client";
+import ApplicationStatus from "@/components/applications/ApplicationStatus";
+import CreateReportForPatientApplicationClient from "../reports/create-report-for-patient-application.client";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -33,28 +34,20 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => (
         <CardTitle className="text-lg font-semibold text-gray-700">
           Application #{entry.id}
         </CardTitle>
-        {entry.status !== "CREATED" && (
-          <span
-            className={cn(
-              "px-3 py-1 text-sm font-medium rounded-full",
-              entry.status === "RESOLVED" && "bg-green-100 text-green-600",
-              entry.status === "PENDING" && "bg-yellow-100 text-yellow-600",
-              entry.status === "CANCELLED" && "bg-red-100 text-red-600",
-              entry.status === "IN_PROGRESS" && "bg-blue-100 text-blue-600"
-            )}
-          >
-            {entry.status}
-          </span>
-        )}
+        <ApplicationStatus status={entry.status} />
 
-        <UpdateDoctorApplicationClient
-          id={entry.id}
-          accessToken={accessToken}
-          initialNote={entry.note}
-          initialDate={entry.visitDate || ""}
-          initialStatus={entry.status}
-          docId={entry.doc?.id || 0}
-        />
+        <div className="flex items-center gap-1">
+          <CreateReportForPatientApplicationClient />
+
+          <UpdateDoctorApplicationClient
+            id={entry.id}
+            accessToken={accessToken}
+            initialNote={entry.note}
+            initialDate={entry.visitDate || ""}
+            initialStatus={entry.status}
+            docId={entry.doc?.id || 0}
+          />
+        </div>
       </div>
     </CardHeader>
     <CardContent className="pt-2">
@@ -237,7 +230,7 @@ const Header = memo(
   }) => (
     <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold">MY APPLICATIONS</h1>
+        <h1 className="font-bold">APPLICATIONS APPROVED BY ME</h1>
         <div className="flex items-center gap-2">
           <StatusFilter
             currentFilter={statusFilter}

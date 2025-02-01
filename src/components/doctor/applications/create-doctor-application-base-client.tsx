@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { createDoctorApplication } from "@/app/actions/doctor/applications/doctor/create-doctor-application.action";
+import { createDoctorApplication } from "@/app/(doctor)/approved-applications/_server-actions/doctor/create-doctor-application.action";
 import type { IUser } from "@/core/types/user.interface";
 
 const CreateDoctorApplicationBaseClient = ({

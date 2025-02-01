@@ -1,4 +1,4 @@
-import ShowAllDoctorsServer from "@/app/_components/doctor/general/show-all-doctors-server";
+import ShowAllDoctorsServer from "@/app/(doctor)/(general)/doctors/_server-components/show-all-doctors-server";
 import React from "react";
 
 const DoctorsListPage = () => {

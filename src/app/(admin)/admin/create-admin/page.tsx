@@ -1,4 +1,4 @@
-import CreateAdminServer from "@/app/_components/admin/create-admin-server";
+import CreateAdminServer from "@/app/_server-components/admin/create-admin-server";
 import React from "react";
 
 const CreateAdminPage = () => {

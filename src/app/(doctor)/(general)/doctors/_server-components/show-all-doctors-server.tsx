@@ -1,4 +1,4 @@
-import { getAllDoctors } from "@/app/actions/doctor/general/get-all-doctor.action";
+import { getAllDoctors } from "@/app/(doctor)/(general)/doctors/_server-actions/get-all-doctor.action";
 import ShowAllDoctorsClient from "@/components/doctor/general/show-all-doctors-client";
 import React from "react";
 

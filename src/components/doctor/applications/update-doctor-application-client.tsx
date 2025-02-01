@@ -27,7 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateDoctorApplication } from "@/app/actions/doctor/applications/doctor/update-doctor-application.action";
+import { updateDoctorApplication } from "@/app/(doctor)/approved-applications/_server-actions/doctor/update-doctor-application.action";
 
 enum ReportStatusEnum {
   CREATED = "CREATED",

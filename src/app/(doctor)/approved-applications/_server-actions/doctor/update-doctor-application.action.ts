@@ -10,7 +10,7 @@ import {
   ApplicationErrorResponse,
 } from "@/core/types/application.interface";
 
-import { updateDoctorApplicationService } from "@/app/services/doctor/applications/update-doctor-application.service";
+import { updateDoctorApplicationService } from "@/app/(doctor)/approved-applications/_services/update-doctor-application.service";
 
 export async function updateDoctorApplication(
   formData: z.infer<typeof updateDoctorApplicationSchema>,

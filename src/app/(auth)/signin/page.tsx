@@ -1,4 +1,4 @@
-import SignInServer from "@/app/_components/auth/signin-server";
+import SignInServer from "@/app/_server-components/auth/signin-server";
 import React from "react";
 
 const SignInPage = () => {

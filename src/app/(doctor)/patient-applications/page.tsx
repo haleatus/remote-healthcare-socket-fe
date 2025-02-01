@@ -1,4 +1,4 @@
-import GetPatientApplicationServer from "@/app/_components/doctor/applications/get-patient-applications-server";
+import GetPatientApplicationServer from "@/app/(doctor)/approved-applications/_server-components/get-patient-applications-server";
 import React from "react";
 
 const PatientApplicationPage = () => {

@@ -9,7 +9,7 @@ import {
   ApplicationErrorResponse,
   DoctorApplicationSuccessResponse,
 } from "@/core/types/application.interface";
-import { createDoctorApplicationService } from "@/app/services/doctor/applications/create-doctor-application.service";
+import { createDoctorApplicationService } from "@/app/(doctor)/approved-applications/_services/create-doctor-application.service";
 
 export async function createDoctorApplication(
   formData: z.infer<typeof createDoctorApplicationSchema>,

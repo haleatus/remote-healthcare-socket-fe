@@ -1,6 +1,6 @@
 "use server";
 
-import { getAllDoctorsService } from "@/app/services/doctor/general/get-all-doctors.service";
+import { getAllDoctorsService } from "@/app/(doctor)/(general)/doctors/_services/get-all-doctors.service";
 import { cookies } from "next/headers";
 
 export async function getAllDoctors() {
