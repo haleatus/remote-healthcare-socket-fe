@@ -17,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import UpdateDoctorApplicationClient from "./update-doctor-application-client";
-import CreateDoctorApplicationBaseClient from "./create-doctor-application-base-client";
+import UpdateDoctorApplicationClient from "./update-doctor-application.client";
+import CreateDoctorApplicationBaseClient from "./create-doctor-application-base.client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
 import CreateReportForPatientApplicationClient from "../../reports/create-report-for-patient-application.client";
 import { deleteApplicationAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/delete-application.action";
