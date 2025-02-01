@@ -5,7 +5,7 @@ import { z } from "zod";
 import {
   AuthErrorResponse,
   AuthSuccessResponse,
-} from "@/core/types/auth.interface";
+} from "@/core/interface/auth.interface";
 import { createDoctorSchema } from "@/app/schema/doctor";
 import { createDoctorService } from "@/app/services/auth/doctor-auth.service";
 

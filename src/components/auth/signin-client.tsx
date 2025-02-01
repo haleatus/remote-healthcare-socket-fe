@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { toast } from "sonner";
 import { userSignIn } from "@/app/actions/auth/user.action";
-import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { AuthErrorResponse } from "@/core/interface/auth.interface";
 import { ShieldCheck, UserPlus } from "lucide-react";
 import { Separator } from "../ui/seperator";
 import { useUser } from "@/context/user-context";

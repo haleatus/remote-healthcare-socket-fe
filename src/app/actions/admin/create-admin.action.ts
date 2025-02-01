@@ -6,7 +6,7 @@ import { createAdminService } from "@/app/services/admin/create-admin.service";
 import {
   AuthErrorResponse,
   AuthSuccessResponse,
-} from "@/core/types/auth.interface";
+} from "@/core/interface/auth.interface";
 import { z } from "zod";
 
 export async function createAdmin(

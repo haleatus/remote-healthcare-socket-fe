@@ -2,7 +2,7 @@
 import "server-only";
 import { createUserSchema, signInUserSchema } from "@/app/schema/user";
 import { endpoints } from "@/core/contants/endpoints";
-import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { AuthErrorResponse } from "@/core/interface/auth.interface";
 import { z } from "zod";
 
 export const createUserService = async (

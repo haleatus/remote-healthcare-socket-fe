@@ -13,9 +13,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils"; // Make sure you have this utility function
 import SignoutButton from "../auth/signout-button";
-import { IUser } from "@/core/types/user.interface";
+import { IUser } from "@/core/interface/user.interface";
 import AdminSignoutButton from "../auth/admin/admin-signout-button";
-import { AuthState } from "@/core/types/auth-state.inteface";
+import { AuthState } from "@/core/interface/auth-state.inteface";
 import { getNavLinks } from "@/core/utils/nav-links";
 import { useState } from "react";
 
