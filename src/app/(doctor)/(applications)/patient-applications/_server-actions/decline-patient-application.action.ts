@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { updateDoctorApplicationSchema } from "@/app/schema/applications";
+import { declinePatientApplicationSchema } from "@/app/schema/applications";
 
 import { z } from "zod";
 
@@ -9,10 +9,10 @@ import {
   ApplicationErrorResponse,
   DoctorApplicationSuccessResponse,
 } from "@/core/types/application.interface";
-import { updatePatientApplicationService } from "../_services/update-patient-application.service";
+import { declinePatientApplicationService } from "../_services/decline-patient-application.service";
 
-export async function updatePatientApplicationAction(
-  formData: z.infer<typeof updateDoctorApplicationSchema>,
+export async function declinePatientApplicationAction(
+  formData: z.infer<typeof declinePatientApplicationSchema>,
   accessToken: string
 ): Promise<{
   success: boolean;
@@ -21,10 +21,10 @@ export async function updatePatientApplicationAction(
 }> {
   try {
     // Validate the input data
-    const validatedData = updateDoctorApplicationSchema.parse(formData);
+    const validatedData = declinePatientApplicationSchema.parse(formData);
 
     // Call the service
-    const response = await updatePatientApplicationService(
+    const response = await declinePatientApplicationService(
       validatedData,
       accessToken
     );

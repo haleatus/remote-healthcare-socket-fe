@@ -2,7 +2,7 @@
 
 import { getPatientApplicationService } from "@/app/(doctor)/(applications)/patient-applications/_services/get-patient-application.service";
 
-export async function getPatientApplications({
+export async function getPatientApplicationsAction({
   accessToken,
 }: {
   accessToken: string;

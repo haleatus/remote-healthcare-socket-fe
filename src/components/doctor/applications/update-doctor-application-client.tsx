@@ -78,6 +78,7 @@ const UpdateDoctorApplicationClient = ({
           note: note,
           date: date,
           status: status,
+          requestByDoc: true,
         },
         accessToken
       )

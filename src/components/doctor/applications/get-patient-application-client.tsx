@@ -5,6 +5,7 @@ import { IUser } from "@/core/types/user.interface";
 import { ClockIcon, UserIcon } from "lucide-react";
 import { ApplicationSuccessResponse } from "@/core/types/application.interface";
 import UpdatePatientApplicationClient from "./update-patient-application.client";
+import DeclinePatientApplicationClient from "./decline-patient-application.client";
 
 export default function GetPatientApplicationsClient({
   patientApplications,
@@ -33,6 +34,12 @@ export default function GetPatientApplicationsClient({
                 <CardTitle className="text-lg font-semibold text-gray-700">
                   Application #{entry.id}
                 </CardTitle>
+                <DeclinePatientApplicationClient
+                  applicationId={entry.id}
+                  accessToken={accessToken}
+                  docId={currentDoctor.id}
+                  patientsNote={entry.note}
+                />
                 <UpdatePatientApplicationClient
                   applicationId={entry.id}
                   accessToken={accessToken}

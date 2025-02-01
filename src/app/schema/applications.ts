@@ -29,3 +29,11 @@ export const updateDoctorApplicationSchema = z.object({
   docId: z.number().int().positive(),
   requestByDoc: z.boolean(),
 });
+
+export const declinePatientApplicationSchema = z.object({
+  id: z.number().int().positive(),
+  status: z
+    .string()
+    .min(2, "Application status must be at least 2 characters."),
+  docId: z.number().int().positive(),
+});
