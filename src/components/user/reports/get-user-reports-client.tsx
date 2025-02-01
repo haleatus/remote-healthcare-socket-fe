@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Report } from "@/core/types/reports.interface";
+import { Report } from "@/core/interface/reports.interface";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";

@@ -2,7 +2,7 @@
 import "server-only";
 import { createDoctorSchema } from "@/app/schema/doctor";
 import { endpoints } from "@/core/contants/endpoints";
-import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { AuthErrorResponse } from "@/core/interface/auth.interface";
 import { z } from "zod";
 
 export const createDoctorService = async (

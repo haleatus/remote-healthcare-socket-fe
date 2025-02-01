@@ -1,9 +1,9 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IUser } from "@/core/types/user.interface";
+import { IUser } from "@/core/interface/user.interface";
 import { ClockIcon, UserIcon } from "lucide-react";
-import { ApplicationSuccessResponse } from "@/core/types/application.interface";
+import { ApplicationSuccessResponse } from "@/core/interface/application.interface";
 import UpdatePatientApplicationClient from "./update-patient-application.client";
 import DeclinePatientApplicationClient from "./decline-patient-application.client";
 

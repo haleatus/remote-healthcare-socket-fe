@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { IUser } from "@/core/types/user.interface";
+import type { IUser } from "@/core/interface/user.interface";
 import UpdateUserApplicationClient from "./update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
@@ -10,7 +10,7 @@ import CreateUserApplicationClient from "./create-user-application-client";
 import {
   ApplicationSuccessResponse,
   IApplication,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 import { memo, useState } from "react";
 import { cn } from "@/lib/utils";
 import {

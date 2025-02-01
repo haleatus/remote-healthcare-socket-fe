@@ -8,7 +8,7 @@ import { z } from "zod";
 import {
   ApplicationErrorResponse,
   DoctorApplicationSuccessResponse,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 import { createDoctorApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/create-doctor-application.service";
 
 export async function createDoctorApplication(

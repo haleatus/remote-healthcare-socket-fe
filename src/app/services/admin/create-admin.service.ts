@@ -3,7 +3,7 @@ import "server-only";
 import { endpoints } from "@/core/contants/endpoints";
 import { createAdminSchema } from "@/app/schema/admin";
 import { z } from "zod";
-import { AuthErrorResponse } from "@/core/types/auth.interface";
+import { AuthErrorResponse } from "@/core/interface/auth.interface";
 
 export const createAdminService = async (
   data: z.infer<typeof createAdminSchema>,

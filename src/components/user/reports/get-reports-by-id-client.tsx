@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/seperator";
-import type { Report } from "@/core/types/reports.interface";
+import type { Report } from "@/core/interface/reports.interface";
 import Link from "next/link";
 import {
   ArrowLeft,

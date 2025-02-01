@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { MapPin, MessageCircleMore, StarIcon } from "lucide-react";
 import Image from "next/image";
-import { IDoctorResponse } from "@/core/types/doctor.interface";
+import { IDoctorResponse } from "@/core/interface/doctor.interface";
 
 interface Props {
   allDoctors: IDoctorResponse;

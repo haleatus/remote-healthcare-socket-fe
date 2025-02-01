@@ -8,7 +8,7 @@ import { z } from "zod";
 import {
   ApplicationSuccessResponse,
   ApplicationErrorResponse,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 
 import { updateDoctorApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/update-doctor-application.service";
 

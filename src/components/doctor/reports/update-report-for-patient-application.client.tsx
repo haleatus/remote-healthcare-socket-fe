@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { Edit } from "lucide-react";
-import { toast } from "sonner";
+import { updateReportForApplicationAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/update-report-for-application.action";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,11 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -23,35 +18,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { updateDoctorApplication } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/update-doctor-application.action";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useUser } from "@/context/user-context";
 import { ReportStatusEnum } from "@/core/enums/report.enum";
+import { Edit } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useCallback, useState } from "react";
+import { toast } from "sonner";
 
-const formatDateForInput = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toISOString().split("T")[0];
-};
-
-const UpdateDoctorApplicationClient = ({
-  id,
+const UpdateReportForPatientApplicationClient = ({
   accessToken,
-  initialNote,
-  initialDate,
+  reportId,
+  initialProblem,
+  initialSolution,
   initialStatus,
-  docId,
 }: {
-  id: number;
   accessToken: string;
-  initialNote: string;
-  initialDate: string;
+  reportId: number;
+  initialProblem: string;
+  initialSolution: string;
   initialStatus: string;
-  docId: number;
 }) => {
-  const [date, setDate] = useState(formatDateForInput(initialDate));
+  const { user } = useUser();
+
+  const [problem, setProblem] = useState(initialProblem);
+  const [solution, setSolution] = useState(initialSolution);
   const [status, setStatus] = useState(initialStatus);
-  const [note, setNote] = useState(initialNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
@@ -63,20 +59,25 @@ const UpdateDoctorApplicationClient = ({
       setIsLoading(true);
       setErrors({});
 
-      updateDoctorApplication(
+      if (!user) {
+        toast.error("User not found. Please try again.");
+        setIsLoading(false);
+        return;
+      }
+
+      updateReportForApplicationAction(
         {
-          docId: docId,
-          id: id,
-          note: note,
-          date: date,
+          docId: user.id, // Current Loggedin Doctor ID
+          id: reportId,
+          problem: problem,
+          solution: solution,
           status: status,
-          requestByDoc: true,
         },
         accessToken
       )
         .then((result) => {
           if (result.success && result.data) {
-            toast.success("Application Updated Successfully!");
+            toast.success("Report Updated Successfully!");
             setOpen(false);
             router.refresh();
           } else if (result.error) {
@@ -85,26 +86,26 @@ const UpdateDoctorApplicationClient = ({
           }
         })
         .catch((error) => {
-          console.error("Error updating application:", error);
+          console.error("Error creating report:", error);
           toast.error("An unexpected error occurred. Please try again.");
         })
         .finally(() => {
           setIsLoading(false);
         });
     },
-    [docId, id, note, date, status, accessToken, router]
+    [accessToken, problem, reportId, router, solution, status, user]
   );
 
-  const handleNoteChange = useCallback(
+  const handleProblemChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setNote(e.target.value);
+      setProblem(e.target.value);
     },
     []
   );
 
-  const handleDateChange = useCallback(
+  const handleSolutionChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setDate(e.target.value);
+      setSolution(e.target.value);
     },
     []
   );
@@ -132,46 +133,45 @@ const UpdateDoctorApplicationClient = ({
           </DialogTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-blue-700">Update Application</p>
+          <p className="text-blue-500">Update Report</p>
         </TooltipContent>
       </Tooltip>
-
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Update Application</DialogTitle>
+          <DialogTitle>Update Report</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="note">Application Note</Label>
+            <Label htmlFor="problem">What was the problem?</Label>
             <Input
-              id="note"
+              id="problem"
               type="text"
-              value={note}
-              onChange={handleNoteChange}
+              value={problem}
+              onChange={handleProblemChange}
               required
               disabled={isLoading}
-              className={errors.note ? "border-red-500" : ""}
-              placeholder="Enter your note here"
+              className={errors.problem ? "border-red-500" : ""}
+              placeholder="Enter the problem here"
             />
-            {errors.note && (
-              <p className="text-red-500 text-sm mt-1">{errors.note}</p>
+            {errors.problem && (
+              <p className="text-red-500 text-sm mt-1">{errors.problem}</p>
             )}
           </div>
-
           <div>
-            <Label htmlFor="date">Date</Label>
+            <Label htmlFor="problem">{"What's the solution?"}</Label>
             <Input
-              id="date"
-              type="date"
-              value={date}
-              onChange={handleDateChange}
+              id="problem"
+              type="text"
+              value={solution}
+              onChange={handleSolutionChange}
               required
               disabled={isLoading}
-              className={errors.date ? "border-red-500" : ""}
+              className={errors.solution ? "border-red-500" : ""}
+              placeholder="Enter the solution here"
             />
-            {errors.date && (
-              <p className="text-red-500 text-sm mt-1">{errors.date}</p>
+            {errors.solution && (
+              <p className="text-red-500 text-sm mt-1">{errors.solution}</p>
             )}
           </div>
 
@@ -195,7 +195,7 @@ const UpdateDoctorApplicationClient = ({
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Updating application..." : "Update Application"}
+            {isLoading ? "Updating report..." : "Update Report"}
           </Button>
         </form>
       </DialogContent>
@@ -203,4 +203,4 @@ const UpdateDoctorApplicationClient = ({
   );
 };
 
-export default UpdateDoctorApplicationClient;
+export default UpdateReportForPatientApplicationClient;

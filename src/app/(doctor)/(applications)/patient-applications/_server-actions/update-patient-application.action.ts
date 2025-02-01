@@ -8,7 +8,7 @@ import { z } from "zod";
 import {
   ApplicationErrorResponse,
   DoctorApplicationSuccessResponse,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 import { updatePatientApplicationService } from "../_services/update-patient-application.service";
 
 export async function updatePatientApplicationAction(

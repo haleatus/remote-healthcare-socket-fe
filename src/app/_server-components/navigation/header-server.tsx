@@ -1,6 +1,6 @@
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
 import HeaderClient from "@/components/navigation/header-client";
-import { AuthState } from "@/core/types/auth-state.inteface";
+import { AuthState } from "@/core/interface/auth-state.inteface";
 import { cookies } from "next/headers";
 import React from "react";
 

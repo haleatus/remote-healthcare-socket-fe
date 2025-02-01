@@ -1,6 +1,6 @@
 "use server";
 
-import { IUser } from "@/core/types/user.interface";
+import { IUser } from "@/core/interface/user.interface";
 import { cookies } from "next/headers";
 
 export async function getCurrentUserFromCookie(): Promise<IUser | null> {

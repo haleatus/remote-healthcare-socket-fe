@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { getMeAdmin } from "@/app/actions/admin/get-me-admin.action";
-import { IAdmin } from "@/core/types/admin.interface";
+import { IAdmin } from "@/core/interface/admin.interface";
 
 interface AdminContextValue {
   admin: IAdmin | null;

@@ -8,7 +8,7 @@ import { z } from "zod";
 import {
   ApplicationErrorResponse,
   DoctorApplicationSuccessResponse,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 import { declinePatientApplicationService } from "../_services/decline-patient-application.service";
 
 export async function declinePatientApplicationAction(

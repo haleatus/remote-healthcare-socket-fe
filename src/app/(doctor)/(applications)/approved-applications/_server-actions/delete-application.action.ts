@@ -2,7 +2,7 @@
 "use server";
 
 import { deleteApplicationService } from "@/app/(doctor)/(applications)/approved-applications/_services/delete-application.service";
-import { ApplicationSuccessResponse } from "@/core/types/application.interface";
+import { ApplicationSuccessResponse } from "@/core/interface/application.interface";
 
 export async function deleteApplicationAction(
   accessToken: string,

@@ -9,7 +9,7 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
-import { IUser } from "@/core/types/user.interface";
+import { IUser } from "@/core/interface/user.interface";
 import { getMeUser } from "@/app/actions/user/get-me-user.action";
 
 interface UserContextValue {

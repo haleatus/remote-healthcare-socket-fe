@@ -40,11 +40,6 @@ const CreateReportForPatientApplicationClient = ({
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  console.log("UserID", userId);
-  console.log("AccessToken", accessToken);
-  console.log("ApplicationID", applicationId);
-  console.log("err", errors);
-
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();

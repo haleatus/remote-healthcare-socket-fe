@@ -3,15 +3,15 @@
 
 import { z } from "zod";
 
-import { createReportForApplicationSchema } from "@/app/schema/reports";
+import { updateReportForApplicationSchema } from "@/app/schema/reports";
 import {
   IReportErrorResponse,
   IReportSuccessResponse,
 } from "@/core/interface/report.interface";
-import { createReportForApplicationService } from "../_services/create-report-for-application.service";
+import { updateReportForApplicationService } from "../_services/update-report-for-application.service";
 
-export async function createReportForApplicationAction(
-  formData: z.infer<typeof createReportForApplicationSchema>,
+export async function updateReportForApplicationAction(
+  formData: z.infer<typeof updateReportForApplicationSchema>,
   accessToken: string
 ): Promise<{
   success: boolean;
@@ -20,10 +20,10 @@ export async function createReportForApplicationAction(
 }> {
   try {
     // Validate the input data
-    const validatedData = createReportForApplicationSchema.parse(formData);
+    const validatedData = updateReportForApplicationSchema.parse(formData);
 
     // Call the service
-    const response = await createReportForApplicationService(
+    const response = await updateReportForApplicationService(
       validatedData,
       accessToken
     );

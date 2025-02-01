@@ -1,7 +1,7 @@
 "use server";
 
 import { getUserReportByIdService } from "@/app/(user)/reports/[id]/_services/get-user-report-by-id.service";
-import { Report } from "@/core/types/reports.interface";
+import { Report } from "@/core/interface/reports.interface";
 
 export async function getUserReportById(
   accessToken: string,

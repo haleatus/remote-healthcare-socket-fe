@@ -1,20 +1,16 @@
 "use client";
 
 import { useUser } from "@/context/user-context";
-import type { ReportSuccessResponse } from "@/core/types/reports.interface";
+import type { ReportSuccessResponse } from "@/core/interface/reports.interface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock, Edit } from "lucide-react";
+import { Clock } from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
-import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/delete-patient-reports.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteReportButton from "./delete-report-button";
+import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
 
 const GetPatientReportsClient = ({
   reports,
@@ -62,19 +58,13 @@ const GetPatientReportsClient = ({
             </CardTitle>
             <ReportStatus status={report.status} />
             <div className="flex items-center gap-2">
-              <Link
-                href={`#`}
-                className="text-blue-500 hover:text-blue-700 hover:underline"
-              >
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Edit size={14} />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-blue-600">Edit</p>
-                  </TooltipContent>
-                </Tooltip>
-              </Link>
+              <UpdateReportForPatientApplicationClient
+                accessToken={accessToken}
+                reportId={report.id}
+                initialProblem={report.problem}
+                initialSolution={report.solution}
+                initialStatus={report.status}
+              />
               <DeleteReportButton
                 reportId={report.id}
                 onDelete={handleDeleteReport}

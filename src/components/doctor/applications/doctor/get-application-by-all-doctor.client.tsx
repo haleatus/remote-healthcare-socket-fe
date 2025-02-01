@@ -1,11 +1,11 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { IUser } from "@/core/types/user.interface";
+import type { IUser } from "@/core/interface/user.interface";
 import type {
   ApplicationSuccessResponse,
   IApplication,
-} from "@/core/types/application.interface";
+} from "@/core/interface/application.interface";
 import { formatVisitDate } from "@/core/utils/date-formatter";
 import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
