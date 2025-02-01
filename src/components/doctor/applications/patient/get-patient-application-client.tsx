@@ -18,6 +18,21 @@ export default function GetPatientApplicationsClient({
 }) {
   const data = patientApplications;
 
+  if (data.data.length === 0) {
+    return (
+      <div className="p-4 font-sans">
+        <h1 className="font-bold pb-4 pl-2 text-gray-800">
+          PATIENTS&apos; APPLICATION
+        </h1>
+        <div className="flex justify-center items-center h-96">
+          <p className="text-gray-500 text-lg">
+            There are no application requests yet!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 font-sans">
       <h1 className="font-bold pb-4 pl-2 text-gray-800">
