@@ -3,8 +3,14 @@
 import { useUser } from "@/context/user-context";
 import type { ReportSuccessResponse } from "@/core/types/reports.interface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import { Clock, Edit, Trash } from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const GetPatientReportsClient = ({
   reports,
@@ -37,7 +43,34 @@ const GetPatientReportsClient = ({
               Report #{report.id}
             </CardTitle>
             <ReportStatus status={report.status} />
-            <div>Actions</div>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`#`}
+                className="text-blue-500 hover:text-blue-700 hover:underline"
+              >
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Edit size={14} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-blue-600">Edit</p>
+                  </TooltipContent>
+                </Tooltip>
+              </Link>
+              <Link
+                href={`#`}
+                className="text-red-500 hover:text-red-700 hover:underline"
+              >
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Trash size={14} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-red-600">Delete</p>
+                  </TooltipContent>
+                </Tooltip>
+              </Link>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="p-2 space-y-2">
