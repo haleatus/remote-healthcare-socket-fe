@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserReportByIdService } from "@/app/services/user/reports/get-user-report-by-id.service";
+import { getUserReportByIdService } from "@/app/(user)/reports/[id]/_services/get-user-report-by-id.service";
 import { Report } from "@/core/types/reports.interface";
 
 export async function getUserReportById(

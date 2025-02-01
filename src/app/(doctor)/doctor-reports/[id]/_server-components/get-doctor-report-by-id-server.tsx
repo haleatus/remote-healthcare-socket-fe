@@ -1,5 +1,5 @@
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import { getUserReportById } from "@/app/actions/user/reports/get-user-report-by-id.actions";
+import { getUserReportById } from "@/app/(user)/reports/[id]/_server-actions/get-user-report-by-id.actions";
 import GetReportByIdClient from "@/components/user/reports/get-reports-by-id-client";
 import Link from "next/link";
 import React from "react";
