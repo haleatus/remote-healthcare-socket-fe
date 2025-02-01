@@ -1,5 +1,5 @@
-import GetAllDoctorsApplicationsServer from "@/app/(doctor)/(applications)/approved-applications/_server-components/get-application-by-doctor.server";
 import React from "react";
+import GetAllDoctorsApplicationsServer from "./_server-components/get-all-doctor-applications.server";
 
 const AllDoctorApplicationPage = () => {
   return (

@@ -2,7 +2,7 @@
 
 import { getApplicationByDoctorService } from "@/app/(doctor)/(applications)/approved-applications/_services/get-application-by-doctor.service";
 
-export async function getApplicationByDoctor({
+export async function getApplicationByDoctorAction({
   accessToken,
 }: {
   accessToken: string;

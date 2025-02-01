@@ -1,4 +1,4 @@
-import { getApplicationByDoctor } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/get-application-by-doctor.action";
+import { getApplicationByDoctorAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/get-application-by-doctor.action";
 import { getAllUser } from "@/app/actions/user/general/get-all-user.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
@@ -17,7 +17,7 @@ export default async function GetApplicationByDoctorServer() {
       redirect("/signin");
     }
 
-    const applicationData = await getApplicationByDoctor({ accessToken });
+    const applicationData = await getApplicationByDoctorAction({ accessToken });
 
     const allUsersData = await getAllUser();
 
