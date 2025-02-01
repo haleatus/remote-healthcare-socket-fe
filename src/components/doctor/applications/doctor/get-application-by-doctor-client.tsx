@@ -35,6 +35,9 @@ interface ApplicationCardProps {
 const ApplicationCard = memo(
   ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
     <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+      <div className="absolute bottom-2 right-2">
+        <CreateReportForPatientApplicationClient />
+      </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold text-gray-700">
@@ -43,8 +46,6 @@ const ApplicationCard = memo(
           <ApplicationStatus status={entry.status} />
 
           <div className="flex items-center gap-1">
-            <CreateReportForPatientApplicationClient />
-
             <UpdateDoctorApplicationClient
               id={entry.id}
               accessToken={accessToken}

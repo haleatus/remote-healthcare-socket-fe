@@ -14,7 +14,6 @@ import {
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
@@ -127,24 +126,22 @@ const UpdateDoctorApplicationClient = ({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full size-6 bg-blue-200 hover:bg-black text-black hover:text-white"
-              >
-                <Edit className="h-5 w-5" />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Update Application</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full size-6 text-blue-500 hover:text-black"
+            >
+              <Edit className="h-5 w-5" />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="text-blue-700">Update Application</p>
+        </TooltipContent>
+      </Tooltip>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
