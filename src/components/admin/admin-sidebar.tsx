@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, UserPlus } from "lucide-react";
+import { LayoutDashboard, UserPlus } from "lucide-react";
 import { useAdmin } from "@/context/admin-context";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 
 const navItems = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-  { href: "/admin/applications", icon: FileText, label: "Applications" },
-  { href: "/admin/admins", icon: Users, label: "Admins" },
-  { href: "/admin/users", icon: Users, label: "Users" },
+  // { href: "/admin/applications", icon: FileText, label: "Applications" },
+  // { href: "/admin/admins", icon: Users, label: "Admins" },
+  // { href: "/admin/users", icon: Users, label: "Users" },
   { href: "/admin/create-admin", icon: UserPlus, label: "Create Admin" },
+  { href: "/admin/create-doctors", icon: UserPlus, label: "Create Doctors" },
 ];
 
 export default function AdminSidebar() {

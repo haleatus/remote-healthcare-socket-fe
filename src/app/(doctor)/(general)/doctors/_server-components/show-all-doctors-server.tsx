@@ -4,7 +4,6 @@ import React from "react";
 
 const ShowAllDoctorsServer = async () => {
   const allDoctors = await getAllDoctors();
-  console.log("all doc", allDoctors);
 
   return (
     <div>
