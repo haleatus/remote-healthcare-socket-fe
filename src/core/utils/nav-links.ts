@@ -11,6 +11,7 @@ export const getNavLinks = (
       // { href: "/admin/reports", label: "Reports" },
       // { href: "/admin/admins", label: "Admins" },
       // { href: "/admin/users", label: "Users" },
+      { href: "/admin/doctors", label: "Doctors" },
       { href: "/admin/create-admin", label: "Create Admins" },
       { href: "/admin/create-doctors", label: "Create Doctors" },
     ];
