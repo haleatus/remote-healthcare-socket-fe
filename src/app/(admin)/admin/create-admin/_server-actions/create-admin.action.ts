@@ -2,7 +2,7 @@
 "use server";
 
 import { createAdminSchema } from "@/app/schema/admin";
-import { createAdminService } from "@/app/services/admin/create-admin.service";
+import { createAdminService } from "@/app/(admin)/admin/create-admin/_services/create-admin.service";
 import {
   AuthErrorResponse,
   AuthSuccessResponse,

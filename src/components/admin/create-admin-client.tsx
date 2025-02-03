@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/interface/auth.interface";
-import { createAdmin } from "@/app/actions/admin/create-admin.action";
+import { createAdmin } from "@/app/(admin)/admin/create-admin/_server-actions/create-admin.action";
 
 export default function CreateAdminClient({
   adminAccessToken,

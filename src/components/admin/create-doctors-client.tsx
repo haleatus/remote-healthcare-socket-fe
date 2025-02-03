@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/interface/auth.interface";
-import { createDoctorAction } from "@/app/actions/admin/create-doctor.action";
+import { createDoctorAction } from "@/app/(admin)/admin/create-doctors/_server-actions/create-doctor.action";
 
 export default function CreateDoctorsClient({
   adminAccessToken,
