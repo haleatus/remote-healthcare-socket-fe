@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
-  allDoctors: IDoctorResponse;
+  allDoctors: IDoctorResponse | null;
 }
 
 const DoctorImage = ({
@@ -51,9 +51,46 @@ const DoctorImage = ({
 };
 
 export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
-  if (!allDoctors?.data || allDoctors.data.length === 0) {
+  // Handle null case
+  if (!allDoctors) {
     return (
-      <Card className="mt-6">
+      <Card className="mt-6 font-sans">
+        <CardHeader>
+          <CardTitle>Doctors</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-red-500">Please log in to view doctors</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Handle error cases
+  if (allDoctors.statusCode === 401) {
+    return (
+      <Card className="mt-6 font-sans">
+        <CardHeader>
+          <CardTitle>Doctors</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-red-500">Session expired. Please log in again.</p>
+          <p className="text-red-500">
+            For now an api in admin side is yet to be made to showcase all
+            doctors.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Handle empty or invalid data
+  if (
+    !allDoctors.data ||
+    !Array.isArray(allDoctors.data) ||
+    allDoctors.data.length === 0
+  ) {
+    return (
+      <Card className="mt-6 font-sans">
         <CardHeader>
           <CardTitle>Doctors</CardTitle>
         </CardHeader>
@@ -65,7 +102,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
   }
 
   return (
-    <Card className="mt-6">
+    <Card className="mt-6 font-sans">
       <CardHeader>
         <CardTitle>Doctors</CardTitle>
       </CardHeader>

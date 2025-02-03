@@ -13,10 +13,5 @@ export const getAllDoctorAdminService = async (accessToken: string) => {
 
   const allDoctors = await res.json();
 
-  if (!res.ok) {
-    const error = new Error(allDoctors.message);
-    throw error;
-  }
-
   return allDoctors;
 };

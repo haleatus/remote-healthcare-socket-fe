@@ -9,14 +9,10 @@ export async function getAllDoctorAdmin() {
   const accessToken = cookieStore.get("adminAccessToken");
 
   if (!accessToken) {
-    return;
+    return null;
   }
 
   const allDoctors = await getAllDoctorAdminService(accessToken.value);
-
-  if (!allDoctors) {
-    return null;
-  }
 
   return allDoctors;
 }

@@ -6,7 +6,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
+    <div className="flex font-sans">
       <AdminSidebar />
       <main className="flex-1 overflow-y-auto p-8">{children}</main>
     </div>
