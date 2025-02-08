@@ -11,6 +11,7 @@ import { Report } from "@/core/interface/reports.interface";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";
+import NoReportsFound from "./no-reports-found";
 
 const GetUserReportsClient = ({ reports }: { reports: Report[] }) => {
   const renderReportCards = () => {
@@ -19,7 +20,7 @@ const GetUserReportsClient = ({ reports }: { reports: Report[] }) => {
     }
 
     if (reports.length === 0) {
-      return <p className="text-center">No Reports Found</p>;
+      return <NoReportsFound />;
     }
 
     return reports.map((report) => (

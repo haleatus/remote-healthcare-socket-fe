@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { createAdminSchema } from "@/app/schema/admin";
-import { createAdminService } from "@/app/services/admin/create-admin.service";
+import { createDoctorSchema } from "@/app/schema/doctor";
+import { createDoctorService } from "@/app/services/auth/doctor-auth.service";
 import {
   AuthErrorResponse,
   AuthSuccessResponse,
 } from "@/core/interface/auth.interface";
 import { z } from "zod";
 
-export async function createAdmin(
-  formData: z.infer<typeof createAdminSchema>,
+export async function createDoctorAction(
+  formData: z.infer<typeof createDoctorSchema>,
   adminAccessToken: string
 ): Promise<{
   success: boolean;
@@ -19,10 +19,10 @@ export async function createAdmin(
 }> {
   try {
     // Validate the input data
-    const validatedData = createAdminSchema.parse(formData);
+    const validatedData = createDoctorSchema.parse(formData);
 
     // Call the service
-    const response = await createAdminService(validatedData, adminAccessToken);
+    const response = await createDoctorService(validatedData, adminAccessToken);
 
     return {
       success: true,

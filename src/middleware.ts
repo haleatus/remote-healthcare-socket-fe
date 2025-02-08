@@ -5,8 +5,25 @@ export function middleware(req: NextRequest) {
   const authToken = req.cookies.get("accessToken");
   const adminAuthToken = req.cookies.get("adminAccessToken");
 
-  const protectedUserRoutes = ["/doctors", "/profile"];
-  const protectedAdminRoutes = ["/admin"];
+  const protectedUserRoutes = [
+    "/doctors",
+    "/profile",
+    "/my-applications",
+    "/reports",
+    "/all-doctor-applications",
+    "/approved-applications",
+    "/patient-applications",
+    "/patient-logs",
+  ];
+  const protectedAdminRoutes = [
+    "/admin",
+    "/admin/admins",
+    "/admin/doctors",
+    "/admin/users",
+    "/admin/create-admin",
+    "/admin/create-doctors",
+    "/admin/applications",
+  ];
   const currentPath = req.nextUrl.pathname;
 
   const isProtectedUserRoute = protectedUserRoutes.some((route) =>
@@ -43,5 +60,17 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/doctors/:path*", "/profile/:path*", "/signin", "/admin/:path*"],
+  matcher: [
+    "/doctors/:path*",
+    "/profile/:path*",
+    "/signin",
+    "/admin-signin",
+    "/admin/:path*",
+    "/my-applications",
+    "/reports",
+    "/all-doctor-applications",
+    "/approved-applications",
+    "/patient-applications",
+    "/patient-logs",
+  ],
 };

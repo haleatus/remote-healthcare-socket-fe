@@ -49,18 +49,20 @@ export default function GetPatientApplicationsClient({
                 <CardTitle className="text-lg font-semibold text-gray-700">
                   Application #{entry.id}
                 </CardTitle>
-                <DeclinePatientApplicationClient
-                  applicationId={entry.id}
-                  accessToken={accessToken}
-                  docId={currentDoctor.id}
-                  patientsNote={entry.note}
-                />
-                <UpdatePatientApplicationClient
-                  applicationId={entry.id}
-                  accessToken={accessToken}
-                  docId={currentDoctor.id}
-                  patientsNote={entry.note}
-                />
+                <div className="flex items-center space-x-2">
+                  <DeclinePatientApplicationClient
+                    applicationId={entry.id}
+                    accessToken={accessToken}
+                    docId={currentDoctor.id}
+                    patientsNote={entry.note}
+                  />
+                  <UpdatePatientApplicationClient
+                    applicationId={entry.id}
+                    accessToken={accessToken}
+                    docId={currentDoctor.id}
+                    patientsNote={entry.note}
+                  />
+                </div>
               </div>
             </CardHeader>
             <CardContent className="pt-2">
