@@ -7,11 +7,13 @@ export const getNavLinks = (
   if (authState.isAdmin) {
     return [
       { href: "/admin", label: "Dashboard" },
-      { href: "/admin/applications", label: "Applications" },
-      { href: "/admin/reports", label: "Reports" },
-      { href: "/admin/admins", label: "Admins" },
-      { href: "/admin/users", label: "Users" },
+      // { href: "/admin/applications", label: "Applications" },
+      // { href: "/admin/reports", label: "Reports" },
+      // { href: "/admin/admins", label: "Admins" },
+      // { href: "/admin/users", label: "Users" },
+      { href: "/admin/doctors", label: "Doctors" },
       { href: "/admin/create-admin", label: "Create Admins" },
+      { href: "/admin/create-doctors", label: "Create Doctors" },
     ];
   }
 

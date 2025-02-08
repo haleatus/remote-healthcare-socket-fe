@@ -102,7 +102,7 @@ const DeclinePatientApplicationClient = ({
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Decline this Application</p>
+            <p className="text-red-500">Decline this Application</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

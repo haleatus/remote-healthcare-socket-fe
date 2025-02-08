@@ -122,7 +122,9 @@ const UpdatePatientApplicationClient = ({
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Approve Application for this patient</p>
+            <p className="text-blue-500">
+              Approve Application for this patient
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

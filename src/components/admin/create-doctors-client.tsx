@@ -8,9 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/interface/auth.interface";
-import { createAdmin } from "@/app/(admin)/admin/create-admin/_server-actions/create-admin.action";
+import { createDoctorAction } from "@/app/(admin)/admin/create-doctors/_server-actions/create-doctor.action";
 
-export default function CreateAdminClient({
+export default function CreateDoctorsClient({
   adminAccessToken,
 }: {
   adminAccessToken: string;
@@ -28,7 +28,7 @@ export default function CreateAdminClient({
     setErrors({});
 
     try {
-      const result = await createAdmin(
+      const result = await createDoctorAction(
         {
           name,
           email,
@@ -38,13 +38,13 @@ export default function CreateAdminClient({
       );
 
       if (result.success && result.data) {
-        toast.success("Successfully created an admin! Redirecting...");
+        toast.success("Successfully created a doctor! Redirecting...");
         // Reset form
         setName("");
         setEmail("");
         setPassword("");
         // Redirect after a short delay
-        setTimeout(() => router.push("/admin/admins"), 1000);
+        setTimeout(() => router.push("/admin/doctors"), 1000);
       } else if (result.error) {
         // Handle field-specific errors
         const error = result.error as AuthErrorResponse;
@@ -80,7 +80,7 @@ export default function CreateAdminClient({
           }`}
         >
           <h1 className="text-2xl font-bold font-sans mb-6 text-primary">
-            CREATE ADMIN
+            CREATE DOCTOR
           </h1>
           <form
             onSubmit={handleSubmit}
@@ -96,7 +96,7 @@ export default function CreateAdminClient({
                 required
                 disabled={isLoading}
                 className={errors.name ? "border-red-500" : "border-black"}
-                placeholder="Enter admins' name"
+                placeholder="Enter doctors' name"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -112,7 +112,7 @@ export default function CreateAdminClient({
                 required
                 disabled={isLoading}
                 className={errors.email ? "border-red-500" : "border-black"}
-                placeholder="Enter admins' email"
+                placeholder="Enter doctors' email"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -130,7 +130,7 @@ export default function CreateAdminClient({
                 required
                 disabled={isLoading}
                 className={errors.password ? "border-red-500" : "border-black"}
-                placeholder="Enter admins' password"
+                placeholder="Enter doctors' password"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -142,7 +142,7 @@ export default function CreateAdminClient({
               disabled={isLoading}
               aria-disabled={isLoading}
             >
-              {isLoading ? "creating Admin..." : "Create Admin"}
+              {isLoading ? "creating Doctor..." : "Create Doctor"}
             </Button>
           </form>
         </div>
