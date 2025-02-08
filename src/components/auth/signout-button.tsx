@@ -36,7 +36,7 @@ const SignoutButton = () => {
         <TooltipTrigger asChild>
           <Button
             onClick={handleSignOut}
-            className="bg-red-500 text-black hover:text-white rounded-full size-7 p-0.5 hover:bg-red-800 transition-colors duration-300"
+            className="bg-red-500 text-white rounded-full size-9 hover:bg-red-700 transition-colors duration-300"
           >
             <IoLogOut size={22} className="pl-[1px]" />
           </Button>
