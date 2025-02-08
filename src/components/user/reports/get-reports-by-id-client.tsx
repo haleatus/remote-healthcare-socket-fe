@@ -1,23 +1,9 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/seperator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Report } from "@/core/interface/reports.interface";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  User,
-  UserIcon as UserMd,
-} from "lucide-react";
+import { ArrowLeft, AlertCircle, Clock, FileText } from "lucide-react";
+import ReportStatus from "@/components/reports/ReportStatus";
 
 interface ReportDetailProps {
   report: Report | null;
@@ -51,93 +37,87 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
   }
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-lg rounded-md overflow-hidden font-sans">
-      <CardHeader className="bg-gradient-to-r from-blue-500 to-emerald-600 text-white">
-        <CardTitle className="text-2xl font-bold">
-          Report {report.id} Details
-        </CardTitle>
-        <Badge
-          variant="secondary"
-          className="mt-2 flex justify-center font-bold uppercase text-white"
-        >
-          {report.status || "Status not set"}
-        </Badge>
-      </CardHeader>
-      <CardContent className="p-6 space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">Problem</h3>
-          <p className="text-gray-600 bg-gray-50 p-3 rounded-md">
-            {report.problem || "No problem description available"}
-          </p>
+    <div className="p-6 h-full">
+      <Card className="relative bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden max-w-3xl mx-auto">
+        {/* PDF Corner Fold Effect */}
+        <div className="absolute top-0 right-0 w-12 h-12 bg-gray-100">
+          <div className="absolute top-0 right-0 w-0 h-0 border-t-[48px] border-t-gray-200 border-l-[48px] border-l-transparent"></div>
         </div>
-        <Separator />
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">Solution</h3>
-          <p className="text-gray-600 bg-gray-50 p-3 rounded-md">
-            {report.solution || "No solution provided yet"}
-          </p>
-        </div>
-        <Separator />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-start gap-3">
-            <User className="text-blue-500" size={24} />
-            <div>
-              <h3 className="text-sm font-semibold text-gray-800">User</h3>
-              <p className="text-gray-600">
-                {report.user ? (
-                  <>
-                    {report.user.name || "Unnamed"}
-                    {report.user.email && (
-                      <span className="block text-sm text-gray-500">
-                        {report.user.email}
-                      </span>
-                    )}
-                  </>
-                ) : (
-                  "User information not available"
-                )}
-              </p>
+
+        <CardHeader className="border-b bg-gray-50 p-6">
+          <div className="flex justify-between items-start">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-gray-500" />
+                <CardTitle className="text-xl font-serif">
+                  Medical Report #{report.id}
+                </CardTitle>
+              </div>
+              <ReportStatus status={report.status} />
             </div>
           </div>
-          <div className="flex items-start gap-3">
-            <UserMd className="text-green-500" size={24} />
-            <div>
-              <h3 className="text-sm font-semibold text-gray-800">Doctor</h3>
-              <p className="text-gray-600">
-                {report.doc ? (
-                  <>
-                    {report.doc.name || "Unnamed"}
-                    {report.doc.email && (
-                      <span className="block text-sm text-gray-500">
-                        {report.doc.email}
-                      </span>
-                    )}
-                  </>
-                ) : (
-                  "Doctor not assigned"
-                )}
-              </p>
+        </CardHeader>
+
+        <CardContent className="p-6 space-y-6">
+          {/* Patient & Doctor Information */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <h3 className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wider">
+                Patient Information
+              </h3>
+              <div className="space-y-1">
+                <p className="text-sm font-medium">{report.user.name}</p>
+                <p className="text-sm text-gray-500">{report.user.email}</p>
+              </div>
+            </div>
+
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <h3 className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wider">
+                Attending Physician
+              </h3>
+              <div className="space-y-1">
+                <p className="text-sm font-medium">{report.doc.name}</p>
+                <p className="text-sm text-gray-500">{report.doc.email}</p>
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-      <CardFooter className="bg-gray-50 text-sm text-gray-500 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Clock size={16} />
-          Created:{" "}
-          {report.createdAt
-            ? new Date(report.createdAt).toLocaleString()
-            : "Date not available"}
-        </div>
-        <div className="flex items-center gap-2">
-          <CheckCircle size={16} />
-          Updated:{" "}
-          {report.updatedAt
-            ? new Date(report.updatedAt).toLocaleString()
-            : "Not updated yet"}
-        </div>
-      </CardFooter>
-    </Card>
+
+          {/* Medical Details */}
+          <div className="space-y-4">
+            <div className="border-l-4 border-red-500 pl-4">
+              <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                Clinical Presentation
+              </h3>
+              <p className="text-sm text-gray-800 leading-relaxed">
+                {report.problem}
+              </p>
+            </div>
+
+            <div className="border-l-4 border-green-500 pl-4">
+              <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                Treatment Plan
+              </h3>
+              <div className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
+                {report.solution}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="flex justify-between items-center pt-4 mt-6 border-t text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span>
+                Last Updated: {new Date(report.updatedAt).toLocaleDateString()}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="text-xs">CONFIDENTIAL</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
