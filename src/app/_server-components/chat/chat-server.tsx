@@ -1,10 +1,15 @@
 import ChatClient from "@/components/chat/chat-client";
-import React from "react";
 
-const ChatServer = ({ id }: { id: string }) => {
+interface ChatServerProps {
+  id: string;
+  userName: string;
+  doctorName: string;
+}
+
+const ChatServer = ({ id, userName, doctorName }: ChatServerProps) => {
   return (
     <div>
-      <ChatClient id={id} />
+      <ChatClient id={id} userName={userName} doctorName={doctorName} />
     </div>
   );
 };

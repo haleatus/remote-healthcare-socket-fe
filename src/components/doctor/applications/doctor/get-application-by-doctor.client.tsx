@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteApplicationButton from "../delete-application-button";
 import NoDataFound from "../../reports/no-data-found";
+import Link from "next/link";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -56,6 +57,14 @@ const ApplicationCard = memo(
             applicationId={entry.id}
             userId={entry.user.id || 0}
           />
+          <Link
+            href={`/chat/${entry.id}?user=${encodeURIComponent(
+              entry.user.name
+            )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          >
+            Chat
+          </Link>
         </div>
       </div>
       <CardHeader className="pb-2">
