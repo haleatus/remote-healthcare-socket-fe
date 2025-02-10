@@ -11,7 +11,7 @@ import { Report } from "@/core/interface/reports.interface";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { MdArrowOutward } from "react-icons/md";
-import NoReportsFound from "./no-reports-found";
+import NoDataFound from "@/components/doctor/reports/no-data-found";
 
 const GetUserReportsClient = ({ reports }: { reports: Report[] }) => {
   const renderReportCards = () => {
@@ -20,7 +20,12 @@ const GetUserReportsClient = ({ reports }: { reports: Report[] }) => {
     }
 
     if (reports.length === 0) {
-      return <NoReportsFound />;
+      return (
+        <NoDataFound
+          title={"No Reports Found"}
+          description={"We couldn't find any reports"}
+        />
+      );
     }
 
     return reports.map((report) => (

@@ -6,6 +6,7 @@ import { ClockIcon, UserIcon } from "lucide-react";
 import { ApplicationSuccessResponse } from "@/core/interface/application.interface";
 import UpdatePatientApplicationClient from "./update-patient-application.client";
 import DeclinePatientApplicationClient from "./decline-patient-application.client";
+import NoDataFound from "../../reports/no-data-found";
 
 export default function GetPatientApplicationsClient({
   patientApplications,
@@ -20,16 +21,10 @@ export default function GetPatientApplicationsClient({
 
   if (data.data.length === 0) {
     return (
-      <div className="p-4 font-sans">
-        <h1 className="font-bold pb-4 pl-2 text-gray-800">
-          PATIENTS&apos; APPLICATION
-        </h1>
-        <div className="flex justify-center items-center h-96">
-          <p className="text-gray-500 text-lg">
-            There are no application requests yet!
-          </p>
-        </div>
-      </div>
+      <NoDataFound
+        title={"No Patient Application Found"}
+        description={"We couldn't find any patient applications"}
+      />
     );
   }
 

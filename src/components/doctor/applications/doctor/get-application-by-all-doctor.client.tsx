@@ -25,6 +25,7 @@ import { deleteApplicationAction } from "@/app/(doctor)/(applications)/approved-
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteApplicationButton from "../delete-application-button";
+import NoDataFound from "../../reports/no-data-found";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -236,7 +237,10 @@ export default function GetApplicationByAllDoctorClient({
         onFilterChange={setStatusFilter}
       />
       {filteredApplications.length === 0 ? (
-        <EmptyState />
+        <NoDataFound
+          title={"No Applications Found"}
+          description={"We couldn't find any applications"}
+        />
       ) : (
         <ApplicationGrid
           applications={filteredApplications}
@@ -287,11 +291,6 @@ const Header = memo(
 );
 
 Header.displayName = "Header";
-const EmptyState = () => (
-  <div className="flex items-center justify-center h-full">
-    <p className="text-sm text-gray-500">No Applications Found</p>
-  </div>
-);
 
 const ApplicationGrid = memo(
   ({

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteReportButton from "./delete-report-button";
 import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
+import NoDataFound from "./no-data-found";
 
 const GetPatientReportsClient = ({
   reports,
@@ -43,7 +44,12 @@ const GetPatientReportsClient = ({
     }
 
     if (filteredReports.length === 0) {
-      return <p className="text-center">No Reports Found</p>;
+      return (
+        <NoDataFound
+          title={"No Patient Report Found"}
+          description={"We couldn't find any patient reports"}
+        />
+      );
     }
 
     return filteredReports.map((report) => (
