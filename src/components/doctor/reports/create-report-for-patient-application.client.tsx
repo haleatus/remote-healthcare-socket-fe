@@ -121,10 +121,12 @@ const CreateReportForPatientApplicationClient = ({
       </Tooltip>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Report For This Application</DialogTitle>
+          <DialogTitle className="font-space-grotesk">
+            Create Report For This Application
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 font-sans">
           <div>
             <Label htmlFor="problem">What was the problem?</Label>
             <Input

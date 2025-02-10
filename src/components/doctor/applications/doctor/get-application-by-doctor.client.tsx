@@ -48,7 +48,7 @@ const ApplicationCard = memo(
           />
 
           <DeleteApplicationButton
-            applicaitonId={entry.id}
+            applicationId={entry.id}
             onDelete={handleDeleteApplication}
           />
           <CreateReportForPatientApplicationClient
