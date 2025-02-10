@@ -3,7 +3,7 @@ import { getUserReports } from "@/app/(user)/reports/_server-actions/get-user-re
 import GetUserReportsClient from "@/components/user/reports/get-user-reports-client";
 import Link from "next/link";
 import React from "react";
-import NoReportsFound from "@/components/user/reports/no-reports-found";
+import NoDataFound from "@/components/doctor/reports/no-data-found";
 
 const GetUserReportsServer = async () => {
   const accessToken = await getCurrentUserAccessToken();
@@ -19,7 +19,12 @@ const GetUserReportsServer = async () => {
   const userReportsData = await getUserReports(accessToken);
 
   if (!userReportsData) {
-    return <NoReportsFound />;
+    return (
+      <NoDataFound
+        title={"No Reports Found"}
+        description={"We couldn't find any reports"}
+      />
+    );
   }
 
   return (
