@@ -1,10 +1,19 @@
-import { MessageCircleDashed, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getCurrentUserFromCookie } from "./actions/user/get-current-user-from-cookie.action";
+import CreateUserApplicationClient from "@/components/user/applications/create-user-application-client";
+import { getCurrentUserAccessToken } from "./actions/user/get-current-user-access-token";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await getCurrentUserFromCookie();
+  const accessToken = await getCurrentUserAccessToken();
+
+  if (!accessToken || !user) {
+    redirect("/signin?message=unauthorized");
+  }
+
   return (
     <div className="flex items-center justify-center font-space-grotesk">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 px-4 md:space-y-0 mt-10">
@@ -26,15 +35,9 @@ export default async function Home() {
             approachable, personalized, and simple.
           </p>
           <div className="flex justify-center md:justify-start space-x-4">
-            <Link
-              className="bg-blue-600 flex gap-2 items-center hover:bg-blue-700 text-white pl-3 pr-4 py-1.5 rounded-full"
-              href="/create-application"
-            >
-              <span>
-                <MessageCircleDashed className="size-5" />
-              </span>
-              Create an application
-            </Link>
+            {user && !user?.isAdmin && (
+              <CreateUserApplicationClient accessToken={accessToken} />
+            )}
             {user ? (
               <Link
                 href="/my-applications"
