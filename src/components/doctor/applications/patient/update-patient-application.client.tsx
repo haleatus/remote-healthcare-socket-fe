@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
+import { Check } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -115,14 +115,14 @@ const UpdatePatientApplicationClient = ({
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full w-10 h-10 bg-blue-400 text-white"
+                className="rounded-full w-10 h-10 bg-green-400 text-white"
               >
-                <PlusCircle className="h-5 w-5" />
+                <Check className="h-5 w-5" />
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p className="text-blue-500">
+            <p className="text-green-500">
               Approve Application for this patient
             </p>
           </TooltipContent>

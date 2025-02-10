@@ -40,10 +40,15 @@ export default async function Home() {
             )}
             {user ? (
               <Link
-                href="/my-applications"
+                href={
+                  user?.isAdmin ? "/patient-applications" : "/my-applications"
+                }
                 className="inline-flex items-center text-blue-600 font-medium hover:underline"
               >
-                View your applications &rarr;
+                {user?.isAdmin
+                  ? "View patient applications"
+                  : "View your applications"}{" "}
+                &rarr;
               </Link>
             ) : (
               <Link
