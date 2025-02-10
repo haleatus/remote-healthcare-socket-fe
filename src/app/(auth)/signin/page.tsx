@@ -3,7 +3,7 @@ import React from "react";
 
 const SignInPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <SignInServer />
     </div>
   );

@@ -3,7 +3,7 @@ import React from "react";
 
 const ApprovedApplicationPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <GetApplicationByDoctorServer />
     </div>
   );

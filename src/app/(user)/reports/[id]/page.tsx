@@ -14,7 +14,7 @@ const SpecificReportsPage = async ({ params }: PageProps) => {
   }
 
   return (
-    <div>
+    <div className="font-sans">
       <GetUserReportById id={idNumber} />
     </div>
   );

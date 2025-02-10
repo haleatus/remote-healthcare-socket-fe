@@ -3,7 +3,7 @@ import React from "react";
 
 const DoctorsListPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <ShowAllDoctorsServer />
     </div>
   );
