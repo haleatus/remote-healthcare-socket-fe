@@ -1,4 +1,4 @@
-import ChatServer from "@/app/_server-components/chat/chat-server";
+import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
 import { notFound } from "next/navigation";
 
 interface ChatPageProps {
