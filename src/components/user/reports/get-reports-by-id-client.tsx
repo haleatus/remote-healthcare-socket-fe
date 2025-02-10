@@ -1,9 +1,18 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { Report } from "@/core/interface/reports.interface";
 import Link from "next/link";
-import { ArrowLeft, AlertCircle, Clock, FileText } from "lucide-react";
+import {
+  ArrowLeft,
+  AlertCircle,
+  Clock,
+  FileText,
+  Download,
+} from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 interface ReportDetailProps {
   report: Report | null;
@@ -11,6 +20,56 @@ interface ReportDetailProps {
 }
 
 const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
+  const handleDownloadPDF = async () => {
+    const reportElement = document.getElementById("report-content");
+    if (!reportElement) return;
+
+    try {
+      // Remove any max-width constraints temporarily for PDF generation
+      const originalMaxWidth = reportElement.style.maxWidth;
+      reportElement.style.maxWidth = "none";
+
+      // Add some padding to ensure content isn't cut off
+      const originalPadding = reportElement.style.padding;
+      reportElement.style.padding = "20px";
+
+      // Create canvas with proper scale
+      const canvas = await html2canvas(reportElement, {
+        scale: 2, // Higher quality
+        width: reportElement.offsetWidth,
+        height: reportElement.offsetHeight,
+        useCORS: true,
+        logging: false,
+        windowWidth: reportElement.scrollWidth,
+        windowHeight: reportElement.scrollHeight,
+      });
+
+      // Restore original styles
+      reportElement.style.maxWidth = originalMaxWidth;
+      reportElement.style.padding = originalPadding;
+
+      // Calculate PDF dimensions (A4 aspect ratio)
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // Initialize PDF with A4 format
+      const pdf = new jsPDF({
+        orientation: imgHeight > imgWidth ? "portrait" : "landscape",
+        unit: "mm",
+        format: "a4",
+      });
+
+      // Add image to PDF with proper scaling
+      const imgData = canvas.toDataURL("image/png");
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+      // Download PDF
+      pdf.save(`medical-report-${report?.id}.pdf`);
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+    }
+  };
+
   if (error || !report) {
     return (
       <Card className="w-full max-w-3xl mx-auto shadow-lg rounded-md overflow-hidden">
@@ -38,7 +97,10 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
 
   return (
     <div className="p-6 h-full">
-      <Card className="relative bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden max-w-3xl mx-auto">
+      <Card
+        id="report-content"
+        className="relative bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden max-w-3xl mx-auto"
+      >
         {/* PDF Corner Fold Effect */}
         <div className="absolute top-0 right-0 w-12 h-12 bg-gray-100">
           <div className="absolute top-0 right-0 w-0 h-0 border-t-[48px] border-t-gray-200 border-l-[48px] border-l-transparent"></div>
@@ -55,6 +117,14 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
               </div>
               <ReportStatus status={report.status} />
             </div>
+            <Button
+              onClick={handleDownloadPDF}
+              variant="outline"
+              className="flex items-center gap-2 mr-8"
+            >
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
           </div>
         </CardHeader>
 
