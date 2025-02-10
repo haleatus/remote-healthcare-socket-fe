@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send } from "lucide-react";
-import { IMessageResponse, IMessage } from "@/core/interface/message.interface";
+import { IMessageResponse } from "@/core/interface/message.interface";
+import { io, Socket } from "socket.io-client";
 
 interface Message {
-  id: string;
-  sender: string;
-  text: string;
-  timestamp: string;
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ChatClientProps {
@@ -19,7 +20,6 @@ interface ChatClientProps {
   userName: string;
   doctorName: string;
   messageSentByPatient: IMessageResponse;
-  messageSentByDoctor: IMessageResponse;
 }
 
 export default function ChatClient({
@@ -27,88 +27,89 @@ export default function ChatClient({
   userName,
   doctorName,
   messageSentByPatient,
-  messageSentByDoctor,
 }: ChatClientProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [isConnected, setIsConnected] = useState(false);
+  const socketRef = useRef<Socket | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  console.log("MBp", messageSentByPatient);
-  console.log("MBd", messageSentByDoctor);
   useEffect(() => {
-    // Combine and format messages from both patient and doctor
-    const formatMessages = () => {
-      const patientMessages = messageSentByPatient.data.map(
-        (msg: IMessage) => ({
-          id: `patient-${msg.id}-${msg.createdAt}`,
-          sender: userName,
-          text: msg.content,
-          timestamp: msg.createdAt,
-        })
-      );
-
-      const doctorMessages = messageSentByDoctor.data.map((msg: IMessage) => ({
-        id: `doctor-${msg.id}-${msg.createdAt}`,
-        sender: doctorName,
-        text: msg.content,
-        timestamp: msg.createdAt,
-      }));
-
-      // Combine all messages and sort by timestamp
-      const allMessages = [...patientMessages, ...doctorMessages].sort(
-        (a, b) =>
-          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-      );
-
-      // Add initial greeting if no messages exist
-      if (allMessages.length === 0) {
-        allMessages.unshift({
-          id: `system-greeting-${Date.now()}`,
-          sender: doctorName,
-          text: `Hello ${userName}! Welcome to your consultation. How can I assist you today?`,
-          timestamp: new Date().toISOString(),
-        });
+    // Initialize socket connection
+    socketRef.current = io(
+      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8080",
+      {
+        query: {
+          appointment: id, // Using appointment ID from the URL
+        },
       }
+    );
+
+    // Socket event handlers
+    socketRef.current.on("connect", () => {
+      setIsConnected(true);
+      console.log("Connected to socket server");
+    });
+
+    socketRef.current.on("disconnect", () => {
+      setIsConnected(false);
+      console.log("Disconnected from socket server");
+    });
+
+    socketRef.current.on("message", (message: Message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+      scrollToBottom();
+    });
+
+    // Initialize messages from API
+    const initializeMessages = () => {
+      // Combine messages and sort by timestamp
+      const allMessages = [...messageSentByPatient.data].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
 
       setMessages(allMessages);
+      setTimeout(scrollToBottom, 100);
     };
 
-    formatMessages();
-  }, [messageSentByPatient, messageSentByDoctor, userName, doctorName]);
+    initializeMessages();
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim()) {
-      const userMessage: Message = {
-        id: `patient-new-${Date.now()}`,
-        sender: userName,
-        text: newMessage,
-        timestamp: new Date().toISOString(),
-      };
-      setMessages((prevMessages) => [...prevMessages, userMessage]);
-      setNewMessage("");
+    // Cleanup
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, [id, messageSentByPatient]);
 
-      // Here you would typically make an API call to save the message
-      // For now, we'll just simulate the doctor's response
-      setTimeout(() => {
-        const doctorResponse: Message = {
-          id: `doctor-new-${Date.now()}`,
-          sender: doctorName,
-          text: generateDoctorResponse(newMessage),
-          timestamp: new Date().toISOString(),
-        };
-        setMessages((prevMessages) => [...prevMessages, doctorResponse]);
-      }, 1000);
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
     }
   };
 
-  const generateDoctorResponse = (userMessage: string) => {
-    const lowercaseMessage = userMessage.toLowerCase();
-    if (lowercaseMessage.includes("cough")) {
-      return "I understand you're experiencing a cough. Can you tell me if you've measured your temperature recently?";
-    } else if (lowercaseMessage.includes("headache")) {
-      return "I'm sorry to hear about your headache. Could you describe the pain in detail?";
-    } else {
-      return "Thank you for sharing. Could you provide more specific details about your symptoms?";
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !socketRef.current) return;
+
+    const messageData = {
+      content: newMessage,
+    };
+
+    try {
+      // Emit the message through socket
+      socketRef.current.emit("message", messageData);
+
+      // Clear input
+      setNewMessage("");
+    } catch (error) {
+      console.error("Failed to send message:", error);
     }
   };
 
@@ -117,6 +118,11 @@ export default function ChatClient({
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  // Helper function to determine if message is from the patient
+  const isPatientMessage = (message: Message) => {
+    return messageSentByPatient.data.some((msg) => msg.id === message.id);
   };
 
   return (
@@ -132,36 +138,45 @@ export default function ChatClient({
           <p className="text-gray-600">
             <span className="font-semibold">Doctor:</span> {doctorName}
           </p>
+          <p className="text-gray-600">
+            <span
+              className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                isConnected ? "bg-green-500" : "bg-red-500"
+              }`}
+            />
+            {isConnected ? "Connected" : "Disconnected"}
+          </p>
         </div>
       </div>
 
       <div className="border rounded-lg p-4 h-[67vh] flex flex-col bg-white shadow-md">
-        <ScrollArea className="flex-grow mb-4">
+        <ScrollArea className="flex-grow mb-4" ref={scrollAreaRef}>
           <div className="space-y-4">
             {messages.map((message) => (
               <div
-                key={message.id}
+                key={`${message.id}-${message.createdAt}`}
                 className={`flex ${
-                  message.sender === userName ? "justify-end" : "justify-start"
+                  isPatientMessage(message) ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
                   className={`max-w-[80%] ${
-                    message.sender === userName ? "items-end" : "items-start"
+                    isPatientMessage(message) ? "items-end" : "items-start"
                   }`}
                 >
                   <div className="flex flex-col">
                     <span className="text-xs text-gray-500 mb-1">
-                      {message.sender} • {formatTime(message.timestamp)}
+                      {isPatientMessage(message) ? userName : doctorName} •{" "}
+                      {formatTime(message.createdAt)}
                     </span>
                     <span
                       className={`inline-block px-4 py-2 rounded-lg ${
-                        message.sender === userName
+                        isPatientMessage(message)
                           ? "bg-teal-500 text-white"
                           : "bg-gray-200 text-gray-800"
                       }`}
                     >
-                      {message.text}
+                      {message.content}
                     </span>
                   </div>
                 </div>
@@ -176,8 +191,13 @@ export default function ChatClient({
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type your message..."
             className="flex-grow"
+            disabled={!isConnected}
           />
-          <Button type="submit" className="bg-teal-600 hover:bg-teal-700">
+          <Button
+            type="submit"
+            className="bg-teal-600 hover:bg-teal-700"
+            disabled={!isConnected}
+          >
             <Send className="h-4 w-4" />
           </Button>
         </form>

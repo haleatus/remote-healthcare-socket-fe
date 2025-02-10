@@ -37,7 +37,6 @@ const ChatServer = async ({ id, userName, doctorName }: ChatServerProps) => {
         userName={userName}
         doctorName={doctorName}
         messageSentByPatient={messageSentByPatient}
-        messageSentByDoctor={messageSentByDoctor}
       />
     </div>
   );
