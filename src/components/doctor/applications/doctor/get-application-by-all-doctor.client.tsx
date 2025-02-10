@@ -35,13 +35,28 @@ interface ApplicationCardProps {
 
 const ApplicationCard = memo(
   ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
-    <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+    <Card className="relative bg-emerald-200 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <div className="absolute bottom-2 right-2">
-        <CreateReportForPatientApplicationClient
-          accessToken={accessToken}
-          applicationId={entry.id}
-          userId={entry.user.id || 0}
-        />
+        <div className="flex items-center gap-1">
+          <UpdateDoctorApplicationClient
+            id={entry.id}
+            accessToken={accessToken}
+            initialNote={entry.note}
+            initialDate={entry.visitDate || ""}
+            initialStatus={entry.status}
+            docId={entry.doc?.id || 0}
+          />
+
+          <DeleteApplicationButton
+            applicaitonId={entry.id}
+            onDelete={handleDeleteApplication}
+          />
+          <CreateReportForPatientApplicationClient
+            accessToken={accessToken}
+            applicationId={entry.id}
+            userId={entry.user.id || 0}
+          />
+        </div>
       </div>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
@@ -49,29 +64,13 @@ const ApplicationCard = memo(
             Application #{entry.id}
           </CardTitle>
           <ApplicationStatus status={entry.status} />
-
-          <div className="flex items-center gap-1">
-            <UpdateDoctorApplicationClient
-              id={entry.id}
-              accessToken={accessToken}
-              initialNote={entry.note}
-              initialDate={entry.visitDate || ""}
-              initialStatus={entry.status}
-              docId={entry.doc?.id || 0}
-            />
-
-            <DeleteApplicationButton
-              applicaitonId={entry.id}
-              onDelete={handleDeleteApplication}
-            />
-          </div>
         </div>
       </CardHeader>
       <CardContent className="pt-2">
         <div className="space-y-4">
           <div>
             <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
-            <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md max-h-16 overflow-auto">
+            <p className="text-sm text-gray-700 bg-gray-50/40 p-2 rounded-md max-h-16 overflow-auto">
               {entry.note}
             </p>
           </div>
@@ -268,7 +267,7 @@ const Header = memo(
     onFilterChange: (status: string) => void;
     allDoctorsData: IUser[];
   }) => (
-    <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
+    <div className="sticky top-[60px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
         <h1 className="font-bold">APPLICATIONS APPROVED BY ALL DOCTOR</h1>
         <div className="flex items-center gap-2">
