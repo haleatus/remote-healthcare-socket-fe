@@ -194,6 +194,7 @@ interface GetApplicationByDoctorClientProps {
   accessToken: string;
   userData: IUser;
   allUsersData: IUser[];
+  allDoctorsData: IUser[];
 }
 
 export default function GetApplicationByDoctorClient({
@@ -201,6 +202,7 @@ export default function GetApplicationByDoctorClient({
   accessToken,
   userData,
   allUsersData,
+  allDoctorsData,
 }: GetApplicationByDoctorClientProps) {
   const { data } = doctorApplications;
 
@@ -230,6 +232,7 @@ export default function GetApplicationByDoctorClient({
         accessToken={accessToken}
         statusFilter={statusFilter}
         allUsersData={allUsersData}
+        allDoctorsData={allDoctorsData}
         onFilterChange={setStatusFilter}
       />
       {filteredApplications.length === 0 ? (
@@ -251,17 +254,19 @@ const Header = memo(
     accessToken,
     statusFilter,
     allUsersData,
+    allDoctorsData,
     onFilterChange,
   }: {
     userData: IUser;
     allUsersData: IUser[];
     accessToken: string;
     statusFilter: string;
+    allDoctorsData: IUser[];
     onFilterChange: (status: string) => void;
   }) => (
     <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold">APPLICATIONS APPROVED BY ME</h1>
+        <h1 className="font-bold">APPLICATIONS FOR ME</h1>
         <div className="flex items-center gap-2">
           <StatusFilter
             currentFilter={statusFilter}
@@ -272,6 +277,7 @@ const Header = memo(
               allUsersData={allUsersData}
               accessToken={accessToken}
               docId={userData.id}
+              allDoctorsData={allDoctorsData}
             />
           )}
         </div>

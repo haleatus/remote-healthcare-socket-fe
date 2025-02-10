@@ -194,6 +194,7 @@ interface GetApplicationByDoctorClientProps {
   accessToken: string;
   userData: IUser;
   allUsersData: IUser[];
+  allDoctorsData: IUser[];
 }
 
 export default function GetApplicationByAllDoctorClient({
@@ -201,6 +202,7 @@ export default function GetApplicationByAllDoctorClient({
   accessToken,
   userData,
   allUsersData,
+  allDoctorsData,
 }: GetApplicationByDoctorClientProps) {
   const { data } = doctorApplications;
 
@@ -230,6 +232,7 @@ export default function GetApplicationByAllDoctorClient({
         accessToken={accessToken}
         statusFilter={statusFilter}
         allUsersData={allUsersData}
+        allDoctorsData={allDoctorsData}
         onFilterChange={setStatusFilter}
       />
       {filteredApplications.length === 0 ? (
@@ -252,12 +255,14 @@ const Header = memo(
     statusFilter,
     allUsersData,
     onFilterChange,
+    allDoctorsData,
   }: {
     userData: IUser;
     allUsersData: IUser[];
     accessToken: string;
     statusFilter: string;
     onFilterChange: (status: string) => void;
+    allDoctorsData: IUser[];
   }) => (
     <div className="sticky top-[48px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
@@ -272,6 +277,7 @@ const Header = memo(
               allUsersData={allUsersData}
               accessToken={accessToken}
               docId={userData.id}
+              allDoctorsData={allDoctorsData}
             />
           )}
         </div>
