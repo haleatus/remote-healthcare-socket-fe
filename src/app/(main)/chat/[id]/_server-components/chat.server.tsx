@@ -36,6 +36,7 @@ const ChatServer = async ({ id }: ChatServerProps) => {
       <ChatClient
         id={id}
         messagesForApplication={messagesForApplication.data}
+        accessToken={accessToken}
         ifDoctor={userData.isAdmin}
       />
     </div>
