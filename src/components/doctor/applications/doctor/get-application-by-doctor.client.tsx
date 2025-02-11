@@ -38,7 +38,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -141,22 +140,9 @@ const ApplicationCard = memo(
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="flex justify-between items-center">
+              <DialogTitle className="flex justify-between items-center pr-7">
                 <span>Application Details #{entry.id}</span>
-                <span
-                  className={cn(
-                    "px-2 py-0.5 text-xs mr-7 font-medium rounded-full",
-                    entry.status === "RESOLVED" &&
-                      "bg-green-200 text-green-700",
-                    entry.status === "PENDING" &&
-                      "bg-yellow-200 text-yellow-700",
-                    entry.status === "CANCELLED" && "bg-red-200 text-red-700",
-                    entry.status === "IN_PROGRESS" &&
-                      "bg-blue-200 text-blue-700"
-                  )}
-                >
-                  {entry.status}
-                </span>
+                <ApplicationStatus status={entry.status} />
               </DialogTitle>
             </DialogHeader>
             <div className="space-y-4 pt-4 pb-7">
