@@ -84,7 +84,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         ...prev,
         {
           content: data.message,
-          senderId: data.senderId, // Assuming the backend sends this
+          senderId: data.senderId,
         },
       ]);
     });

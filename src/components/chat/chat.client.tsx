@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -14,15 +14,19 @@ import Image from "next/image";
 const ChatClient = ({
   id,
   messagesForApplication,
+  ifDoctor,
 }: {
   id: string;
   messagesForApplication: IMessage[];
+  ifDoctor: boolean;
 }) => {
   const [messages, setMessages] = useState(messagesForApplication || []);
   const [newMessage, setNewMessage] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  console.log(setMessages);
+
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -110,7 +114,7 @@ const ChatClient = ({
               <MessageBubble
                 key={message.id}
                 message={message}
-                isCurrentUser={!message.sender.isAdmin}
+                isCurrentUser={message.sender.isAdmin === ifDoctor}
               />
             ))}
           </div>
