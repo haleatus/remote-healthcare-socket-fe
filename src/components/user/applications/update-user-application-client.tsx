@@ -98,7 +98,7 @@ const UpdateUserApplicationClient = ({
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-sans">
         <DialogHeader>
           <DialogTitle>Update Application</DialogTitle>
         </DialogHeader>
