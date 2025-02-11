@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, UserCircle2 } from "lucide-react";
-import { IMessage } from "@/core/interface/message.interface";
+import { Send, UserCircle2, Stethoscope } from "lucide-react";
+import type { IMessage } from "@/core/interface/message.interface";
 import Image from "next/image";
 
 const ChatClient = ({
@@ -24,20 +24,34 @@ const ChatClient = ({
   const [newMessage, setNewMessage] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  console.log(setMessages);
-
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [scrollRef]); // Updated dependency
 
-  const handleSendMessage = (e: any) => {
+  const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
     // Here you would typically make an API call to send the message
     // For now, we'll just update the UI
+    // const newMsg: IMessage = {
+    //   content: newMessage,
+    //   sender: {
+    //     id: user.id,
+    //     name: user.name,
+    //     isAdmin: user.isAdmin,
+    //     createdAt: "",
+    //     updatedAt: "",
+    //     email: user.email,
+    //     isVerified: false,
+    //     isOnline: false,
+    //     avatar: null
+    //   },
+    //   createdAt: new Date().toISOString(),
+    // };
+    setMessages([...messages]);
     setNewMessage("");
   };
 
@@ -56,23 +70,29 @@ const ChatClient = ({
           isCurrentUser ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 mr-2">
+        <div
+          className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+            isCurrentUser ? "bg-blue-100" : "bg-green-100"
+          } ${isCurrentUser ? "ml-2" : "mr-2"}`}
+        >
           {message.sender.avatar ? (
             <Image
-              src={message.sender.avatar}
+              src={message.sender.avatar || "/placeholder.svg"}
               alt={message.sender.name}
-              className="w-8 h-8 rounded-full"
-              height={32}
-              width={32}
+              className="w-10 h-10 rounded-full"
+              height={40}
+              width={40}
             />
+          ) : message.sender.isAdmin ? (
+            <Stethoscope className="w-6 h-6 text-blue-500" />
           ) : (
-            <UserCircle2 className="w-6 h-6 text-gray-500" />
+            <UserCircle2 className="w-6 h-6 text-green-500" />
           )}
         </div>
         <div className="flex flex-col">
           <div
             className={`
-            px-4 py-2 rounded-2xl
+            px-4 py-2 rounded-2xl shadow-sm
             ${
               isCurrentUser
                 ? "bg-blue-600 text-white rounded-tr-none"
@@ -97,19 +117,20 @@ const ChatClient = ({
   );
 
   return (
-    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans">
-      <CardContent className="flex flex-col h-full p-4">
-        <div className="mb-4 pb-2 border-b">
-          <h2 className="text-xl font-semibold text-gray-800">
-            Medical Consultation Chat For Application Number {id}
+    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans shadow-lg">
+      <CardContent className="flex flex-col h-full p-6">
+        <div className="mb-6 pb-3 border-b">
+          <h2 className="text-2xl font-bold text-gray-800">
+            Medical Consultation Chat
           </h2>
-          <p className="text-sm text-gray-500">
-            Secure messaging between patient and healthcare provider
+          <p className="text-sm text-gray-600">
+            Application Number: {id} • Secure messaging between patient and
+            healthcare provider
           </p>
         </div>
 
-        <ScrollArea ref={scrollRef} className="flex-grow mb-4 pr-4">
-          <div className="space-y-2">
+        <ScrollArea ref={scrollRef} className="flex-grow mb-6 pr-4">
+          <div className="space-y-4">
             {messages.map((message) => (
               <MessageBubble
                 key={message.id}
@@ -120,15 +141,16 @@ const ChatClient = ({
           </div>
         </ScrollArea>
 
-        <form onSubmit={handleSendMessage} className="flex gap-2 pt-2 border-t">
+        <form onSubmit={handleSendMessage} className="flex gap-3 pt-4 border-t">
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type your message here..."
-            className="flex-grow"
+            className="flex-grow text-base"
           />
-          <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-            <Send className="w-4 h-4" />
+          <Button type="submit" className="bg-blue-600 hover:bg-blue-700 px-6">
+            <Send className="w-5 h-5 mr-2" />
+            Send
           </Button>
         </form>
       </CardContent>

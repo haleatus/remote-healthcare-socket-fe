@@ -31,8 +31,6 @@ const ChatServer = async ({ id }: ChatServerProps) => {
     });
   }
 
-  console.log("messages", messagesForApplication);
-
   return (
     <div>
       <ChatClient
