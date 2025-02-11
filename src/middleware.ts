@@ -64,7 +64,6 @@ export const config = {
     "/doctors/:path*",
     "/profile/:path*",
     "/signin",
-    "/admin-signin",
     "/admin/:path*",
     "/my-applications",
     "/reports",

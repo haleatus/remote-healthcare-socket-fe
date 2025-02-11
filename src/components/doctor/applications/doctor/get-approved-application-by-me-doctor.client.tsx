@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import UpdateDoctorApplicationClient from "./update-doctor-application.client";
+// import UpdateDoctorApplicationClient from "./update-doctor-application.client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base.client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
 import CreateReportForPatientApplicationClient from "../../reports/create-report-for-patient-application.client";
@@ -38,14 +38,14 @@ const ApplicationCard = memo(
     <Card className="relative bg-white pb-6 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <div className="absolute bottom-2 right-2">
         <div className="flex items-center gap-1">
-          <UpdateDoctorApplicationClient
+          {/* <UpdateDoctorApplicationClient
             id={entry.id}
             accessToken={accessToken}
             initialNote={entry.note}
             initialDate={entry.visitDate || ""}
             initialStatus={entry.status}
             docId={entry.doc?.id || 0}
-          />
+          /> */}
 
           <DeleteApplicationButton
             applicationId={entry.id}
@@ -189,7 +189,7 @@ const StatusFilter = memo(
 
 StatusFilter.displayName = "StatusFilter";
 
-interface GetApplicationByDoctorClientProps {
+interface GetApprrovedApplicationByMeDoctorClientProps {
   doctorApplications: ApplicationSuccessResponse;
   accessToken: string;
   userData: IUser;
@@ -197,13 +197,13 @@ interface GetApplicationByDoctorClientProps {
   allDoctorsData: IUser[];
 }
 
-export default function GetApplicationByAllDoctorClient({
+export default function GetApprrovedApplicationByMeDoctorClient({
   doctorApplications,
   accessToken,
   userData,
   allUsersData,
   allDoctorsData,
-}: GetApplicationByDoctorClientProps) {
+}: GetApprrovedApplicationByMeDoctorClientProps) {
   const { data } = doctorApplications;
 
   const router = useRouter();

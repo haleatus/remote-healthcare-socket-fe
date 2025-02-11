@@ -42,6 +42,7 @@ export const endpoints = {
       deleteApplication: `${baseURL}/doc/application-controller/application/:id`,
       getApplicationsByDoctor: `${baseURL}/doc/application-controller/applications/doc`,
       finishAppointment: `${baseURL}/doc/application-controller/finish-appoinement/:appointmentId`,
+      ownApprovedApplications: `${baseURL}/doc/application-controller/own-approved`,
     },
     chat: {
       getChatMessages: `${baseURL}/doc/application-controller/applications/message/:appointmentId`,

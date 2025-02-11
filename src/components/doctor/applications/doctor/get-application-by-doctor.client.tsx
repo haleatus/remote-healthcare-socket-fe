@@ -36,7 +36,7 @@ interface ApplicationCardProps {
 
 const ApplicationCard = memo(
   ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
-    <Card className="relative border-2 border-emerald-400 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
+    <Card className="relative bg-white pb-6 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <div className="absolute bottom-2 right-2">
         <div className="flex items-center gap-1">
           <UpdateDoctorApplicationClient
