@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { IUser } from "@/core/interface/user.interface";
 import UpdateUserApplicationClient from "./update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
-import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, MessageCircle, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 import CreateUserApplicationClient from "./create-user-application-client";
 import {
@@ -27,6 +27,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -98,11 +104,30 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
           </div>
         </CardContent>
         <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
-          <UpdateUserApplicationClient
-            id={entry.id}
-            accessToken={accessToken}
-            initialNote={entry.note}
-          />
+          <div className="flex items-center gap-2">
+            <UpdateUserApplicationClient
+              id={entry.id}
+              accessToken={accessToken}
+              initialNote={entry.note}
+            />
+            {entry.doc && entry.user && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={`/chat/${entry.id}?user=${encodeURIComponent(
+                      entry.user.name
+                    )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                    className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                  >
+                    <MessageCircle />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-blue-500">Chat</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
         </div>
       </Card>
 
