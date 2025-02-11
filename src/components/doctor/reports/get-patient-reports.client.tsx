@@ -1,17 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { useUser } from "@/context/user-context";
-import type { ReportSuccessResponse } from "@/core/interface/reports.interface";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Clock } from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
-
-import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/delete-patient-reports.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import DeleteReportButton from "./delete-report-button";
-import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
 import NoDataFound from "./no-data-found";
+import type {
+  Report,
+  ReportSuccessResponse,
+} from "@/core/interface/reports.interface";
+import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs/_server-actions/delete-patient-reports.action";
+import ReportDetailPopup from "./report-detail-popup";
+import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
+import DeleteReportButton from "./delete-report-button";
 
 const GetPatientReportsClient = ({
   reports,
@@ -22,6 +26,7 @@ const GetPatientReportsClient = ({
 }) => {
   const { user } = useUser();
   const router = useRouter();
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
   const filteredReports = reports.data.filter(
     (report) => report.doc.id === user?.id
@@ -31,6 +36,7 @@ const GetPatientReportsClient = ({
     try {
       await deletePatientReportAction(accessToken, reportId);
       toast.success("Report deleted successfully");
+      setSelectedReport(null);
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -46,8 +52,8 @@ const GetPatientReportsClient = ({
     if (filteredReports.length === 0) {
       return (
         <NoDataFound
-          title={"No Patient Report Found"}
-          description={"We couldn't find any patient reports"}
+          title="No Patient Report Found"
+          description="We couldn't find any patient reports"
         />
       );
     }
@@ -55,14 +61,37 @@ const GetPatientReportsClient = ({
     return filteredReports.map((report) => (
       <Card
         key={report.id}
-        className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
+        className="hover:shadow-lg transition-all duration-300 cursor-pointer bg-white"
+        onClick={() => setSelectedReport(report)}
       >
-        <CardHeader className="p-2">
-          <div className="flex justify-between items-center text-sm">
-            <CardTitle className="text-sm font-semibold text-gray-700">
-              Report #{report.id}
-            </CardTitle>
+        <CardContent className="p-4">
+          <div className="flex justify-between items-start mb-4">
+            <span className="text-sm font-medium text-gray-600">
+              #{report.id}
+            </span>
             <ReportStatus status={report.status} />
+          </div>
+
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <p className="text-xs text-gray-500">Patient</p>
+              <p className="text-sm font-medium truncate">{report.user.name}</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-xs text-gray-500">Problem</p>
+              <p className="text-sm line-clamp-1 text-gray-700">
+                {report.problem}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-xs text-gray-400 mt-4 pt-4 border-t">
+            <div className="flex items-center">
+              <Clock className="size-3 mr-1" />
+              <span>{new Date(report.updatedAt).toLocaleDateString()}</span>
+            </div>
+
             <div className="flex items-center gap-2">
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
@@ -77,60 +106,6 @@ const GetPatientReportsClient = ({
               />
             </div>
           </div>
-        </CardHeader>
-        <CardContent className="p-2 space-y-2">
-          <div className="bg-gray-100 rounded p-1">
-            <div className="text-xs font-bold font-mono flex items-center gap-1">
-              PATIENT:
-              <span className="text-blue-500 uppercase font-semibold">
-                {report.user.name}
-              </span>
-              |{" "}
-              <span className="text-emerald-500 font-normal">
-                {report.user.email}
-              </span>
-            </div>
-          </div>
-          <div className="bg-gray-100 rounded p-1">
-            <div className="text-xs font-bold font-mono flex items-center gap-1">
-              DOCTOR:
-              <span className="text-blue-500 uppercase font-semibold">
-                {report.doc.name}
-              </span>
-              |{" "}
-              <span className="text-emerald-500 font-normal">
-                {report.doc.email}
-              </span>
-            </div>
-          </div>
-
-          <div className="space-y-2 pb-4 font-space-grotesk">
-            <div>
-              <p className="text-xs font-bold font-mono flex items-center gap-1 text-red-500">
-                Problem
-              </p>
-              <p className="text-sm text-red-800 bg-red-50 p-1 rounded max-h-20 overflow-y-auto">
-                {report.problem}
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs font-bold font-mono flex items-center gap-1 text-emerald-500">
-                Solution
-              </h3>
-              <p className="mt-1 text-sm text-green-800 bg-green-50 p-1 rounded max-h-20 overflow-y-auto">
-                {report.solution}
-              </p>
-            </div>
-          </div>
-
-          <div className="absolute bottom-1 right-1 text-xs flex items-center gap-1">
-            <Clock className="size-3 mt-0.5 text-gray-500" />
-            <div>
-              <p className="text-gray-500">
-                {new Date(report.updatedAt).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
         </CardContent>
       </Card>
     ));
@@ -139,11 +114,19 @@ const GetPatientReportsClient = ({
   return (
     <div className="p-4 font-sans">
       <h1 className="font-bold pb-4 pl-2 text-gray-800">
-        PATIENTS&apos; REPORTS
+        {"PATIENTS' REPORTS"}
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         {renderReportCards()}
       </div>
+      {selectedReport && (
+        <ReportDetailPopup
+          report={selectedReport}
+          onClose={() => setSelectedReport(null)}
+          accessToken={accessToken}
+          onDelete={handleDeleteReport}
+        />
+      )}
     </div>
   );
 };
