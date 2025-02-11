@@ -129,7 +129,7 @@ const UpdatePatientApplicationClient = ({
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-sans">
         <DialogHeader>
           <DialogTitle>Approve Application For Patient</DialogTitle>
         </DialogHeader>

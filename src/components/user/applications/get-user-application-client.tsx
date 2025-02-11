@@ -252,12 +252,12 @@ const StatusFilter = memo(
     onFilterChange: (status: string) => void;
     currentFilter: string;
   }) => (
-    <div>
+    <div className="font-sans">
       <Select value={currentFilter} onValueChange={onFilterChange}>
-        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded shadow-sm">
+        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded-full shadow-sm">
           <SelectValue placeholder="Filter by status" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="font-sans rounded">
           <SelectItem value="ALL">All Applications</SelectItem>
           <SelectItem value="CREATED">Created</SelectItem>
           <SelectItem value="PENDING">Pending</SelectItem>
