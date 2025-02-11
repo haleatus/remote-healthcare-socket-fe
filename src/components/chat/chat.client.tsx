@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
@@ -30,6 +29,7 @@ const ChatClient = ({
   );
   const [newMessage, setNewMessage] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pendingMessageRef = useRef<string | null>(null);
 
   useEffect(() => {
     connect(id, accessToken);
@@ -39,29 +39,32 @@ const ChatClient = ({
   useEffect(() => {
     if (!socket) return;
 
-    // Listen for incoming messages
     socket.on("message.appointment", (data: { message: string }) => {
-      const newMsg: IMessage = {
-        id: Date.now(),
-        content: data.message,
-        sender: {
+      // Only add the message if it's not the pending message we just sent
+      if (data.message !== pendingMessageRef.current) {
+        const newMsg: IMessage = {
           id: Date.now(),
-          // Use the actual name from the application context
-          name: ifDoctor ? "Doctor" : "Patient", // We'll improve this later
-          isAdmin: ifDoctor,
+          content: data.message,
+          sender: {
+            id: Date.now(),
+            name: !ifDoctor ? "Doctor" : "Patient",
+            isAdmin: !ifDoctor,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            email: "",
+            isVerified: true,
+            isOnline: true,
+            avatar: null,
+          },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          email: "",
-          isVerified: true,
-          isOnline: true,
-          avatar: null,
-        },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+        };
 
-      setMessages((prev) => [...prev, newMsg]);
-      scrollToBottom();
+        setMessages((prev) => [...prev, newMsg]);
+        scrollToBottom();
+      }
+      // Clear the pending message after processing
+      pendingMessageRef.current = null;
     });
 
     return () => {
@@ -83,11 +86,37 @@ const ChatClient = ({
     e.preventDefault();
     if (!newMessage.trim()) return;
 
+    // Store the pending message to prevent duplication
+    pendingMessageRef.current = newMessage;
+
+    // Add local message immediately
+    const localMsg: IMessage = {
+      id: Date.now(),
+      content: newMessage,
+      sender: {
+        id: Date.now(),
+        name: ifDoctor ? "Doctor" : "Patient",
+        isAdmin: ifDoctor,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        email: "",
+        isVerified: true,
+        isOnline: true,
+        avatar: null,
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, localMsg]);
+
     try {
       sendMessage(newMessage);
       setNewMessage("");
     } catch (error) {
       console.error("Failed to send message:", error);
+      // Clear pending message if send fails
+      pendingMessageRef.current = null;
     }
   };
 
