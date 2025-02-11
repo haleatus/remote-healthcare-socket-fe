@@ -51,7 +51,7 @@ function AdminSignInForm() {
         await refetchAdmin();
 
         // Redirect to home or the intended destination
-        const redirectTo = searchParams.get("redirectTo") || "/";
+        const redirectTo = searchParams.get("redirectTo") || "/admin";
         setTimeout(() => router.push(redirectTo), 1000);
       } else if (result.error) {
         // Handle field-specific errors

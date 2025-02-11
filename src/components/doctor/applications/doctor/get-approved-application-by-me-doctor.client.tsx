@@ -26,6 +26,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import DeleteApplicationButton from "../delete-application-button";
 import NoDataFound from "../../reports/no-data-found";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -34,67 +40,158 @@ interface ApplicationCardProps {
 }
 
 const ApplicationCard = memo(
-  ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => (
-    <Card className="relative bg-white pb-6 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
-      <div className="absolute bottom-2 right-2">
-        <div className="flex items-center gap-1">
-          {/* <UpdateDoctorApplicationClient
-            id={entry.id}
-            accessToken={accessToken}
-            initialNote={entry.note}
-            initialDate={entry.visitDate || ""}
-            initialStatus={entry.status}
-            docId={entry.doc?.id || 0}
-          /> */}
+  ({ entry, accessToken, handleDeleteApplication }: ApplicationCardProps) => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-          <DeleteApplicationButton
-            applicationId={entry.id}
-            onDelete={handleDeleteApplication}
-          />
-          <CreateReportForPatientApplicationClient
-            accessToken={accessToken}
-            applicationId={entry.id}
-            userId={entry.user.id || 0}
-          />
-        </div>
-      </div>
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold text-gray-700">
-            Application #{entry.id}
-          </CardTitle>
-          <ApplicationStatus status={entry.status} />
-        </div>
-      </CardHeader>
-      <CardContent className="pt-2">
-        <div className="space-y-4">
-          <div>
-            <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
-            <p className="text-sm text-gray-700 bg-gray-50/40 p-2 rounded-md max-h-16 overflow-auto">
-              {entry.note}
-            </p>
-          </div>
+    const handleCardClick = () => {
+      setIsDialogOpen(true);
+    };
 
-          <div className="flex justify-between items-center text-xs text-gray-500">
-            <TimeInfo label="Created" date={entry.createdAt} />
-            <TimeInfo label="Updated" date={entry.updatedAt} />
-          </div>
+    const handleEditClick = (e: React.MouseEvent) => {
+      e.stopPropagation(); // Stop the click event from propagating to the card
+    };
+    return (
+      <>
+        <Card
+          className="relative bg-white pb-6 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
+          onClick={handleCardClick}
+        >
+          <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
+            <div className="flex items-center gap-1">
+              {/* <UpdateDoctorApplicationClient
+                id={entry.id}
+                accessToken={accessToken}
+                initialNote={entry.note}
+                initialDate={entry.visitDate || ""}
+                initialStatus={entry.status}
+                docId={entry.doc?.id || 0}
+              /> */}
 
-          <div className="border-t border-gray-100 pt-3">
-            <UserInfo user={entry.user} />
-            {entry.doc ? (
-              <>
-                <DoctorInfo doctor={entry.doc} />
-                <VisitDateInfo date={entry.visitDate} />
-              </>
-            ) : (
-              <PendingRequest />
-            )}
+              <DeleteApplicationButton
+                applicationId={entry.id}
+                onDelete={handleDeleteApplication}
+              />
+              <CreateReportForPatientApplicationClient
+                accessToken={accessToken}
+                applicationId={entry.id}
+                userId={entry.user.id || 0}
+              />
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-lg font-semibold text-gray-700">
+                Application #{entry.id}
+              </CardTitle>
+              <ApplicationStatus status={entry.status} />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-2">
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
+                <p className="text-sm bg-gray-50 rounded-md line-clamp-1">
+                  {entry.note}
+                </p>
+              </div>
+
+              <div className="flex justify-between items-center text-xs text-gray-500">
+                <TimeInfo label="Created" date={entry.createdAt} />
+                <TimeInfo label="Updated" date={entry.updatedAt} />
+              </div>
+
+              <div className="border-t border-gray-100 pt-3">
+                <UserInfo user={entry.user} />
+                {entry.doc ? (
+                  <>
+                    <VisitDateInfo date={entry.visitDate} />
+                  </>
+                ) : (
+                  <PendingRequest />
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex justify-between items-center pr-7">
+                <span>Application Details #{entry.id}</span>
+                <ApplicationStatus status={entry.status} />
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 pt-4 pb-7">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-600">
+                  Issue Description
+                </h3>
+                <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md whitespace-pre-wrap">
+                  {entry.note}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 mb-2">
+                    Timestamps
+                  </h3>
+                  <div className="space-y-2">
+                    <TimeInfo label="Created" date={entry.createdAt} />
+                    <TimeInfo label="Updated" date={entry.updatedAt} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-600 mb-2">
+                    User Information
+                  </h3>
+                  <UserInfo user={entry.user} />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-2">
+                  Doctor Assignment
+                </h3>
+                {entry.doc ? (
+                  <div className="space-y-2">
+                    <DoctorInfo doctor={entry.doc} />
+                    <VisitDateInfo date={entry.visitDate} />
+                  </div>
+                ) : (
+                  <PendingRequest />
+                )}
+              </div>
+
+              <div className="absolute bottom-4 right-4">
+                <div className="flex items-center gap-1">
+                  {/* <UpdateDoctorApplicationClient
+                    id={entry.id}
+                    accessToken={accessToken}
+                    initialNote={entry.note}
+                    initialDate={entry.visitDate || ""}
+                    initialStatus={entry.status}
+                    docId={entry.doc?.id || 0}
+                  /> */}
+
+                  <DeleteApplicationButton
+                    applicationId={entry.id}
+                    onDelete={handleDeleteApplication}
+                  />
+                  <CreateReportForPatientApplicationClient
+                    accessToken={accessToken}
+                    applicationId={entry.id}
+                    userId={entry.user.id || 0}
+                  />
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </>
+    );
+  }
 );
 
 ApplicationCard.displayName = "ApplicationCard";
@@ -269,7 +366,7 @@ const Header = memo(
   }) => (
     <div className="sticky top-[60px] font-sans p-2 pr-0 z-30">
       <div className="flex justify-between items-center">
-        <h1 className="font-bold">APPLICATIONS APPROVED BY ALL DOCTOR</h1>
+        <h1 className="font-bold">PATIENT APPLICATIONS APPROVED BY ME</h1>
         <div className="flex items-center gap-2">
           <StatusFilter
             currentFilter={statusFilter}

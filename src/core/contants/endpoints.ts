@@ -65,6 +65,7 @@ export const endpoints = {
     },
     createAdmin: `${baseURL}/admin/admin-user`,
     getMeAdmin: `${baseURL}/auth/admin/me`,
+    getAllDoctors: `${baseURL}/admin/admin-user/all-doctors`,
   },
   messages: {},
 };

@@ -53,7 +53,7 @@ export function middleware(req: NextRequest) {
   }
 
   if (adminAuthToken && currentPath.startsWith("/admin-signin")) {
-    return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+    return NextResponse.redirect(new URL("/admin", req.url));
   }
 
   return NextResponse.next();
