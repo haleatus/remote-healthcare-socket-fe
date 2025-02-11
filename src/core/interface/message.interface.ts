@@ -1,8 +1,11 @@
+import { IUser } from "./user.interface";
+
 export interface IMessage {
   id: number;
+  createdAt: string;
   updatedAt: string;
   content: string;
-  createdAt: string;
+  sender: IUser;
 }
 
 export interface IMessageResponse {

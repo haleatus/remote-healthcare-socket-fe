@@ -3,40 +3,41 @@ import ChatClient from "@/components/chat/chat.client";
 import { redirect } from "next/navigation";
 import { getPatientMessagesAction } from "../_server-actions/get-patient-messages.action";
 import { getDoctorMessagesAction } from "../_server-actions/get-doctor-messages.action";
+import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
 
 interface ChatServerProps {
   id: string;
-  userName: string;
-  doctorName: string;
 }
 
-const ChatServer = async ({ id, userName, doctorName }: ChatServerProps) => {
+const ChatServer = async ({ id }: ChatServerProps) => {
   const accessToken = await getCurrentUserAccessToken();
+  const userData = await getCurrentUserFromCookie();
 
-  if (!accessToken) {
+  if (!accessToken || !userData) {
     redirect("/signin");
   }
 
-  const messageSentByPatient = await getPatientMessagesAction({
-    accessToken,
-    applicationId: parseInt(id),
-  });
+  let messagesForApplication;
 
-  const messageSentByDoctor = await getDoctorMessagesAction({
-    accessToken,
-    applicationId: parseInt(id),
-  });
+  if (userData.isAdmin) {
+    messagesForApplication = await getDoctorMessagesAction({
+      accessToken,
+      applicationId: parseInt(id),
+    });
+  } else {
+    messagesForApplication = await getPatientMessagesAction({
+      accessToken,
+      applicationId: parseInt(id),
+    });
+  }
 
-  console.log("messageSentByPatient", messageSentByPatient);
-  console.log("messageSentByDoctor", messageSentByDoctor);
+  console.log("messages", messagesForApplication);
 
   return (
     <div>
       <ChatClient
         id={id}
-        userName={userName}
-        doctorName={doctorName}
-        messageSentByPatient={messageSentByPatient}
+        messagesForApplication={messagesForApplication.data}
       />
     </div>
   );

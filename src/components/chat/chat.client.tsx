@@ -1,207 +1,135 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React, { useRef, useState } from "react";
+import { format } from "date-fns";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send } from "lucide-react";
-import { IMessageResponse } from "@/core/interface/message.interface";
-import { io, Socket } from "socket.io-client";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Send, UserCircle2 } from "lucide-react";
+import { IMessage } from "@/core/interface/message.interface";
+import Image from "next/image";
 
-interface Message {
-  id: number;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ChatClientProps {
-  id: string;
-  userName: string;
-  doctorName: string;
-  messageSentByPatient: IMessageResponse;
-}
-
-export default function ChatClient({
+const ChatClient = ({
   id,
-  userName,
-  doctorName,
-  messageSentByPatient,
-}: ChatClientProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  messagesForApplication,
+}: {
+  id: string;
+  messagesForApplication: IMessage[];
+}) => {
+  const [messages, setMessages] = useState(messagesForApplication || []);
   const [newMessage, setNewMessage] = useState("");
-  const [isConnected, setIsConnected] = useState(false);
-  const socketRef = useRef<Socket | null>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Initialize socket connection
-    socketRef.current = io(
-      process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8080",
-      {
-        query: {
-          appointment: id, // Using appointment ID from the URL
-        },
-      }
-    );
-
-    // Socket event handlers
-    socketRef.current.on("connect", () => {
-      setIsConnected(true);
-      console.log("Connected to socket server");
-    });
-
-    socketRef.current.on("disconnect", () => {
-      setIsConnected(false);
-      console.log("Disconnected from socket server");
-    });
-
-    socketRef.current.on("message", (message: Message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom();
-    });
-
-    // Initialize messages from API
-    const initializeMessages = () => {
-      // Combine messages and sort by timestamp
-      const allMessages = [...messageSentByPatient.data].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-
-      setMessages(allMessages);
-      setTimeout(scrollToBottom, 100);
-    };
-
-    initializeMessages();
-
-    // Cleanup
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  }, [id, messageSentByPatient]);
-
-  const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      const scrollElement = scrollAreaRef.current.querySelector(
-        "[data-radix-scroll-area-viewport]"
-      );
-      if (scrollElement) {
-        scrollElement.scrollTop = scrollElement.scrollHeight;
-      }
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  };
+  }, [messages]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = (e: any) => {
     e.preventDefault();
-    if (!newMessage.trim() || !socketRef.current) return;
+    if (!newMessage.trim()) return;
 
-    const messageData = {
-      content: newMessage,
-    };
-
-    try {
-      // Emit the message through socket
-      socketRef.current.emit("message", messageData);
-
-      // Clear input
-      setNewMessage("");
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    }
+    // Here you would typically make an API call to send the message
+    // For now, we'll just update the UI
+    setNewMessage("");
   };
 
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  // Helper function to determine if message is from the patient
-  const isPatientMessage = (message: Message) => {
-    return messageSentByPatient.data.some((msg) => msg.id === message.id);
-  };
-
-  return (
-    <div className="flex-grow container mx-auto px-4 py-8 font-sans">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-teal-800">
-          Medical Consultation - Application #{id}
-        </h1>
-        <div className="mt-2 space-y-1">
-          <p className="text-gray-600">
-            <span className="font-semibold">Patient:</span> {userName}
-          </p>
-          <p className="text-gray-600">
-            <span className="font-semibold">Doctor:</span> {doctorName}
-          </p>
-          <p className="text-gray-600">
-            <span
-              className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                isConnected ? "bg-green-500" : "bg-red-500"
-              }`}
+  const MessageBubble = ({
+    message,
+    isCurrentUser,
+  }: {
+    message: IMessage;
+    isCurrentUser: boolean;
+  }) => (
+    <div
+      className={`flex ${isCurrentUser ? "justify-end" : "justify-start"} mb-4`}
+    >
+      <div
+        className={`flex items-start max-w-[70%] ${
+          isCurrentUser ? "flex-row-reverse" : "flex-row"
+        }`}
+      >
+        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-gray-100 mr-2">
+          {message.sender.avatar ? (
+            <Image
+              src={message.sender.avatar}
+              alt={message.sender.name}
+              className="w-8 h-8 rounded-full"
+              height={32}
+              width={32}
             />
-            {isConnected ? "Connected" : "Disconnected"}
-          </p>
+          ) : (
+            <UserCircle2 className="w-6 h-6 text-gray-500" />
+          )}
+        </div>
+        <div className="flex flex-col">
+          <div
+            className={`
+            px-4 py-2 rounded-2xl
+            ${
+              isCurrentUser
+                ? "bg-blue-600 text-white rounded-tr-none"
+                : "bg-gray-100 text-gray-800 rounded-tl-none"
+            }
+          `}
+          >
+            <p className="text-sm">{message.content}</p>
+          </div>
+          <div
+            className={`text-xs text-gray-500 mt-1 ${
+              isCurrentUser ? "text-right" : "text-left"
+            }`}
+          >
+            <span className="font-medium">{message.sender.name}</span>
+            <span className="mx-1">•</span>
+            {format(new Date(message.createdAt), "MMM d, h:mm a")}
+          </div>
         </div>
       </div>
+    </div>
+  );
 
-      <div className="border rounded-lg p-4 h-[67vh] flex flex-col bg-white shadow-md">
-        <ScrollArea className="flex-grow mb-4" ref={scrollAreaRef}>
-          <div className="space-y-4">
+  return (
+    <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans">
+      <CardContent className="flex flex-col h-full p-4">
+        <div className="mb-4 pb-2 border-b">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Medical Consultation Chat For Application Number {id}
+          </h2>
+          <p className="text-sm text-gray-500">
+            Secure messaging between patient and healthcare provider
+          </p>
+        </div>
+
+        <ScrollArea ref={scrollRef} className="flex-grow mb-4 pr-4">
+          <div className="space-y-2">
             {messages.map((message) => (
-              <div
-                key={`${message.id}-${message.createdAt}`}
-                className={`flex ${
-                  isPatientMessage(message) ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-[80%] ${
-                    isPatientMessage(message) ? "items-end" : "items-start"
-                  }`}
-                >
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 mb-1">
-                      {isPatientMessage(message) ? userName : doctorName} •{" "}
-                      {formatTime(message.createdAt)}
-                    </span>
-                    <span
-                      className={`inline-block px-4 py-2 rounded-lg ${
-                        isPatientMessage(message)
-                          ? "bg-teal-500 text-white"
-                          : "bg-gray-200 text-gray-800"
-                      }`}
-                    >
-                      {message.content}
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <MessageBubble
+                key={message.id}
+                message={message}
+                isCurrentUser={!message.sender.isAdmin}
+              />
             ))}
           </div>
         </ScrollArea>
 
-        <form onSubmit={handleSendMessage} className="flex gap-2">
+        <form onSubmit={handleSendMessage} className="flex gap-2 pt-2 border-t">
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
+            placeholder="Type your message here..."
             className="flex-grow"
-            disabled={!isConnected}
           />
-          <Button
-            type="submit"
-            className="bg-teal-600 hover:bg-teal-700"
-            disabled={!isConnected}
-          >
-            <Send className="h-4 w-4" />
+          <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+            <Send className="w-4 h-4" />
           </Button>
         </form>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
-}
+};
+
+export default ChatClient;
