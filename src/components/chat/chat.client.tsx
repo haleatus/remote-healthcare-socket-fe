@@ -11,6 +11,7 @@ import { Send, UserCircle2, Stethoscope } from "lucide-react";
 import type { IMessage } from "@/core/interface/message.interface";
 import Image from "next/image";
 import { useSocket } from "@/lib/socket";
+import { cn } from "@/lib/utils";
 
 const ChatClient = ({
   id,
@@ -78,7 +79,10 @@ const ChatClient = ({
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "instant",
+      });
     }
   };
 
@@ -113,6 +117,7 @@ const ChatClient = ({
     try {
       sendMessage(newMessage);
       setNewMessage("");
+      scrollToBottom();
     } catch (error) {
       console.error("Failed to send message:", error);
       // Clear pending message if send fails
@@ -170,7 +175,9 @@ const ChatClient = ({
               isCurrentUser ? "text-right" : "text-left"
             }`}
           >
-            <span className="font-medium">{message.sender.name}</span>
+            <span className="font-medium">
+              {message.sender.isAdmin ? "Doctor" : "Patient"}
+            </span>
             <span className="mx-1">•</span>
             {format(new Date(message.createdAt), "MMM d, h:mm a")}
           </div>
@@ -182,7 +189,16 @@ const ChatClient = ({
   return (
     <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans shadow-lg">
       <CardContent className="flex flex-col h-full p-6">
-        <p>Status: {isConnected ? "connected" : "disconnected"}</p>
+        <div className="flex items-center mb-2">
+          <div
+            className={cn(
+              "w-3 h-3 rounded-full mr-2",
+              isConnected ? "bg-green-500" : "bg-red-500",
+              isConnected && "animate-pulse"
+            )}
+          ></div>
+          <p>{isConnected ? "Connected" : "Disconnected"}</p>
+        </div>
 
         <div className="mb-6 pb-3 border-b">
           <h2 className="text-2xl font-bold text-gray-800">
