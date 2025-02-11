@@ -17,9 +17,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useUser } from "@/context/user-context";
-import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
+import { IoDocument } from "react-icons/io5";
 import { toast } from "sonner";
 
 const CreateReportForPatientApplicationClient = ({
@@ -111,7 +111,7 @@ const CreateReportForPatientApplicationClient = ({
               size="icon"
               className="rounded-full size-6 text-emerald-500 hover:text-black"
             >
-              <Plus className="h-5 w-5" />
+              <IoDocument className="h-5 w-5" />
             </Button>
           </DialogTrigger>
         </TooltipTrigger>

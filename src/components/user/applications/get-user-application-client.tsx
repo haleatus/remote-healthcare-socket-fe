@@ -107,7 +107,7 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-2xl font-sans">
+        <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex justify-between items-center">
               <span>Application Details #{entry.id}</span>
