@@ -29,7 +29,7 @@ export const getNavLinks = (
               href: "/all-doctor-applications",
               label: "All Doctor Applications",
             },
-            { href: "/doctors", label: "Doctors" },
+            // { href: "/doctors", label: "Doctors" },
           ]
         : [
             { href: "/my-applications", label: "My Applications" },
