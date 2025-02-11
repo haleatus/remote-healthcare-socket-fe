@@ -1,13 +1,14 @@
 import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
 
 interface ChatPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const ChatPage = async ({ params }: ChatPageProps) => {
+  const { id } = await params;
   return (
     <div>
-      <ChatServer id={params.id} />
+      <ChatServer id={id} />
     </div>
   );
 };
