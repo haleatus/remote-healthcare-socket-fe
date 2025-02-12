@@ -376,7 +376,7 @@ const ApplicationGrid = memo(
     applications: IApplication[];
     accessToken: string;
   }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
       {applications.map((entry) => (
         <ApplicationCard
           key={entry.id}

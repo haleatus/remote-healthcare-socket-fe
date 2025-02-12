@@ -29,11 +29,16 @@ export const getNavLinks = (
               href: "/all-doctor-applications",
               label: "All Doctor Applications",
             },
+            {
+              href: "/chat",
+              label: "Chats",
+            },
             // { href: "/doctors", label: "Doctors" },
           ]
         : [
             { href: "/my-applications", label: "My Applications" },
             { href: "/reports", label: "My Reports" },
+            { href: "/chat", label: "Chats" },
           ]),
     ];
   }
