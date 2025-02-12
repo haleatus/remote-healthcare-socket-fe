@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getApplicationByDoctorAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/get-application-by-doctor.action";
 import { getApprovedApplicationByMeDoctorAction } from "@/app/(doctor)/(applications)/approved-by-me-applications/_server-actions/get-approved-application-by-me-doctor.action";
 import { getUserApplications } from "@/app/actions/user/applications/get-user-application.action";
@@ -26,16 +27,17 @@ const ChatPageServer = async () => {
       getApprovedApplicationByMeDoctorAction({ accessToken }),
     ]);
 
-    // Filter applications where the doctor is the current user
+    // Filter applications where the doctor is the current user and status is not cancelled
     const filteredDoctorApplications = docApplicationData.data.filter(
-      (application: { doc: { id: number } }) =>
-        application.doc?.id === userData.id
+      (application: { doc: { id: number }; status: string }) =>
+        application.doc?.id === userData.id &&
+        application.status !== "CANCELLED"
     );
 
-    // Ensure approved applications data is in the correct format
-    const formattedApprovedApplications = docApprovedApplicationData.data.map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (app: any) => ({
+    // Ensure approved applications data is in the correct format and filter out cancelled
+    const formattedApprovedApplications = docApprovedApplicationData.data
+      .filter((app: { status: string }) => app.status !== "CANCELLED")
+      .map((app: any) => ({
         id: app.id || 0,
         createdAt: app.createdAt || new Date().toISOString(),
         updatedAt: app.updatedAt || new Date().toISOString(),
@@ -45,8 +47,7 @@ const ChatPageServer = async () => {
         requestByDoc: app.requestByDoc || false,
         user: app.user || { id: 0 },
         doc: app.doc || { id: 0 },
-      })
-    );
+      }));
 
     // Combine both sets of applications, removing duplicates based on ID
     const combinedApplications = [
@@ -62,9 +63,16 @@ const ChatPageServer = async () => {
       data: uniqueApplications,
     };
   } else {
-    applicationData = await getUserApplications({ accessToken });
+    // Get user applications and filter for those with non-null doc field and not cancelled
+    const rawApplicationData = await getUserApplications({ accessToken });
+    applicationData = {
+      ...rawApplicationData,
+      data: rawApplicationData.data.filter(
+        (app: { doc: any; status: string }) =>
+          app.doc !== null && app.status !== "CANCELLED"
+      ),
+    };
   }
-
   return (
     <div>
       <ChatForApplicationClient

@@ -18,11 +18,15 @@ const ChatClient = ({
   accessToken,
   messagesForApplication,
   ifDoctor,
+  patientName,
+  doctorName,
 }: {
   id: string;
   accessToken: string;
   messagesForApplication: IMessage[];
   ifDoctor: boolean;
+  patientName: string;
+  doctorName: string;
 }) => {
   const { socket, connect, disconnect, isConnected, sendMessage } = useSocket();
   const [messages, setMessages] = useState<IMessage[]>(
@@ -169,21 +173,25 @@ const ChatClient = ({
   return (
     <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans shadow-lg">
       <CardContent className="flex flex-col h-full p-6">
-        <div className="flex items-center mb-2">
-          <div
-            className={cn(
-              "w-3 h-3 rounded-full mr-2",
-              isConnected ? "bg-green-500" : "bg-red-500",
-              isConnected && "animate-pulse"
-            )}
-          ></div>
-          <p>{isConnected ? "Connected" : "Disconnected"}</p>
-        </div>
-
         <div className="mb-6 pb-3 border-b">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Medical Consultation Chat
-          </h2>
+          <div className="text-2xl font-bold text-gray-800 flex">
+            <p>
+              {isConnected ? "Connected" : "Disconnected"} with{" "}
+              {ifDoctor ? `patient` : `doctor`}{" "}
+              <span className="text-blue-500">
+                {ifDoctor ? `${patientName}` : `${doctorName}`}
+              </span>
+            </p>
+
+            <div
+              className={cn(
+                "w-3 h-3 rounded-full mr-2",
+                isConnected ? "bg-green-500" : "bg-red-500",
+                isConnected && "animate-pulse"
+              )}
+            ></div>
+          </div>
+
           <p className="text-sm text-gray-600">
             Application Number: {id} • Secure messaging between patient and
             healthcare provider

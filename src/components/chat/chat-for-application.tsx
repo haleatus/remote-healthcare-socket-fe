@@ -38,7 +38,13 @@ const ApplicationCard = memo(({ entry, isDoctor }: ApplicationCardProps) => {
     <>
       <Card
         className="relative bg-white pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
-        onClick={() => router.push(`/chat/${entry.id}`)}
+        onClick={() =>
+          router.push(
+            `/chat/${entry.id}?patient=${encodeURIComponent(
+              entry.user.name
+            )}&doctor=${encodeURIComponent(entry.doc.name)}`
+          )
+        }
       >
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
@@ -83,7 +89,9 @@ const ApplicationCard = memo(({ entry, isDoctor }: ApplicationCardProps) => {
             <TooltipTrigger asChild>
               <div>
                 <Link
-                  href={`/chat/${entry.id}`}
+                  href={`/chat/${entry.id}?patient=${encodeURIComponent(
+                    entry.user.name
+                  )}&doctor=${encodeURIComponent(entry.doc.name)}`}
                   className=" text-blue-500 hover:text-blue-600 transition-colors"
                 >
                   <MessageCircle />
@@ -174,16 +182,15 @@ const StatusFilter = memo(
   }) => (
     <div>
       <Select value={currentFilter} onValueChange={onFilterChange}>
-        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded shadow-sm">
+        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded shadow-sm font-sans">
           <SelectValue placeholder="Filter by status" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="font-sans">
           <SelectItem value="ALL">All Applications</SelectItem>
           <SelectItem value="CREATED">Created</SelectItem>
           <SelectItem value="PENDING">Pending</SelectItem>
           <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
           <SelectItem value="RESOLVED">Resolved</SelectItem>
-          <SelectItem value="CANCELLED">Cancelled</SelectItem>
         </SelectContent>
       </Select>
     </div>

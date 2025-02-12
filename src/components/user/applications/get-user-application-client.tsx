@@ -114,7 +114,7 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href={`/chat/${entry.id}?user=${encodeURIComponent(
+                    href={`/chat/${entry.id}?patient=${encodeURIComponent(
                       entry.user.name
                     )}&doctor=${encodeURIComponent(entry.doc.name)}`}
                     className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"

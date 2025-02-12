@@ -1,14 +1,22 @@
 import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
+import { notFound } from "next/navigation";
 
 interface ChatPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
+  searchParams: { [key: string]: string | undefined };
 }
 
-const ChatPage = async ({ params }: ChatPageProps) => {
-  const { id } = await params;
+const ChatPage = async ({ params, searchParams }: ChatPageProps) => {
+  if (!params.id || !searchParams.patient || !searchParams.doctor) {
+    notFound();
+  }
   return (
     <div>
-      <ChatServer id={id} />
+      <ChatServer
+        id={params.id}
+        patientName={searchParams.patient}
+        doctorName={searchParams.doctor}
+      />
     </div>
   );
 };
