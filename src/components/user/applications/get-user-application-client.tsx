@@ -110,23 +110,25 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
               accessToken={accessToken}
               initialNote={entry.note}
             />
-            {entry.doc && entry.user && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={`/chat/${entry.id}?user=${encodeURIComponent(
-                      entry.user.name
-                    )}&doctor=${encodeURIComponent(entry.doc.name)}`}
-                    className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-                  >
-                    <MessageCircle />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-blue-500">Chat</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+            {entry.doc &&
+              entry.user &&
+              entry.status.toUpperCase() !== "CANCELLED" && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={`/chat/${entry.id}?patient=${encodeURIComponent(
+                        entry.user.name
+                      )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                      className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                    >
+                      <MessageCircle />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-blue-500">Chat</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
           </div>
         </div>
       </Card>
@@ -376,7 +378,7 @@ const ApplicationGrid = memo(
     applications: IApplication[];
     accessToken: string;
   }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
       {applications.map((entry) => (
         <ApplicationCard
           key={entry.id}
