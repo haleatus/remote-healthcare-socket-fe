@@ -4,7 +4,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import CustomScrollArea from "@/components/ui/custom-scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, UserCircle2, Stethoscope } from "lucide-react";
@@ -18,18 +18,21 @@ const ChatClient = ({
   accessToken,
   messagesForApplication,
   ifDoctor,
+  patientName,
+  doctorName,
 }: {
   id: string;
   accessToken: string;
   messagesForApplication: IMessage[];
   ifDoctor: boolean;
+  patientName: string;
+  doctorName: string;
 }) => {
   const { socket, connect, disconnect, isConnected, sendMessage } = useSocket();
   const [messages, setMessages] = useState<IMessage[]>(
     messagesForApplication || []
   );
   const [newMessage, setNewMessage] = useState("");
-  const scrollRef = useRef<HTMLDivElement>(null);
   const pendingMessageRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -37,11 +40,11 @@ const ChatClient = ({
     return () => disconnect();
   }, [id, accessToken, connect, disconnect]);
 
+  // Handle new messages
   useEffect(() => {
     if (!socket) return;
 
     socket.on("message.appointment", (data: { message: string }) => {
-      // Only add the message if it's not the pending message we just sent
       if (data.message !== pendingMessageRef.current) {
         const newMsg: IMessage = {
           id: Date.now(),
@@ -62,9 +65,7 @@ const ChatClient = ({
         };
 
         setMessages((prev) => [...prev, newMsg]);
-        scrollToBottom();
       }
-      // Clear the pending message after processing
       pendingMessageRef.current = null;
     });
 
@@ -73,27 +74,12 @@ const ChatClient = ({
     };
   }, [socket, ifDoctor]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const scrollToBottom = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "instant",
-      });
-    }
-  };
-
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
-    // Store the pending message to prevent duplication
     pendingMessageRef.current = newMessage;
 
-    // Add local message immediately
     const localMsg: IMessage = {
       id: Date.now(),
       content: newMessage,
@@ -117,10 +103,8 @@ const ChatClient = ({
     try {
       sendMessage(newMessage);
       setNewMessage("");
-      scrollToBottom();
     } catch (error) {
       console.error("Failed to send message:", error);
-      // Clear pending message if send fails
       pendingMessageRef.current = null;
     }
   };
@@ -189,28 +173,32 @@ const ChatClient = ({
   return (
     <Card className="w-full max-w-4xl mx-auto h-[600px] flex flex-col font-sans shadow-lg">
       <CardContent className="flex flex-col h-full p-6">
-        <div className="flex items-center mb-2">
-          <div
-            className={cn(
-              "w-3 h-3 rounded-full mr-2",
-              isConnected ? "bg-green-500" : "bg-red-500",
-              isConnected && "animate-pulse"
-            )}
-          ></div>
-          <p>{isConnected ? "Connected" : "Disconnected"}</p>
-        </div>
-
         <div className="mb-6 pb-3 border-b">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Medical Consultation Chat
-          </h2>
+          <div className="text-2xl font-bold text-gray-800 flex">
+            <p>
+              {isConnected ? "Connected" : "Disconnected"} with{" "}
+              {ifDoctor ? `patient` : `doctor`}{" "}
+              <span className="text-blue-500">
+                {ifDoctor ? `${patientName}` : `${doctorName}`}
+              </span>
+            </p>
+
+            <div
+              className={cn(
+                "w-3 h-3 rounded-full mr-2",
+                isConnected ? "bg-green-500" : "bg-red-500",
+                isConnected && "animate-pulse"
+              )}
+            ></div>
+          </div>
+
           <p className="text-sm text-gray-600">
             Application Number: {id} • Secure messaging between patient and
             healthcare provider
           </p>
         </div>
 
-        <ScrollArea ref={scrollRef} className="flex-grow mb-6 pr-4">
+        <CustomScrollArea className="flex-grow mb-6 pr-4" autoScrollToBottom>
           <div className="space-y-4">
             {messages.map((message) => (
               <MessageBubble
@@ -220,7 +208,7 @@ const ChatClient = ({
               />
             ))}
           </div>
-        </ScrollArea>
+        </CustomScrollArea>
 
         <form onSubmit={handleSendMessage} className="flex gap-3 pt-4 border-t">
           <Input

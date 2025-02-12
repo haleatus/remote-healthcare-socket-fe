@@ -7,9 +7,11 @@ import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-fr
 
 interface ChatServerProps {
   id: string;
+  patientName: string;
+  doctorName: string;
 }
 
-const ChatServer = async ({ id }: ChatServerProps) => {
+const ChatServer = async ({ id, patientName, doctorName }: ChatServerProps) => {
   const accessToken = await getCurrentUserAccessToken();
   const userData = await getCurrentUserFromCookie();
 
@@ -38,6 +40,8 @@ const ChatServer = async ({ id }: ChatServerProps) => {
         messagesForApplication={messagesForApplication.data}
         accessToken={accessToken}
         ifDoctor={userData.isAdmin}
+        patientName={patientName}
+        doctorName={doctorName}
       />
     </div>
   );

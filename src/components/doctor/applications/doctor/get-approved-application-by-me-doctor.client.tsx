@@ -7,7 +7,7 @@ import type {
   IApplication,
 } from "@/core/interface/application.interface";
 import { formatVisitDate } from "@/core/utils/date-formatter";
-import { CalendarIcon, ClockIcon, UserIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, MessageCircle, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 import { memo, useState } from "react";
 import {
@@ -32,6 +32,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 
 interface ApplicationCardProps {
   entry: IApplication;
@@ -53,7 +59,7 @@ const ApplicationCard = memo(
     return (
       <>
         <Card
-          className="relative bg-white pb-6 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
+          className="relative bg-white pb-2 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
           onClick={handleCardClick}
         >
           <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
@@ -76,6 +82,21 @@ const ApplicationCard = memo(
                 applicationId={entry.id}
                 userId={entry.user.id || 0}
               />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={`/chat/${entry.id}?patient=${encodeURIComponent(
+                      entry.user.name
+                    )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                    className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                  >
+                    <MessageCircle />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-blue-500">Chat</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
           <CardHeader className="pb-2">
@@ -184,6 +205,21 @@ const ApplicationCard = memo(
                     applicationId={entry.id}
                     userId={entry.user.id || 0}
                   />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={`/chat/${entry.id}?patient=${encodeURIComponent(
+                          entry.user.name
+                        )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                        className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                      >
+                        <MessageCircle />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-blue-500">Chat</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
               </div>
             </div>
@@ -398,7 +434,7 @@ const ApplicationGrid = memo(
     accessToken: string;
     handleDeleteApplication: (applicationId: number) => Promise<void>;
   }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
       {applications.map((entry) => (
         <ApplicationCard
           key={entry.id}

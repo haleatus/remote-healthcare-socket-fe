@@ -87,7 +87,7 @@ const ApplicationCard = memo(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Link
-                    href={`/chat/${entry.id}?user=${encodeURIComponent(
+                    href={`/chat/${entry.id}?patient=${encodeURIComponent(
                       entry.user.name
                     )}&doctor=${encodeURIComponent(entry.doc.name)}`}
                     className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
@@ -211,7 +211,7 @@ const ApplicationCard = memo(
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Link
-                        href={`/chat/${entry.id}?user=${encodeURIComponent(
+                        href={`/chat/${entry.id}?patient=${encodeURIComponent(
                           entry.user.name
                         )}&doctor=${encodeURIComponent(entry.doc.name)}`}
                         className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
@@ -437,7 +437,7 @@ const ApplicationGrid = memo(
     accessToken: string;
     handleDeleteApplication: (applicationId: number) => Promise<void>;
   }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 font-sans">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
       {applications.map((entry) => (
         <ApplicationCard
           key={entry.id}
