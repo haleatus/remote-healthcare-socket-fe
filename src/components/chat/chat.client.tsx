@@ -4,7 +4,7 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import CustomScrollArea from "@/components/ui/custom-scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, UserCircle2, Stethoscope } from "lucide-react";
@@ -29,53 +29,18 @@ const ChatClient = ({
     messagesForApplication || []
   );
   const [newMessage, setNewMessage] = useState("");
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pendingMessageRef = useRef<string | null>(null);
-  const isNearBottomRef = useRef(true);
 
   useEffect(() => {
     connect(id, accessToken);
     return () => disconnect();
   }, [id, accessToken, connect, disconnect]);
 
-  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
-    if (scrollAreaRef.current) {
-      const scrollContainer = scrollAreaRef.current;
-      const scrollHeight = scrollContainer.scrollHeight;
-      scrollContainer.scrollTo({
-        top: scrollHeight,
-        behavior,
-      });
-    }
-  };
-
-  // Check if scroll is near bottom
-  const handleScroll = () => {
-    if (scrollAreaRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = scrollAreaRef.current;
-      const scrollThreshold = 100; // pixels from bottom
-      isNearBottomRef.current =
-        scrollHeight - (scrollTop + clientHeight) <= scrollThreshold;
-    }
-  };
-  // Initial scroll and scroll handler setup
-  useEffect(() => {
-    const scrollContainer = scrollAreaRef.current;
-    if (scrollContainer) {
-      scrollToBottom("instant");
-      scrollContainer.addEventListener("scroll", handleScroll);
-      return () => {
-        scrollContainer.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, []);
-
   // Handle new messages
   useEffect(() => {
     if (!socket) return;
 
     socket.on("message.appointment", (data: { message: string }) => {
-      // Only add the message if it's not the pending message we just sent
       if (data.message !== pendingMessageRef.current) {
         const newMsg: IMessage = {
           id: Date.now(),
@@ -96,12 +61,7 @@ const ChatClient = ({
         };
 
         setMessages((prev) => [...prev, newMsg]);
-        // Use requestAnimationFrame for smoother scrolling
-        requestAnimationFrame(() => {
-          setTimeout(() => scrollToBottom(), 100);
-        });
       }
-      // Clear the pending message after processing
       pendingMessageRef.current = null;
     });
 
@@ -110,23 +70,12 @@ const ChatClient = ({
     };
   }, [socket, ifDoctor]);
 
-  // Auto-scroll when messages change
-  useEffect(() => {
-    if (isNearBottomRef.current) {
-      requestAnimationFrame(() => {
-        scrollToBottom();
-      });
-    }
-  }, [messages]);
-
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
-    // Store the pending message to prevent duplication
     pendingMessageRef.current = newMessage;
 
-    // Add local message immediately
     const localMsg: IMessage = {
       id: Date.now(),
       content: newMessage,
@@ -150,13 +99,8 @@ const ChatClient = ({
     try {
       sendMessage(newMessage);
       setNewMessage("");
-      isNearBottomRef.current = true;
-      requestAnimationFrame(() => {
-        scrollToBottom();
-      });
     } catch (error) {
       console.error("Failed to send message:", error);
-      // Clear pending message if send fails
       pendingMessageRef.current = null;
     }
   };
@@ -246,7 +190,7 @@ const ChatClient = ({
           </p>
         </div>
 
-        <ScrollArea ref={scrollAreaRef} className="flex-grow mb-6 pr-4">
+        <CustomScrollArea className="flex-grow mb-6 pr-4" autoScrollToBottom>
           <div className="space-y-4">
             {messages.map((message) => (
               <MessageBubble
@@ -256,7 +200,7 @@ const ChatClient = ({
               />
             ))}
           </div>
-        </ScrollArea>
+        </CustomScrollArea>
 
         <form onSubmit={handleSendMessage} className="flex gap-3 pt-4 border-t">
           <Input
