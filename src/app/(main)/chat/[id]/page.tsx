@@ -2,14 +2,22 @@ import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
 import { notFound } from "next/navigation";
 
 interface ChatPageProps {
-  params: Promise<{ id: string }> | { id: string }; // Allow Promise for params
-  searchParams: { [key: string]: string | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 const ChatPage = async ({ params, searchParams }: ChatPageProps) => {
-  const resolvedParams = await Promise.resolve(params); // Ensure params is resolved
+  // Await both promises concurrently for better performance
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
 
-  if (!resolvedParams.id || !searchParams.patient || !searchParams.doctor) {
+  if (
+    !resolvedParams.id ||
+    !resolvedSearchParams.patient ||
+    !resolvedSearchParams.doctor
+  ) {
     notFound();
   }
 
@@ -17,8 +25,8 @@ const ChatPage = async ({ params, searchParams }: ChatPageProps) => {
     <div>
       <ChatServer
         id={resolvedParams.id}
-        patientName={searchParams.patient}
-        doctorName={searchParams.doctor}
+        patientName={resolvedSearchParams.patient as string}
+        doctorName={resolvedSearchParams.doctor as string}
       />
     </div>
   );
