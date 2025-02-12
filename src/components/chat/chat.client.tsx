@@ -29,14 +29,48 @@ const ChatClient = ({
     messagesForApplication || []
   );
   const [newMessage, setNewMessage] = useState("");
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pendingMessageRef = useRef<string | null>(null);
+  const isNearBottomRef = useRef(true);
 
   useEffect(() => {
     connect(id, accessToken);
     return () => disconnect();
   }, [id, accessToken, connect, disconnect]);
 
+  const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
+    if (scrollAreaRef.current) {
+      const scrollContainer = scrollAreaRef.current;
+      const scrollHeight = scrollContainer.scrollHeight;
+      scrollContainer.scrollTo({
+        top: scrollHeight,
+        behavior,
+      });
+    }
+  };
+
+  // Check if scroll is near bottom
+  const handleScroll = () => {
+    if (scrollAreaRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = scrollAreaRef.current;
+      const scrollThreshold = 100; // pixels from bottom
+      isNearBottomRef.current =
+        scrollHeight - (scrollTop + clientHeight) <= scrollThreshold;
+    }
+  };
+  // Initial scroll and scroll handler setup
+  useEffect(() => {
+    const scrollContainer = scrollAreaRef.current;
+    if (scrollContainer) {
+      scrollToBottom("instant");
+      scrollContainer.addEventListener("scroll", handleScroll);
+      return () => {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
+  // Handle new messages
   useEffect(() => {
     if (!socket) return;
 
@@ -62,7 +96,10 @@ const ChatClient = ({
         };
 
         setMessages((prev) => [...prev, newMsg]);
-        scrollToBottom();
+        // Use requestAnimationFrame for smoother scrolling
+        requestAnimationFrame(() => {
+          setTimeout(() => scrollToBottom(), 100);
+        });
       }
       // Clear the pending message after processing
       pendingMessageRef.current = null;
@@ -73,18 +110,14 @@ const ChatClient = ({
     };
   }, [socket, ifDoctor]);
 
+  // Auto-scroll when messages change
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const scrollToBottom = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "instant",
+    if (isNearBottomRef.current) {
+      requestAnimationFrame(() => {
+        scrollToBottom();
       });
     }
-  };
+  }, [messages]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,7 +150,10 @@ const ChatClient = ({
     try {
       sendMessage(newMessage);
       setNewMessage("");
-      scrollToBottom();
+      isNearBottomRef.current = true;
+      requestAnimationFrame(() => {
+        scrollToBottom();
+      });
     } catch (error) {
       console.error("Failed to send message:", error);
       // Clear pending message if send fails
@@ -210,7 +246,7 @@ const ChatClient = ({
           </p>
         </div>
 
-        <ScrollArea ref={scrollRef} className="flex-grow mb-6 pr-4">
+        <ScrollArea ref={scrollAreaRef} className="flex-grow mb-6 pr-4">
           <div className="space-y-4">
             {messages.map((message) => (
               <MessageBubble
