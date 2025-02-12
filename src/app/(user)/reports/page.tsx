@@ -2,7 +2,7 @@ import GetUserReportsServer from "@/app/(user)/reports/_server-components/get-us
 
 const UserReportsPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <GetUserReportsServer />
     </div>
   );

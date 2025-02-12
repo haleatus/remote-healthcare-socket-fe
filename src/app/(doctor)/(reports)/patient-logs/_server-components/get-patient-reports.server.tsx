@@ -18,7 +18,7 @@ const GetPatientReportsServer = async () => {
   const userReportsData = await getPatientReportsAction(accessToken);
 
   return (
-    <div>
+    <div className="font-sans">
       {userReportsData ? (
         <GetPatientReportsClient
           reports={userReportsData}

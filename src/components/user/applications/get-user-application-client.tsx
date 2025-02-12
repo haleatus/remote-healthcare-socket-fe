@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { IUser } from "@/core/interface/user.interface";
 import UpdateUserApplicationClient from "./update-user-application-client";
 import { formatVisitDate } from "@/core/utils/date-formatter";
-import { CalendarIcon, ClockIcon, Search, UserIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, MessageCircle, UserIcon } from "lucide-react";
 import { FaUserDoctor } from "react-icons/fa6";
 import CreateUserApplicationClient from "./create-user-application-client";
 import {
@@ -20,69 +20,190 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import NoDataFound from "@/components/doctor/reports/no-data-found";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 
 interface ApplicationCardProps {
   entry: IApplication;
   accessToken: string;
 }
 
-const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => (
-  <Card className="relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
-    <CardHeader className="pb-2">
-      <div className="flex justify-between items-center">
-        <CardTitle className="text-lg font-semibold text-gray-700">
-          Application #{entry.id}
-        </CardTitle>
-        {entry.status !== "CREATED" && (
-          <span
-            className={cn(
-              "px-3 py-1 text-sm font-medium rounded-full",
-              entry.status === "RESOLVED" && "bg-green-100 text-green-600",
-              entry.status === "PENDING" && "bg-yellow-100 text-yellow-600",
-              entry.status === "CANCELLED" && "bg-red-100 text-red-600",
-              entry.status === "IN_PROGRESS" && "bg-blue-100 text-blue-600"
+const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCardClick = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Stop the click event from propagating to the card
+  };
+
+  return (
+    <>
+      <Card
+        className="relative bg-white pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden cursor-pointer"
+        onClick={handleCardClick}
+      >
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-lg font-semibold text-gray-700">
+              Application #{entry.id}
+            </CardTitle>
+            {entry.status !== "CREATED" && (
+              <span
+                className={cn(
+                  "px-2 py-0.5 text-xs font-medium rounded-full",
+                  entry.status === "RESOLVED" && "bg-green-200 text-green-700",
+                  entry.status === "PENDING" && "bg-yellow-200 text-yellow-700",
+                  entry.status === "CANCELLED" && "bg-red-200 text-red-700",
+                  entry.status === "IN_PROGRESS" && "bg-blue-200 text-blue-700"
+                )}
+              >
+                {entry.status}
+              </span>
             )}
-          >
-            {entry.status}
-          </span>
-        )}
+          </div>
+        </CardHeader>
 
-        <UpdateUserApplicationClient
-          id={entry.id}
-          accessToken={accessToken}
-          initialNote={entry.note}
-        />
-      </div>
-    </CardHeader>
-    <CardContent className="pt-2">
-      <div className="space-y-4">
-        <div>
-          <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
-          <p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md max-h-16 overflow-auto">
-            {entry.note}
-          </p>
-        </div>
+        <CardContent className="pt-2">
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium text-gray-600 mb-1">Issue</p>
+              <p className="text-sm bg-gray-50 rounded-md line-clamp-1">
+                {entry.note}
+              </p>
+            </div>
 
-        <div className="flex justify-between items-center text-xs text-gray-500">
-          <TimeInfo label="Created" date={entry.createdAt} />
-          <TimeInfo label="Updated" date={entry.updatedAt} />
-        </div>
+            <div className="flex justify-between items-center text-xs text-gray-500">
+              <TimeInfo label="Created" date={entry.createdAt} />
+              <TimeInfo label="Updated" date={entry.updatedAt} />
+            </div>
 
-        <div className="border-t border-gray-100 pt-3">
-          <UserInfo user={entry.user} />
-          {entry.doc ? (
-            <>
-              <DoctorInfo doctor={entry.doc} />
-              <VisitDateInfo date={entry.visitDate} />
-            </>
-          ) : (
-            <PendingRequest />
-          )}
+            <div className="border-t border-gray-100 pt-3">
+              {entry.doc ? (
+                <>
+                  <DoctorInfo doctor={entry.doc} />
+                  <VisitDateInfo date={entry.visitDate} />
+                </>
+              ) : (
+                <PendingRequest />
+              )}
+            </div>
+          </div>
+        </CardContent>
+        <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
+          <div className="flex items-center gap-2">
+            <UpdateUserApplicationClient
+              id={entry.id}
+              accessToken={accessToken}
+              initialNote={entry.note}
+            />
+            {entry.doc && entry.user && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={`/chat/${entry.id}?user=${encodeURIComponent(
+                      entry.user.name
+                    )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                    className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                  >
+                    <MessageCircle />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-blue-500">Chat</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
         </div>
-      </div>
-    </CardContent>
-  </Card>
-));
+      </Card>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex justify-between items-center">
+              <span>Application Details #{entry.id}</span>
+              <span
+                className={cn(
+                  "px-2 py-0.5 text-xs mr-7 font-medium rounded-full",
+                  entry.status === "RESOLVED" && "bg-green-200 text-green-700",
+                  entry.status === "PENDING" && "bg-yellow-200 text-yellow-700",
+                  entry.status === "CANCELLED" && "bg-red-200 text-red-700",
+                  entry.status === "IN_PROGRESS" && "bg-blue-200 text-blue-700"
+                )}
+              >
+                {entry.status}
+              </span>
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-4 pb-7">
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium text-gray-600">
+                Issue Description
+              </h3>
+              <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md whitespace-pre-wrap">
+                {entry.note}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-2">
+                  Timestamps
+                </h3>
+                <div className="space-y-2">
+                  <TimeInfo label="Created" date={entry.createdAt} />
+                  <TimeInfo label="Updated" date={entry.updatedAt} />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 mb-2">
+                  User Information
+                </h3>
+                <UserInfo user={entry.user} />
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-medium text-gray-600 mb-2">
+                Doctor Assignment
+              </h3>
+              {entry.doc ? (
+                <div className="space-y-2">
+                  <DoctorInfo doctor={entry.doc} />
+                  <VisitDateInfo date={entry.visitDate} />
+                </div>
+              ) : (
+                <PendingRequest />
+              )}
+            </div>
+
+            <div className="absolute bottom-4 right-4">
+              <UpdateUserApplicationClient
+                id={entry.id}
+                accessToken={accessToken}
+                initialNote={entry.note}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+});
 
 ApplicationCard.displayName = "ApplicationCard";
 
@@ -114,7 +235,7 @@ const DoctorInfo = memo(({ doctor }: { doctor: IUser }) => (
     <div className="flex items-center">
       <FaUserDoctor className="w-4 h-4 mr-2 text-gray-500" />
       <p className="text-sm font-medium text-gray-700">
-        Approved By: <span className="font-normal">{doctor.name}</span>
+        <span className="font-normal">{doctor.name}</span>
       </p>
     </div>
     <p className="text-xs text-gray-500">{doctor.email}</p>
@@ -127,7 +248,7 @@ const VisitDateInfo = memo(({ date }: { date: string | null }) => (
   <div className="flex items-center">
     <CalendarIcon className="w-4 h-4 mr-2 text-gray-500" />
     <p className="text-sm text-gray-700 flex justify-between w-full items-center">
-      Visit Date:{" "}
+      Visit:{" "}
       <span className="font-light text-xs">
         {date ? formatVisitDate(date) : "Not scheduled"}
       </span>
@@ -156,12 +277,12 @@ const StatusFilter = memo(
     onFilterChange: (status: string) => void;
     currentFilter: string;
   }) => (
-    <div>
+    <div className="font-sans">
       <Select value={currentFilter} onValueChange={onFilterChange}>
-        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded shadow-sm">
+        <SelectTrigger className="w-[180px] bg-white border border-gray-200 rounded-full shadow-sm">
           <SelectValue placeholder="Filter by status" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="font-sans rounded">
           <SelectItem value="ALL">All Applications</SelectItem>
           <SelectItem value="CREATED">Created</SelectItem>
           <SelectItem value="PENDING">Pending</SelectItem>
@@ -202,7 +323,10 @@ export default function GetUserApplicationsClient({
         onFilterChange={setStatusFilter}
       />
       {filteredApplications.length === 0 ? (
-        <EmptyState />
+        <NoDataFound
+          title={"No Applications Found"}
+          description={"We couldn't find any applications"}
+        />
       ) : (
         <ApplicationGrid
           applications={filteredApplications}
@@ -243,27 +367,6 @@ const Header = memo(
 );
 
 Header.displayName = "Header";
-const EmptyState = () => (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-50">
-    <div className="relative w-full max-w-lg">
-      {/* Decorative elements */}
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-
-      {/* Main content */}
-      <div className="relative bg-white rounded-lg shadow-lg p-8 text-center">
-        <Search className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          No Applications Found
-        </h2>
-        <p className="text-gray-500 mb-6">
-          {"We couldn't find any applications matching your criteria."}
-        </p>
-      </div>
-    </div>
-  </div>
-);
 
 const ApplicationGrid = memo(
   ({

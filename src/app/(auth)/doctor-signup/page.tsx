@@ -3,7 +3,7 @@ import React from "react";
 
 const DoctorSignUpPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <DoctorSignUpServer />
     </div>
   );

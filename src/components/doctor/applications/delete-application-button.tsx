@@ -18,17 +18,17 @@ import {
 import { Trash } from "lucide-react";
 
 interface DeleteApplicationButtonProps {
-  applicaitonId: number;
+  applicationId: number;
   onDelete: (reportId: number) => Promise<void>;
 }
 
 const DeleteApplicationButton: React.FC<DeleteApplicationButtonProps> = ({
-  applicaitonId,
+  applicationId,
   onDelete,
 }) => {
   const handleDelete = async () => {
     try {
-      await onDelete(applicaitonId);
+      await onDelete(applicationId);
     } catch (error) {
       console.error(error);
     }

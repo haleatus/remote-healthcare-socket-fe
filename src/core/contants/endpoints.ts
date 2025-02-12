@@ -1,4 +1,5 @@
-export const baseURL: string = "http://localhost:8080/api";
+export const baseURL: string =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export const endpoints = {
   auth: {
@@ -19,6 +20,9 @@ export const endpoints = {
       updateUserApplication: `${baseURL}/user/user-application/update/application`,
       getUserApplications: `${baseURL}/user/user-application/applications`,
     },
+    chat: {
+      getChatMessages: `${baseURL}/user/user-application/applications/message/:appointmentId`,
+    },
     reports: {
       getAllReports: `${baseURL}/user/user-records/records`,
       getReportById: `${baseURL}/user/user-records/record/:id`,
@@ -38,6 +42,10 @@ export const endpoints = {
       deleteApplication: `${baseURL}/doc/application-controller/application/:id`,
       getApplicationsByDoctor: `${baseURL}/doc/application-controller/applications/doc`,
       finishAppointment: `${baseURL}/doc/application-controller/finish-appoinement/:appointmentId`,
+      ownApprovedApplications: `${baseURL}/doc/application-controller/own-approved`,
+    },
+    chat: {
+      getChatMessages: `${baseURL}/doc/application-controller/applications/message/:appointmentId`,
     },
     reports: {
       getAllRecords: `${baseURL}/doc/report-controller/records`,
@@ -57,6 +65,7 @@ export const endpoints = {
     },
     createAdmin: `${baseURL}/admin/admin-user`,
     getMeAdmin: `${baseURL}/auth/admin/me`,
+    getAllDoctors: `${baseURL}/admin/admin-user/all-doctors`,
   },
   messages: {},
 };

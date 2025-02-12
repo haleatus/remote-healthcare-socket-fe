@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +9,6 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { AuthErrorResponse } from "@/core/interface/auth.interface";
 import { adminSignIn } from "@/app/actions/auth/admin.action";
-import { UserPlus2 } from "lucide-react";
-import { Separator } from "@/components/ui/seperator";
 import { useAdmin } from "@/context/admin-context";
 import { useUser } from "@/context/user-context";
 
@@ -54,7 +51,7 @@ function AdminSignInForm() {
         await refetchAdmin();
 
         // Redirect to home or the intended destination
-        const redirectTo = searchParams.get("redirectTo") || "/";
+        const redirectTo = searchParams.get("redirectTo") || "/admin";
         setTimeout(() => router.push(redirectTo), 1000);
       } else if (result.error) {
         // Handle field-specific errors
@@ -139,18 +136,6 @@ function AdminSignInForm() {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <div className="mt-6">
-            <Separator className="my-4" />
-            <div className="flex flex-col space-y-4">
-              <Link
-                href="/admin-signup"
-                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <UserPlus2 size={16} />
-                <span>Create an admin account?</span>
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
       <div className="hidden md:block md:w-1/2">

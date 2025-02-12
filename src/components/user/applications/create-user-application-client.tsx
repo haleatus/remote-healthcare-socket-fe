@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { PlusCircle } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { MessageCircleDashed } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -32,6 +32,7 @@ const CreateUserApplicationClient = ({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -79,21 +80,27 @@ const CreateUserApplicationClient = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="rounded-[7px] h-10 bg-blue-400 text-white flex items-center justify-center"
-              >
-                <PlusCircle className="h-5 w-5" /> Create Application
+              <Button className="bg-blue-600 flex gap-2 items-center hover:bg-blue-700 text-white pl-3 pr-4 py-1.5 rounded-full">
+                <span>
+                  <MessageCircleDashed className="size-5" />
+                </span>
+                {pathname === "/my-applications"
+                  ? "Create new application"
+                  : "Create an application"}
               </Button>
             </DialogTrigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Create New Application</p>
+            <p>
+              {pathname === "/my-applications"
+                ? "Create new application"
+                : "Create an application"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-sans">
         <DialogHeader>
           <DialogTitle>Create Application</DialogTitle>
         </DialogHeader>

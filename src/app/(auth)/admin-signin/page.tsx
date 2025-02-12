@@ -3,7 +3,7 @@ import React from "react";
 
 const AdminSignInPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <AdminSignInServer />
     </div>
   );

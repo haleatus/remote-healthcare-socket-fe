@@ -3,7 +3,7 @@ import GetAllDoctorsApplicationsServer from "./_server-components/get-all-doctor
 
 const AllDoctorApplicationPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <GetAllDoctorsApplicationsServer />
     </div>
   );

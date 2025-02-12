@@ -36,12 +36,14 @@ const UpdateReportForPatientApplicationClient = ({
   initialProblem,
   initialSolution,
   initialStatus,
+  onClose,
 }: {
   accessToken: string;
   reportId: number;
   initialProblem: string;
   initialSolution: string;
   initialStatus: string;
+  onClose?: () => void;
 }) => {
   const { user } = useUser();
 
@@ -80,6 +82,9 @@ const UpdateReportForPatientApplicationClient = ({
             toast.success("Report Updated Successfully!");
             setOpen(false);
             router.refresh();
+            if (onClose) {
+              onClose();
+            }
           } else if (result.error) {
             setErrors(result.error.error || {});
             toast.error(result.error.message || "An error occurred");
