@@ -110,23 +110,25 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
               accessToken={accessToken}
               initialNote={entry.note}
             />
-            {entry.doc && entry.user && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={`/chat/${entry.id}?patient=${encodeURIComponent(
-                      entry.user.name
-                    )}&doctor=${encodeURIComponent(entry.doc.name)}`}
-                    className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-                  >
-                    <MessageCircle />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-blue-500">Chat</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+            {entry.doc &&
+              entry.user &&
+              entry.status.toUpperCase() !== "CANCELLED" && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={`/chat/${entry.id}?patient=${encodeURIComponent(
+                        entry.user.name
+                      )}&doctor=${encodeURIComponent(entry.doc.name)}`}
+                      className=" bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                    >
+                      <MessageCircle />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-blue-500">Chat</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
           </div>
         </div>
       </Card>
