@@ -2,18 +2,21 @@ import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
 import { notFound } from "next/navigation";
 
 interface ChatPageProps {
-  params: { id: string };
+  params: { id: string } | Promise<{ id: string }>;
   searchParams: { [key: string]: string | undefined };
 }
 
 const ChatPage = async ({ params, searchParams }: ChatPageProps) => {
-  if (!params.id || !searchParams.patient || !searchParams.doctor) {
+  const resolvedParams = await Promise.resolve(params);
+
+  if (!resolvedParams.id || !searchParams.patient || !searchParams.doctor) {
     notFound();
   }
+
   return (
     <div>
       <ChatServer
-        id={params.id}
+        id={resolvedParams.id}
         patientName={searchParams.patient}
         doctorName={searchParams.doctor}
       />
