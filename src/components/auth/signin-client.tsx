@@ -10,7 +10,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { userSignIn } from "@/app/actions/auth/user.action";
 import { AuthErrorResponse } from "@/core/interface/auth.interface";
-import { ShieldCheck, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { Separator } from "../ui/seperator";
 import { useUser } from "@/context/user-context";
 import { useAdmin } from "@/context/admin-context";
@@ -144,13 +144,6 @@ function SignInForm() {
               >
                 <UserPlus size={16} />
                 <span>Don&apos;t have an account? Sign Up</span>
-              </Link>
-              <Link
-                href="/admin-signin"
-                className="flex items-center justify-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ShieldCheck size={16} />
-                <span>Sign In as Admin</span>
               </Link>
             </div>
           </div>

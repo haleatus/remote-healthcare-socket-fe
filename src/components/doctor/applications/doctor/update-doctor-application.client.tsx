@@ -132,11 +132,11 @@ const UpdateDoctorApplicationClient = ({
           </DialogTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-blue-700">Update Application</p>
+          <p className="text-blue-700 font-space-grotesk">Update Application</p>
         </TooltipContent>
       </Tooltip>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-sans">
         <DialogHeader>
           <DialogTitle>Update Application</DialogTitle>
         </DialogHeader>

@@ -18,6 +18,7 @@ import AdminSignoutButton from "../auth/admin/admin-signout-button";
 import { AuthState } from "@/core/interface/auth-state.inteface";
 import { getNavLinks } from "@/core/utils/nav-links";
 import { useState } from "react";
+import { useAdmin } from "@/context/admin-context";
 
 export default function HeaderClient({
   userFromCookie,
@@ -30,6 +31,8 @@ export default function HeaderClient({
   const [isOpen, setIsOpen] = useState(false);
 
   const isDoctor = userFromCookie?.isAdmin ? true : false;
+
+  const { admin } = useAdmin();
 
   const navLinks = getNavLinks(authState, isDoctor);
 
@@ -90,7 +93,7 @@ export default function HeaderClient({
   return (
     <header className="bg-transparent backdrop-blur-md p-3 sticky top-0 z-50 font-space-grotesk">
       <nav className="max-w-8xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex gap-2 items-center">
+        <Link href={admin ? "#" : "/"} className="flex gap-2 items-center">
           <Image
             src="/app-icons/logo.svg"
             alt="app-logo"

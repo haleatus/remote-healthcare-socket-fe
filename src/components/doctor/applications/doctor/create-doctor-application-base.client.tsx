@@ -29,18 +29,22 @@ const CreateDoctorApplicationBaseClient = ({
   allUsersData,
   accessToken,
   docId,
+  allDoctorsData,
 }: {
   allUsersData: IUser[];
   accessToken: string;
   docId: number;
+  allDoctorsData: IUser[];
 }) => {
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [doctorSearchTerm, setDoctorSearchTerm] = useState("");
   const router = useRouter();
 
   const filteredUsers = useMemo(() => {
@@ -51,6 +55,15 @@ const CreateDoctorApplicationBaseClient = ({
         user.id.toString().includes(searchTerm)
     );
   }, [allUsersData, searchTerm]);
+
+  const filteredDoctors = useMemo(() => {
+    return allDoctorsData.filter(
+      (doctor) =>
+        doctor.name.toLowerCase().includes(doctorSearchTerm.toLowerCase()) ||
+        doctor.email.toLowerCase().includes(doctorSearchTerm.toLowerCase()) ||
+        doctor.id.toString().includes(doctorSearchTerm)
+    );
+  }, [allDoctorsData, doctorSearchTerm]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -70,10 +83,12 @@ const CreateDoctorApplicationBaseClient = ({
         return;
       }
 
+      const finalDoctorId = selectedDoctor ? selectedDoctor.id : docId;
+
       createDoctorApplication(
         {
           userId: selectedUser.id,
-          docId: docId,
+          docId: finalDoctorId,
           note: note,
           date: date,
           requestByDoc: true,
@@ -85,6 +100,7 @@ const CreateDoctorApplicationBaseClient = ({
             toast.success("Application For Patient Created Successfully!");
             setNote("");
             setSelectedUser(null);
+            setSelectedDoctor(null);
             setDate("");
             setOpen(false);
             router.refresh();
@@ -101,16 +117,17 @@ const CreateDoctorApplicationBaseClient = ({
           setIsLoading(false);
         });
     },
-    [date, selectedUser, docId, note, accessToken, router]
+    [date, selectedUser, selectedDoctor, docId, note, accessToken, router]
   );
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
     if (!newOpen) {
-      // Reset form when closing
       setNote("");
       setSelectedUser(null);
+      setSelectedDoctor(null);
       setDate("");
       setSearchTerm("");
+      setDoctorSearchTerm("");
       setErrors({});
     }
     setOpen(newOpen);
@@ -138,7 +155,7 @@ const CreateDoctorApplicationBaseClient = ({
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-mono">
             Create Application For Patient
@@ -146,92 +163,135 @@ const CreateDoctorApplicationBaseClient = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 font-sans">
-          <div className="space-y-2">
-            <Label htmlFor="user-search">Search Patient</Label>
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="user-search"
-                placeholder="Search by name, email or ID"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8"
-              />
-            </div>
-          </div>
-
-          <ScrollArea className="h-[150px] w-full rounded border border-black">
-            {filteredUsers.map((user) => (
-              <div
-                key={user.id}
-                className={`flex flex-col p-2 cursor-pointer hover:bg-blue-200 ${
-                  selectedUser?.id === user.id ? "bg-blue-100" : ""
-                }`}
-                onClick={() => setSelectedUser(user)}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{user.id}</span>
-                  <span className="font-medium">|</span>
-                  <span className="font-medium">{user.name}</span>
-                </div>
-                <span className="text-sm text-gray-500 flex justify-end -mt-2">
-                  {user.email}
-                </span>
+          <div className="grid grid-cols-2 gap-4">
+            {/* Patient Selection Section */}
+            <div className="space-y-2">
+              <Label htmlFor="user-search">Search Patient</Label>
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="user-search"
+                  placeholder="Search by name, email or ID"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8"
+                />
               </div>
-            ))}
-          </ScrollArea>
-          {errors.userId && (
-            <p className="text-red-500 text-sm">{errors.userId}</p>
-          )}
-
-          {selectedUser ? (
-            <div className="p-2 bg-blue-100 rounded">
-              <p className="font-mono font-medium">Selected Patient:</p>
-              <p className="font-space-grotesk font-semibold flex justify-center items-center">
-                {selectedUser.id} | {selectedUser.name} | ({selectedUser.email})
-              </p>
+              <ScrollArea className="h-48 w-full rounded border border-black">
+                {filteredUsers.map((user) => (
+                  <div
+                    key={user.id}
+                    className={`flex items-center justify-between p-1.5 cursor-pointer hover:bg-blue-200 ${
+                      selectedUser?.id === user.id ? "bg-blue-100" : ""
+                    }`}
+                    onClick={() => setSelectedUser(user)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{user.id} |</span>
+                      <span className="font-medium">{user.name}</span>
+                    </div>
+                    <span className="text-sm text-gray-500">{user.email}</span>
+                  </div>
+                ))}
+              </ScrollArea>
+              {errors.userId && (
+                <p className="text-red-500 text-sm">{errors.userId}</p>
+              )}
+              {selectedUser ? (
+                <div className="p-1.5 bg-blue-100 rounded text-sm">
+                  <p className="font-medium">
+                    Selected: {selectedUser.id} | {selectedUser.name}
+                  </p>
+                </div>
+              ) : (
+                <div className="p-1.5 bg-red-100 rounded text-sm">
+                  <p className="font-medium">No Patient Selected</p>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="p-2 bg-red-100 rounded">
-              <p className="font-mono font-medium">Selected Patient:</p>
-              <p className="font-space-grotesk font-semibold flex justify-center items-center">
-                No Patient Selected
-              </p>
-            </div>
-          )}
 
-          <div className="space-y-2">
-            <Label htmlFor="date">Visit Date</Label>
-            <Input
-              id="date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              min={today}
-              required
-              disabled={isLoading}
-              className={errors.date ? "border-red-500" : ""}
-            />
-            {errors.date && (
-              <p className="text-red-500 text-sm">{errors.date}</p>
-            )}
+            {/* Doctor Selection Section */}
+            <div className="space-y-2">
+              <Label htmlFor="doctor-search">Search Doctor (Optional)</Label>
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="doctor-search"
+                  placeholder="Search by name, email or ID"
+                  value={doctorSearchTerm}
+                  onChange={(e) => setDoctorSearchTerm(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
+              <ScrollArea className="h-48 w-full rounded border border-black">
+                {filteredDoctors.map((doctor) => (
+                  <div
+                    key={doctor.id}
+                    className={`flex items-center justify-between p-1.5 cursor-pointer hover:bg-blue-200 ${
+                      selectedDoctor?.id === doctor.id ? "bg-blue-100" : ""
+                    }`}
+                    onClick={() => setSelectedDoctor(doctor)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{doctor.id} |</span>
+                      <span className="font-medium">{doctor.name}</span>
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      {doctor.email}
+                    </span>
+                  </div>
+                ))}
+              </ScrollArea>
+              {selectedDoctor ? (
+                <div className="p-1.5 bg-blue-100 rounded text-sm">
+                  <p className="font-medium">
+                    Selected: {selectedDoctor.id} | {selectedDoctor.name}
+                  </p>
+                </div>
+              ) : (
+                <div className="p-1.5 bg-yellow-100 rounded text-sm">
+                  <p className="font-medium">
+                    Using Current Doctor (ID: {docId})
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="note">Application Note</Label>
-            <Input
-              id="note"
-              type="text"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              required
-              disabled={isLoading}
-              className={errors.note ? "border-red-500" : ""}
-              placeholder="Enter your issue here"
-            />
-            {errors.note && (
-              <p className="text-red-500 text-sm">{errors.note}</p>
-            )}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="date">Visit Date</Label>
+              <Input
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                min={today}
+                required
+                disabled={isLoading}
+                className={errors.date ? "border-red-500" : ""}
+              />
+              {errors.date && (
+                <p className="text-red-500 text-sm">{errors.date}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="note">Application Note</Label>
+              <Input
+                id="note"
+                type="text"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                required
+                disabled={isLoading}
+                className={errors.note ? "border-red-500" : ""}
+                placeholder="Enter issue"
+              />
+              {errors.note && (
+                <p className="text-red-500 text-sm">{errors.note}</p>
+              )}
+            </div>
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>

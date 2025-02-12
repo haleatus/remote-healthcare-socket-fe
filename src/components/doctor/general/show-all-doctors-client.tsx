@@ -1,11 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
-import { MapPin, MessageCircleMore, StarIcon } from "lucide-react";
+import { MapPin, StarIcon } from "lucide-react";
 import Image from "next/image";
 import { IDoctorResponse } from "@/core/interface/doctor.interface";
+import NoDataFound from "../reports/no-data-found";
 
 interface Props {
   allDoctors: IDoctorResponse;
@@ -50,20 +49,19 @@ const DoctorImage = ({
 export default function ShowAllDoctorsClient({ allDoctors }: Props) {
   if (!allDoctors?.data || allDoctors.data.length === 0) {
     return (
-      <div className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-black">
-          No doctors available
-        </h1>
-      </div>
+      <NoDataFound
+        title={"No Doctors Found"}
+        description={"No doctors yet to display"}
+      />
     );
   }
 
   return (
-    <div className="flex-grow container mx-auto px-4 pb-8 font-sans">
+    <div className="flex-grow container mx-auto px-4 font-sans">
       <h1 className="text-xl font-bold text-black">Available Doctors</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {allDoctors.data.map((doctor) => (
-          <Card key={doctor.id} className="overflow-hidden">
+          <Card key={doctor.id} className="overflow-hidden cursor-pointer">
             <CardHeader className="pb-0">
               <div className="flex items-center space-x-2 w-full pb-0.5">
                 <DoctorImage isOnline={doctor.isOnline} name={doctor.name} />
@@ -76,7 +74,7 @@ export default function ShowAllDoctorsClient({ allDoctors }: Props) {
                   </p>
                   <p className="text-xs pl-2 text-teal-600 font-mono">
                     {/* You can add specialty from your API data when available */}
-                    General Physician
+                    Doctor
                   </p>
                 </div>
               </div>
@@ -94,15 +92,6 @@ export default function ShowAllDoctorsClient({ allDoctors }: Props) {
                   </span>
                 </div>
               </div>
-              <Button
-                asChild
-                className="w-full bg-blue-600 text-sm hover:bg-teal-700 transition-colors duration-300 ease-in-out"
-              >
-                <Link href={`#`}>
-                  <MessageCircleMore className="mr-2 h-4 w-4" />
-                  Book Consultation
-                </Link>
-              </Button>
             </CardContent>
           </Card>
         ))}

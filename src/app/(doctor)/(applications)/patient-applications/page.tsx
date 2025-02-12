@@ -3,7 +3,7 @@ import React from "react";
 
 const PatientApplicationPage = () => {
   return (
-    <div>
+    <div className="font-sans">
       <GetPatientApplicationServer />
     </div>
   );

@@ -1,5 +1,4 @@
-import ChatServer from "@/app/_server-components/chat/chat-server";
-import React from "react";
+import ChatServer from "@/app/(main)/chat/[id]/_server-components/chat.server";
 
 interface ChatPageProps {
   params: Promise<{ id: string }>;

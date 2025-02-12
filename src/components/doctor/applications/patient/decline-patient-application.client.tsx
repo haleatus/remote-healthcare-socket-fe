@@ -107,7 +107,7 @@ const DeclinePatientApplicationClient = ({
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-sans">
         <DialogHeader>
           <DialogTitle>Decline Application For Patient</DialogTitle>
         </DialogHeader>

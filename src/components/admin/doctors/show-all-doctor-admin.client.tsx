@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -11,9 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { IDoctorResponse } from "@/core/interface/doctor.interface";
-import { MapPin, MessageCircleMore, StarIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 interface Props {
   allDoctors: IDoctorResponse | null;
@@ -54,7 +51,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
   // Handle null case
   if (!allDoctors) {
     return (
-      <Card className="mt-6 font-sans">
+      <Card className="font-sans">
         <CardHeader>
           <CardTitle>Doctors</CardTitle>
         </CardHeader>
@@ -68,7 +65,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
   // Handle error cases
   if (allDoctors.statusCode === 401) {
     return (
-      <Card className="mt-6 font-sans">
+      <Card className="font-sans">
         <CardHeader>
           <CardTitle>Doctors</CardTitle>
         </CardHeader>
@@ -90,7 +87,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
     allDoctors.data.length === 0
   ) {
     return (
-      <Card className="mt-6 font-sans">
+      <Card className="font-sans">
         <CardHeader>
           <CardTitle>Doctors</CardTitle>
         </CardHeader>
@@ -102,7 +99,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
   }
 
   return (
-    <Card className="mt-6 font-sans">
+    <Card className="font-sans">
       <CardHeader>
         <CardTitle>Doctors</CardTitle>
       </CardHeader>
@@ -112,11 +109,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Specialty</TableHead>
-              <TableHead>Rating</TableHead>
-              <TableHead>Location</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -132,19 +125,7 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
                   </div>
                 </TableCell>
                 <TableCell>{doctor.email}</TableCell>
-                <TableCell>General Physician</TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    <StarIcon className="text-yellow-400 mr-1" size={16} />
-                    <span>4.8</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center">
-                    <MapPin className="text-gray-400 mr-1" size={16} />
-                    <span className="text-sm">Available Nationwide</span>
-                  </div>
-                </TableCell>
+
                 <TableCell>
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
@@ -155,14 +136,6 @@ export default function ShowAllDoctorAdminDashboard({ allDoctors }: Props) {
                   >
                     {doctor.isOnline ? "Online" : "Offline"}
                   </span>
-                </TableCell>
-                <TableCell>
-                  <Button asChild size="sm">
-                    <Link href={`#`}>
-                      <MessageCircleMore className="mr-2 h-4 w-4" />
-                      Book
-                    </Link>
-                  </Button>
                 </TableCell>
               </TableRow>
             ))}

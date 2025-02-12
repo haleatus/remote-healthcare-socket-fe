@@ -1,4 +1,5 @@
 import { getApplicationByDoctorAction } from "@/app/(doctor)/(applications)/approved-applications/_server-actions/get-application-by-doctor.action";
+import { getAllDoctors } from "@/app/(doctor)/(general)/doctors/_server-actions/get-all-doctor.action";
 import { getAllUser } from "@/app/actions/user/general/get-all-user.action";
 import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
 import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
@@ -20,6 +21,7 @@ export default async function GetAllDoctorsApplicationsServer() {
     const applicationData = await getApplicationByDoctorAction({ accessToken });
 
     const allUsersData = await getAllUser();
+    const allDoctorsData = await getAllDoctors();
 
     if (!applicationData?.data) {
       throw new Error("Failed to fetch application data");
@@ -29,6 +31,7 @@ export default async function GetAllDoctorsApplicationsServer() {
       <GetApplicationByAllDoctorClient
         userData={userData}
         allUsersData={allUsersData.data}
+        allDoctorsData={allDoctorsData.data}
         doctorApplications={applicationData}
         accessToken={accessToken}
       />
