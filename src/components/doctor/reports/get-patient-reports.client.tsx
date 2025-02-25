@@ -17,6 +17,7 @@ import ReportDetailPopup from "./report-detail-popup";
 import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
 import DeleteReportButton from "./delete-report-button";
 import { IMedication } from "@/core/interface/medication.interface";
+import CreateMedicationForm from "@/components/medications/create-medication-form";
 
 const GetPatientReportsClient = ({
   reports,
@@ -30,8 +31,6 @@ const GetPatientReportsClient = ({
   const { user } = useUser();
   const router = useRouter();
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
-
-  console.log("all Meds", allMedication);
 
   const filteredReports = reports.data.filter(
     (report) => report.doc.id === user?.id
@@ -101,6 +100,11 @@ const GetPatientReportsClient = ({
               className="flex items-center gap-2"
               onClick={(e) => e.stopPropagation()}
             >
+              <CreateMedicationForm
+                reportId={report.id}
+                userId={report.user.id}
+                accessToken={accessToken}
+              />
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
                 reportId={report.id}
