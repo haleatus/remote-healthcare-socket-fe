@@ -19,23 +19,17 @@ export async function addMedicationAction(
   error?: MedicationErrorResponse;
 }> {
   try {
-    console.log("formdata", formData);
     // Validate the input data
     const validatedData = addMedicationSchema.parse(formData);
 
-    console.log("ajsk", validatedData);
-
     // Call the service
     const response = await addMedicationService(validatedData, accessToken);
-
-    console.log("response", response);
 
     return {
       success: true,
       data: response as MedicationSuccessResponse,
     };
   } catch (error) {
-    console.log("error", error);
     if (error instanceof z.ZodError) {
       return {
         success: false,

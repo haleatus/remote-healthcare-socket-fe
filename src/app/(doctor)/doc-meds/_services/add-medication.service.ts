@@ -10,8 +10,6 @@ export const addMedicationService = async (
   data: z.infer<typeof addMedicationSchema>,
   accessToken: string
 ) => {
-  console.log("wiii", data);
-
   const res = await fetch(endpoints.doctor.medication.addMedication, {
     method: "POST",
     headers: {
@@ -20,8 +18,6 @@ export const addMedicationService = async (
     },
     body: JSON.stringify(data),
   });
-
-  console.log("res", res);
 
   const addMedication = await res.json();
 
