@@ -35,14 +35,7 @@ const MedicationsPage = async () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 font-sans">
           {myMeds.map((med: IMedication) => (
-            <MedicationCard
-              key={med.id}
-              name={med.name}
-              dosage={med.dosage}
-              frequency={med.frequency}
-              duration={med.duration}
-              expirationDate={med.expirationDate}
-            />
+            <MedicationCard key={med.id} medicationData={med} />
           ))}
         </div>
       )}

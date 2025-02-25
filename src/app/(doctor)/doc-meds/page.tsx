@@ -3,9 +3,17 @@ import { getAllMedicationByMeAction } from "./_server-actions/get-all-medication
 import { MedicationCard } from "@/components/medications/medication-card";
 import { IMedication } from "@/core/interface/medication.interface";
 import NoDataFound from "@/components/doctor/reports/no-data-found";
+import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
+import { redirect } from "next/navigation";
 
 const DoctorsMedicationPage = async () => {
   const allMedicationByMe = await getAllMedicationByMeAction();
+  const accessToken = await getCurrentUserAccessToken();
+
+  if (!accessToken) {
+    redirect("/signin");
+  }
+
   return (
     <div className="container mx-auto px-3 py-8">
       {allMedicationByMe.data.length === 0 ? (
@@ -18,11 +26,9 @@ const DoctorsMedicationPage = async () => {
           {allMedicationByMe.data.map((med: IMedication) => (
             <MedicationCard
               key={med.id}
-              name={med.name}
-              dosage={med.dosage}
-              frequency={med.frequency}
-              duration={med.duration}
-              expirationDate={med.expirationDate}
+              medicationData={med}
+              accessToken={accessToken}
+              isDoctorView={true}
             />
           ))}
         </div>
