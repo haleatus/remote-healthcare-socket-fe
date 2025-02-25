@@ -1,29 +1,10 @@
-import { getCurrentUserAccessToken } from "@/app/actions/user/get-current-user-access-token";
-import { getCurrentUserFromCookie } from "@/app/actions/user/get-current-user-from-cookie.action";
 import { getMyMedicationsAction } from "@/app/actions/user/medications/get-my-medications.action";
 import NoDataFound from "@/components/doctor/reports/no-data-found";
 import { MedicationCard } from "@/components/medications/medication-card";
 import { IMedication } from "@/core/interface/medication.interface";
 
 const MedicationsPage = async () => {
-  const accessToken = await getCurrentUserAccessToken();
-  const user = await getCurrentUserFromCookie();
-
-  if (!accessToken || !user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-2xl font-bold mb-4">Unauthorized</h1>
-        <p className="text-gray-600">
-          You are not authorized to view this page
-        </p>
-      </div>
-    );
-  }
-
-  const myMeds = await getMyMedicationsAction({
-    accessToken,
-    userId: user.id.toString(),
-  });
+  const myMeds = await getMyMedicationsAction();
 
   return (
     <div className="container mx-auto px-3 py-8">

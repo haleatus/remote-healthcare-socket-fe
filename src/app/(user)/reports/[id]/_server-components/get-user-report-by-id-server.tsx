@@ -3,6 +3,7 @@ import { getUserReportById } from "@/app/(user)/reports/[id]/_server-actions/get
 import GetReportByIdClient from "@/components/user/reports/get-reports-by-id-client";
 import Link from "next/link";
 import React from "react";
+import { getMyMedicationsAction } from "@/app/actions/user/medications/get-my-medications.action";
 
 const GetUserReportById = async ({ id }: { id: number }) => {
   const accessToken = await getCurrentUserAccessToken();
@@ -21,9 +22,17 @@ const GetUserReportById = async ({ id }: { id: number }) => {
     id
   );
 
+  const allMedication = await getMyMedicationsAction();
+
+  console.log("am", allMedication);
+
   return (
     <div>
-      <GetReportByIdClient report={userReportData} error={error} />
+      <GetReportByIdClient
+        report={userReportData}
+        error={error}
+        allMedication={allMedication}
+      />
     </div>
   );
 };
