@@ -92,7 +92,10 @@ const GetPatientReportsClient = ({
               <span>{new Date(report.updatedAt).toLocaleDateString()}</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
                 reportId={report.id}
