@@ -60,7 +60,14 @@ export default function GetPatientApplicationsClient({
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-lg font-semibold text-gray-700">
-                    Application #{entry.id}
+                    <span>
+                      {entry.title
+                        ? entry.title.length > 30
+                          ? entry.title.slice(0, 27) + "..."
+                          : entry.title
+                        : "No Title"}
+                    </span>{" "}
+                    #{entry.id}
                   </CardTitle>
                   <div
                     className="flex items-center space-x-2"
