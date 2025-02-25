@@ -16,7 +16,6 @@ export function MedicationCard({
   accessToken,
   isDoctorView = false,
 }: MedicationCardProps) {
-  console.log("medicationData", medicationData);
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>

@@ -24,8 +24,6 @@ const GetUserReportById = async ({ id }: { id: number }) => {
 
   const allMedication = await getMyMedicationsAction();
 
-  console.log("am", allMedication);
-
   return (
     <div>
       <GetReportByIdClient
