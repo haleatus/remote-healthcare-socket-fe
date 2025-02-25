@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import UpdateDoctorApplicationClient from "./update-doctor-application.client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base.client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
 import CreateReportForPatientApplicationClient from "../../reports/create-report-for-patient-application.client";
@@ -64,15 +63,6 @@ const ApplicationCard = memo(
         >
           <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
             <div className="flex items-center gap-1">
-              {/* <UpdateDoctorApplicationClient
-                id={entry.id}
-                accessToken={accessToken}
-                initialNote={entry.note}
-                initialDate={entry.visitDate || ""}
-                initialStatus={entry.status}
-                docId={entry.doc?.id || 0}
-              /> */}
-
               <DeleteApplicationButton
                 applicationId={entry.id}
                 onDelete={handleDeleteApplication}
@@ -187,15 +177,6 @@ const ApplicationCard = memo(
 
               <div className="absolute bottom-4 right-4">
                 <div className="flex items-center gap-1">
-                  {/* <UpdateDoctorApplicationClient
-                    id={entry.id}
-                    accessToken={accessToken}
-                    initialNote={entry.note}
-                    initialDate={entry.visitDate || ""}
-                    initialStatus={entry.status}
-                    docId={entry.doc?.id || 0}
-                  /> */}
-
                   <DeleteApplicationButton
                     applicationId={entry.id}
                     onDelete={handleDeleteApplication}

@@ -36,6 +36,7 @@ const CreateDoctorApplicationBaseClient = ({
   docId: number;
   allDoctorsData: IUser[];
 }) => {
+  const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [note, setNote] = useState("");
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
@@ -89,6 +90,7 @@ const CreateDoctorApplicationBaseClient = ({
         {
           userId: selectedUser.id,
           docId: finalDoctorId,
+          title: title,
           note: note,
           date: date,
           requestByDoc: true,
@@ -98,6 +100,7 @@ const CreateDoctorApplicationBaseClient = ({
         .then((result) => {
           if (result.success && result.data) {
             toast.success("Application For Patient Created Successfully!");
+            setTitle("");
             setNote("");
             setSelectedUser(null);
             setSelectedDoctor(null);
@@ -117,11 +120,21 @@ const CreateDoctorApplicationBaseClient = ({
           setIsLoading(false);
         });
     },
-    [date, selectedUser, selectedDoctor, docId, note, accessToken, router]
+    [
+      date,
+      selectedUser,
+      selectedDoctor,
+      docId,
+      title,
+      note,
+      accessToken,
+      router,
+    ]
   );
 
   const handleOpenChange = useCallback((newOpen: boolean) => {
     if (!newOpen) {
+      setTitle("");
       setNote("");
       setSelectedUser(null);
       setSelectedDoctor(null);
@@ -276,6 +289,22 @@ const CreateDoctorApplicationBaseClient = ({
               )}
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="title">Application Title</Label>
+              <Input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+                disabled={isLoading}
+                className={errors.titile ? "border-red-500" : ""}
+                placeholder="Enter title"
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
+            </div>
             <div className="space-y-2">
               <Label htmlFor="note">Application Note</Label>
               <Input

@@ -67,6 +67,7 @@ const ApplicationCard = memo(
             <div className="flex items-center gap-1">
               <UpdateDoctorApplicationClient
                 id={entry.id}
+                initialTitle={entry.title || ""}
                 accessToken={accessToken}
                 initialNote={entry.note}
                 initialDate={entry.visitDate || ""}
@@ -191,6 +192,7 @@ const ApplicationCard = memo(
                 <div className="flex items-center gap-1">
                   <UpdateDoctorApplicationClient
                     id={entry.id}
+                    initialTitle={entry.title || ""}
                     accessToken={accessToken}
                     initialNote={entry.note}
                     initialDate={entry.visitDate || ""}
