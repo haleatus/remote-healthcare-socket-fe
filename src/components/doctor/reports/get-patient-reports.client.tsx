@@ -16,13 +16,17 @@ import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs
 import ReportDetailPopup from "./report-detail-popup";
 import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
 import DeleteReportButton from "./delete-report-button";
+import { IMedication } from "@/core/interface/medication.interface";
+import CreateMedicationForm from "@/components/medications/create-medication-form";
 
 const GetPatientReportsClient = ({
   reports,
   accessToken,
+  allMedication,
 }: {
   reports: ReportSuccessResponse;
   accessToken: string;
+  allMedication: IMedication[];
 }) => {
   const { user } = useUser();
   const router = useRouter();
@@ -66,9 +70,16 @@ const GetPatientReportsClient = ({
       >
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-sm font-medium text-gray-600">
+            <h1 className="text-sm font-medium text-gray-600">
+              <span>
+                {report.title
+                  ? report.title.length > 30
+                    ? report.title.slice(0, 27) + "..."
+                    : report.title
+                  : "No Title"}
+              </span>{" "}
               #{report.id}
-            </span>
+            </h1>
             <ReportStatus status={report.status} />
           </div>
 
@@ -92,10 +103,19 @@ const GetPatientReportsClient = ({
               <span>{new Date(report.updatedAt).toLocaleDateString()}</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CreateMedicationForm
+                reportId={report.id}
+                userId={report.user.id}
+                accessToken={accessToken}
+              />
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
                 reportId={report.id}
+                initialTitle={report.title}
                 initialProblem={report.problem}
                 initialSolution={report.solution}
                 initialStatus={report.status}
@@ -125,6 +145,7 @@ const GetPatientReportsClient = ({
           onClose={() => setSelectedReport(null)}
           accessToken={accessToken}
           onDelete={handleDeleteReport}
+          allMedication={allMedication}
         />
       )}
     </div>

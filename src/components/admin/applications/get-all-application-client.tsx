@@ -67,6 +67,9 @@ const GetAllApplicationClient = ({
                           <strong>Status:</strong> {app.status}
                         </p>
                         <p>
+                          <strong>Title:</strong> {app.title ?? "No Title"}
+                        </p>
+                        <p>
                           <strong>Note:</strong> {app.note}
                         </p>
                         <p>

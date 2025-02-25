@@ -54,7 +54,7 @@ const GetPatientReportByIdClient = ({ report, error }: ReportDetailProps) => {
     <Card className="w-full max-w-3xl mx-auto shadow-lg rounded-md overflow-hidden font-sans">
       <CardHeader className="bg-gradient-to-r from-blue-500 to-emerald-600 text-white">
         <CardTitle className="text-2xl font-bold">
-          Report {report.id} Details
+          <span>{report.title ?? "No Title"}</span> #{report.id}
         </CardTitle>
         <Badge
           variant="secondary"

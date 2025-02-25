@@ -9,17 +9,24 @@ import {
   Clock,
   FileText,
   Download,
+  Pill,
 } from "lucide-react";
 import ReportStatus from "@/components/reports/ReportStatus";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { IMedication } from "@/core/interface/medication.interface";
 
 interface ReportDetailProps {
   report: Report | null;
   error?: string;
+  allMedication: IMedication[];
 }
 
-const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
+const GetReportByIdClient = ({
+  report,
+  error,
+  allMedication,
+}: ReportDetailProps) => {
   const handleDownloadPDF = async () => {
     const reportElement = document.getElementById("report-content");
     if (!reportElement) return;
@@ -95,6 +102,11 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
     );
   }
 
+  // Filter medications for this specific report
+  const reportMedications = allMedication.filter(
+    (med) => med.recordId === report.id
+  );
+
   return (
     <div className="p-6 h-full">
       <Card
@@ -112,7 +124,14 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-gray-500" />
                 <CardTitle className="text-xl font-serif">
-                  Medical Report #{report.id}
+                  <span>
+                    {report.title
+                      ? report.title.length > 30
+                        ? report.title.slice(0, 27) + "..."
+                        : report.title
+                      : "No Title"}
+                  </span>{" "}
+                  #{report.id}
                 </CardTitle>
               </div>
               <ReportStatus status={report.status} />
@@ -170,6 +189,84 @@ const GetReportByIdClient = ({ report, error }: ReportDetailProps) => {
               <div className="text-sm text-gray-800 leading-relaxed whitespace-pre-line">
                 {report.solution}
               </div>
+            </div>
+          </div>
+
+          {/* Medications Section */}
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center">
+                <Pill className="h-4 w-4 mr-2" />
+                Prescribed Medications
+              </h3>
+
+              {reportMedications.length > 0 ? (
+                <div className="overflow-x-auto border rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Medication
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Dosage
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Frequency
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Duration
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Expires
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {reportMedications.map((medication) => (
+                        <tr key={medication.id} className="hover:bg-gray-50">
+                          <td className="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {medication.name}
+                          </td>
+                          <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {medication.dosage}
+                          </td>
+                          <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {medication.frequency}
+                          </td>
+                          <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {medication.duration}
+                          </td>
+                          <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(
+                              medication.expirationDate
+                            ).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500 italic py-2">
+                  No medications prescribed for this report.
+                </div>
+              )}
             </div>
           </div>
 

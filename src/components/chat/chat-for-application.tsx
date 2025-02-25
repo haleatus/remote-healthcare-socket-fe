@@ -49,7 +49,14 @@ const ApplicationCard = memo(({ entry, isDoctor }: ApplicationCardProps) => {
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg font-semibold text-gray-700">
-              Application #{entry.id}
+              <span>
+                {entry.title
+                  ? entry.title.length > 30
+                    ? entry.title.slice(0, 27) + "..."
+                    : entry.title
+                  : "No Title"}
+              </span>{" "}
+              #{entry.id}
             </CardTitle>
             <ApplicationStatus status={entry.status} />
           </div>

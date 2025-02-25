@@ -38,12 +38,14 @@ const UpdateDoctorApplicationClient = ({
   id,
   accessToken,
   initialNote,
+  initialTitle,
   initialDate,
   initialStatus,
   docId,
 }: {
   id: number;
   accessToken: string;
+  initialTitle: string;
   initialNote: string;
   initialDate: string;
   initialStatus: string;
@@ -52,6 +54,7 @@ const UpdateDoctorApplicationClient = ({
   const [date, setDate] = useState(formatDateForInput(initialDate));
   const [status, setStatus] = useState(initialStatus);
   const [note, setNote] = useState(initialNote);
+  const [title, setTitle] = useState(initialTitle);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [open, setOpen] = useState(false);
@@ -67,6 +70,7 @@ const UpdateDoctorApplicationClient = ({
         {
           docId: docId,
           id: id,
+          title: title,
           note: note,
           date: date,
           status: status,
@@ -92,9 +96,15 @@ const UpdateDoctorApplicationClient = ({
           setIsLoading(false);
         });
     },
-    [docId, id, note, date, status, accessToken, router]
+    [docId, id, note, date, title, status, accessToken, router]
   );
 
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitle(e.target.value);
+    },
+    []
+  );
   const handleNoteChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setNote(e.target.value);
@@ -142,6 +152,22 @@ const UpdateDoctorApplicationClient = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title">Application Title</Label>
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              required
+              disabled={isLoading}
+              className={errors.title ? "border-red-500" : ""}
+              placeholder="Enter your title here"
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
+          </div>
           <div>
             <Label htmlFor="note">Application Note</Label>
             <Input

@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import UpdateDoctorApplicationClient from "./update-doctor-application.client";
 import CreateDoctorApplicationBaseClient from "./create-doctor-application-base.client";
 import ApplicationStatus from "@/components/applications/ApplicationStatus";
 import CreateReportForPatientApplicationClient from "../../reports/create-report-for-patient-application.client";
@@ -64,15 +63,6 @@ const ApplicationCard = memo(
         >
           <div className="absolute bottom-2 right-5" onClick={handleEditClick}>
             <div className="flex items-center gap-1">
-              {/* <UpdateDoctorApplicationClient
-                id={entry.id}
-                accessToken={accessToken}
-                initialNote={entry.note}
-                initialDate={entry.visitDate || ""}
-                initialStatus={entry.status}
-                docId={entry.doc?.id || 0}
-              /> */}
-
               <DeleteApplicationButton
                 applicationId={entry.id}
                 onDelete={handleDeleteApplication}
@@ -102,7 +92,14 @@ const ApplicationCard = memo(
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardTitle className="text-lg font-semibold text-gray-700">
-                Application #{entry.id}
+                <span>
+                  {entry.title
+                    ? entry.title.length > 30
+                      ? entry.title.slice(0, 27) + "..."
+                      : entry.title
+                    : "No Title"}
+                </span>{" "}
+                #{entry.id}
               </CardTitle>
               <ApplicationStatus status={entry.status} />
             </div>
@@ -139,7 +136,9 @@ const ApplicationCard = memo(
           <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex justify-between items-center pr-7">
-                <span>Application Details #{entry.id}</span>
+                <div className="text-lg font-semibold text-gray-700">
+                  <span>{entry.title ?? "No Title"}</span> #{entry.id}
+                </div>
                 <ApplicationStatus status={entry.status} />
               </DialogTitle>
             </DialogHeader>
@@ -187,15 +186,6 @@ const ApplicationCard = memo(
 
               <div className="absolute bottom-4 right-4">
                 <div className="flex items-center gap-1">
-                  {/* <UpdateDoctorApplicationClient
-                    id={entry.id}
-                    accessToken={accessToken}
-                    initialNote={entry.note}
-                    initialDate={entry.visitDate || ""}
-                    initialStatus={entry.status}
-                    docId={entry.doc?.id || 0}
-                  /> */}
-
                   <DeleteApplicationButton
                     applicationId={entry.id}
                     onDelete={handleDeleteApplication}

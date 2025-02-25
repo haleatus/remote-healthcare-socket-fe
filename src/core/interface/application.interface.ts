@@ -4,6 +4,7 @@ export interface IApplication {
   id: number;
   createdAt: string;
   updatedAt: string;
+  title: string;
   status: string;
   note: string;
   visitDate: string | null;

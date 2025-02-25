@@ -67,6 +67,7 @@ const ApplicationCard = memo(
             <div className="flex items-center gap-1">
               <UpdateDoctorApplicationClient
                 id={entry.id}
+                initialTitle={entry.title || ""}
                 accessToken={accessToken}
                 initialNote={entry.note}
                 initialDate={entry.visitDate || ""}
@@ -104,7 +105,14 @@ const ApplicationCard = memo(
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardTitle className="text-lg font-semibold text-gray-700">
-                Application #{entry.id}
+                <span>
+                  {entry.title
+                    ? entry.title.length > 30
+                      ? entry.title.slice(0, 27) + "..."
+                      : entry.title
+                    : "No Title"}
+                </span>{" "}
+                #{entry.id}
               </CardTitle>
               <ApplicationStatus status={entry.status} />
             </div>
@@ -141,7 +149,9 @@ const ApplicationCard = memo(
           <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex justify-between items-center pr-7">
-                <span>Application Details #{entry.id}</span>
+                <div className="text-lg font-semibold text-gray-700">
+                  <span>{entry.title ?? "No Title"}</span> #{entry.id}
+                </div>
                 <ApplicationStatus status={entry.status} />
               </DialogTitle>
             </DialogHeader>
@@ -191,6 +201,7 @@ const ApplicationCard = memo(
                 <div className="flex items-center gap-1">
                   <UpdateDoctorApplicationClient
                     id={entry.id}
+                    initialTitle={entry.title || ""}
                     accessToken={accessToken}
                     initialNote={entry.note}
                     initialDate={entry.visitDate || ""}

@@ -14,6 +14,7 @@ export const updateUserApplicationSchema = z.object({
 export const createDoctorApplicationSchema = z.object({
   userId: z.number().int().positive(),
   docId: z.number().int().positive(),
+  title: z.string().min(2, "Application title must be at least 2 characters."),
   note: z.string().min(2, "Application note must be at least 2 characters."),
   date: z.string().min(2, "Application date must be at least 2 characters."),
   requestByDoc: z.boolean(),
@@ -21,6 +22,7 @@ export const createDoctorApplicationSchema = z.object({
 
 export const updateDoctorApplicationSchema = z.object({
   id: z.number().int().positive(),
+  title: z.string().min(2, "Application title must be at least 2 characters."),
   note: z.string().min(2, "Application note must be at least 2 characters."),
   date: z.string().min(2, "Application date must be at least 2 characters."),
   status: z

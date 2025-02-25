@@ -34,6 +34,7 @@ const UpdatePatientApplicationClient = ({
   patientsNote: string;
 }) => {
   const [date, setDate] = useState("");
+  const [title, setTitle] = useState("");
   const [note, setNote] = useState(patientsNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -56,6 +57,7 @@ const UpdatePatientApplicationClient = ({
         {
           id: applicationId,
           docId: docId,
+          title: title,
           note: note,
           date: date,
           requestByDoc: true,
@@ -66,6 +68,8 @@ const UpdatePatientApplicationClient = ({
         .then((result) => {
           if (result.success && result.data) {
             toast.success("Application For Patient Update Successfully!");
+            setDate("");
+            setTitle("");
             setNote("");
             setOpen(false);
             router.refresh();
@@ -83,7 +87,7 @@ const UpdatePatientApplicationClient = ({
           router.refresh();
         });
     },
-    [date, docId, note, accessToken, router, applicationId]
+    [date, docId, note, title, accessToken, router, applicationId]
   );
 
   const handleNoteChange = useCallback(
