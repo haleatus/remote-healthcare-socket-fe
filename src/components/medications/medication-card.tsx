@@ -16,12 +16,13 @@ export function MedicationCard({
   accessToken,
   isDoctorView = false,
 }: MedicationCardProps) {
+  console.log("medicationData", medicationData);
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Pill className="h-5 w-5" />
-          {medicationData.name} {medicationData.id}
+          {medicationData.name} | For Report {medicationData.recordId}
         </CardTitle>
       </CardHeader>
       <CardContent className="relative">

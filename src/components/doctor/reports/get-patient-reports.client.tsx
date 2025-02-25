@@ -16,17 +16,22 @@ import { deletePatientReportAction } from "@/app/(doctor)/(reports)/patient-logs
 import ReportDetailPopup from "./report-detail-popup";
 import UpdateReportForPatientApplicationClient from "./update-report-for-patient-application.client";
 import DeleteReportButton from "./delete-report-button";
+import { IMedication } from "@/core/interface/medication.interface";
 
 const GetPatientReportsClient = ({
   reports,
   accessToken,
+  allMedication,
 }: {
   reports: ReportSuccessResponse;
   accessToken: string;
+  allMedication: IMedication[];
 }) => {
   const { user } = useUser();
   const router = useRouter();
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+
+  console.log("all Meds", allMedication);
 
   const filteredReports = reports.data.filter(
     (report) => report.doc.id === user?.id
@@ -128,6 +133,7 @@ const GetPatientReportsClient = ({
           onClose={() => setSelectedReport(null)}
           accessToken={accessToken}
           onDelete={handleDeleteReport}
+          allMedication={allMedication}
         />
       )}
     </div>
