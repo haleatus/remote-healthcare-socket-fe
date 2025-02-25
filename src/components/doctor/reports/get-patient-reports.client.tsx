@@ -70,9 +70,16 @@ const GetPatientReportsClient = ({
       >
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-4">
-            <span className="text-sm font-medium text-gray-600">
+            <h1 className="text-sm font-medium text-gray-600">
+              <span>
+                {report.title
+                  ? report.title.length > 30
+                    ? report.title.slice(0, 27) + "..."
+                    : report.title
+                  : "No Title"}
+              </span>{" "}
               #{report.id}
-            </span>
+            </h1>
             <ReportStatus status={report.status} />
           </div>
 
@@ -108,6 +115,7 @@ const GetPatientReportsClient = ({
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
                 reportId={report.id}
+                initialTitle={report.title}
                 initialProblem={report.problem}
                 initialSolution={report.solution}
                 initialStatus={report.status}

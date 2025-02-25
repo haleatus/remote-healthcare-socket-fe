@@ -39,7 +39,9 @@ const ReportDetailPopup: React.FC<ReportDetailPopupProps> = ({
           <DialogTitle className="flex w-full items-center">
             <div className="flex justify-between items-center w-full">
               <div>
-                <h2 className="text-xl font-semibold">Report #{report.id}</h2>
+                <h2 className="text-xl font-semibold">
+                  <span>{report.title ?? "No Title"}</span> #{report.id}
+                </h2>
                 <p className="text-sm text-gray-500">
                   Generated on: {new Date(report.createdAt).toLocaleString()}
                 </p>
@@ -167,6 +169,7 @@ const ReportDetailPopup: React.FC<ReportDetailPopupProps> = ({
               <UpdateReportForPatientApplicationClient
                 accessToken={accessToken}
                 reportId={report.id}
+                initialTitle={report.title}
                 initialProblem={report.problem}
                 initialSolution={report.solution}
                 initialStatus={report.status}

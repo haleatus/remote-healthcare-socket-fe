@@ -124,7 +124,14 @@ const GetReportByIdClient = ({
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-gray-500" />
                 <CardTitle className="text-xl font-serif">
-                  Medical Report #{report.id}
+                  <span>
+                    {report.title
+                      ? report.title.length > 30
+                        ? report.title.slice(0, 27) + "..."
+                        : report.title
+                      : "No Title"}
+                  </span>{" "}
+                  #{report.id}
                 </CardTitle>
               </div>
               <ReportStatus status={report.status} />
