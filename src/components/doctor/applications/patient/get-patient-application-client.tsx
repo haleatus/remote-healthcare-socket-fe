@@ -130,7 +130,9 @@ export default function GetPatientApplicationsClient({
               <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="flex justify-between items-center">
-                    <span>Application Details #{entry.id}</span>
+                    <div className="text-lg font-semibold text-gray-700">
+                      <span>{entry.title ?? "No Title"}</span> #{entry.id}
+                    </div>
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 pt-4 pb-7">
