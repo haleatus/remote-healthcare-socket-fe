@@ -61,6 +61,13 @@ export const endpoints = {
       // getAllOnlineDoctors: `${baseURL}/doc/general/get-online`,
       // getAllOfflineDoctors: `${baseURL}/doc/general/get-offline`,
     },
+    medication: {
+      addMedication: `${baseURL}/doc/medicaiton`,
+      updateMedication: `${baseURL}/doc/medicaiton`,
+      getMedicationAssignedByMe: `${baseURL}/doc/medicaiton/get-doc-medication`,
+      getAllMedicationCreated: `${baseURL}/doc/medicaiton/get-all-medication`,
+      getMedicationAssignedToPatient: `${baseURL}/doc/medicaiton/get-user-medication/:userId`,
+    },
   },
   admin: {
     applications: {

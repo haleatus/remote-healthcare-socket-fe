@@ -98,7 +98,7 @@ const UpdateReportForPatientApplicationClient = ({
           setIsLoading(false);
         });
     },
-    [accessToken, problem, reportId, router, solution, status, user]
+    [accessToken, onClose, problem, reportId, router, solution, status, user]
   );
 
   const handleProblemChange = useCallback(
