@@ -23,6 +23,10 @@ export const getNavLinks = (
         ? [
             { href: "/patient-applications", label: "Patients' Applications" },
             { href: "/patient-logs", label: "Patients' Logs" },
+            {
+              href: "/doc-meds",
+              label: "Medications",
+            },
             { href: "/approved-by-me-applications", label: "My Applications" },
             { href: "/approved-applications", label: "Approved Applications" },
             {
@@ -39,6 +43,7 @@ export const getNavLinks = (
             { href: "/my-applications", label: "My Applications" },
             { href: "/reports", label: "My Reports" },
             { href: "/chat", label: "Chats" },
+            { href: "/medications", label: "Medications" },
           ]),
     ];
   }

@@ -59,7 +59,14 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg font-semibold text-gray-700">
-              Application #{entry.id}
+              <span>
+                {entry.title
+                  ? entry.title.length > 30
+                    ? entry.title.slice(0, 27) + "..."
+                    : entry.title
+                  : "No Title"}
+              </span>{" "}
+              #{entry.id}
             </CardTitle>
             {entry.status !== "CREATED" && (
               <span
@@ -137,7 +144,9 @@ const ApplicationCard = memo(({ entry, accessToken }: ApplicationCardProps) => {
         <DialogContent className="max-w-2xl font-sans max-h-[calc(100vh-100px)] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex justify-between items-center">
-              <span>Application Details #{entry.id}</span>
+              <div className="text-lg font-semibold text-gray-700">
+                <span>{entry.title ?? "No Title"}</span> #{entry.id}
+              </div>
               <span
                 className={cn(
                   "px-2 py-0.5 text-xs mr-7 font-medium rounded-full",

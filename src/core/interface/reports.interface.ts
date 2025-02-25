@@ -6,6 +6,7 @@ export interface Report {
   id: number;
   createdAt: string;
   updatedAt: string;
+  title: string;
   problem: string;
   solution: string;
   status: string;

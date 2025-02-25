@@ -33,6 +33,7 @@ import { toast } from "sonner";
 const UpdateReportForPatientApplicationClient = ({
   accessToken,
   reportId,
+  initialTitle,
   initialProblem,
   initialSolution,
   initialStatus,
@@ -40,6 +41,7 @@ const UpdateReportForPatientApplicationClient = ({
 }: {
   accessToken: string;
   reportId: number;
+  initialTitle: string;
   initialProblem: string;
   initialSolution: string;
   initialStatus: string;
@@ -47,6 +49,7 @@ const UpdateReportForPatientApplicationClient = ({
 }) => {
   const { user } = useUser();
 
+  const [title, setTitle] = useState(initialTitle);
   const [problem, setProblem] = useState(initialProblem);
   const [solution, setSolution] = useState(initialSolution);
   const [status, setStatus] = useState(initialStatus);
@@ -71,6 +74,7 @@ const UpdateReportForPatientApplicationClient = ({
         {
           docId: user.id, // Current Loggedin Doctor ID
           id: reportId,
+          title: title,
           problem: problem,
           solution: solution,
           status: status,
@@ -98,7 +102,24 @@ const UpdateReportForPatientApplicationClient = ({
           setIsLoading(false);
         });
     },
-    [accessToken, problem, reportId, router, solution, status, user]
+    [
+      accessToken,
+      onClose,
+      title,
+      problem,
+      reportId,
+      router,
+      solution,
+      status,
+      user,
+    ]
+  );
+
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitle(e.target.value);
+    },
+    []
   );
 
   const handleProblemChange = useCallback(
@@ -147,6 +168,23 @@ const UpdateReportForPatientApplicationClient = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title">Title Of the Report</Label>
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              required
+              disabled={isLoading}
+              className={errors.title ? "border-red-500" : ""}
+              placeholder="Enter the title here"
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
+          </div>
+
           <div>
             <Label htmlFor="problem">What was the problem?</Label>
             <Input

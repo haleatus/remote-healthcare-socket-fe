@@ -5,6 +5,7 @@ export interface IReport {
   doc: {
     id: number;
   };
+  title: string;
   problem: string;
   solution: string;
   appointment: {
