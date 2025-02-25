@@ -33,6 +33,9 @@ export const endpoints = {
       getAllOfflineUsers: `${baseURL}/user/general/get-offline`,
     },
     getMeUser: `${baseURL}/auth/users/me`,
+    medication: {
+      getMyMedication: `${baseURL}/user/medication/get-self-medication/:userId`,
+    },
   },
   doctor: {
     applications: {

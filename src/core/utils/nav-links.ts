@@ -39,6 +39,7 @@ export const getNavLinks = (
             { href: "/my-applications", label: "My Applications" },
             { href: "/reports", label: "My Reports" },
             { href: "/chat", label: "Chats" },
+            { href: "/medications", label: "Medications" },
           ]),
     ];
   }
