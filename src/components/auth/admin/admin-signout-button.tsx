@@ -28,7 +28,8 @@ const AdminSignoutButton = () => {
       await refetchUser();
       await refetchAdmin();
       // Redirect to login page or update UI
-      router.push("/signin");
+      router.replace("/signin"); // Replace history
+      window.location.reload(); // Force reload to reset UI
     } else {
       // Handle error
       toast.error(result.error?.message);
