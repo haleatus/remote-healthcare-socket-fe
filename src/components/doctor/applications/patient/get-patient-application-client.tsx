@@ -78,12 +78,14 @@ export default function GetPatientApplicationsClient({
                       accessToken={accessToken}
                       docId={currentDoctor.id}
                       patientsNote={entry.note}
+                      patientsTitle={entry.title}
                     />
                     <UpdatePatientApplicationClient
                       applicationId={entry.id}
                       accessToken={accessToken}
                       docId={currentDoctor.id}
                       patientsNote={entry.note}
+                      patientsTitle={entry.title}
                     />
                   </div>
                 </div>
@@ -199,12 +201,14 @@ export default function GetPatientApplicationsClient({
                         accessToken={accessToken}
                         docId={currentDoctor.id}
                         patientsNote={entry.note}
+                        patientsTitle={entry.title}
                       />
                       <UpdatePatientApplicationClient
                         applicationId={entry.id}
                         accessToken={accessToken}
                         docId={currentDoctor.id}
                         patientsNote={entry.note}
+                        patientsTitle={entry.title}
                       />
                     </div>
                   </div>

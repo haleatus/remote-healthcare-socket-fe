@@ -27,11 +27,13 @@ const DeclinePatientApplicationClient = ({
   accessToken,
   docId,
   patientsNote,
+  patientsTitle,
 }: {
   applicationId: number;
   accessToken: string;
   docId: number;
   patientsNote: string;
+  patientsTitle: string;
 }) => {
   const [note, setNote] = useState(patientsNote);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +57,9 @@ const DeclinePatientApplicationClient = ({
       )
         .then((result) => {
           if (result.success && result.data) {
-            toast.success("Application For Patient Declined Successfully!");
+            toast.success(
+              `Application ${patientsTitle} For Patient Declined Successfully!`
+            );
             setNote("");
             setOpen(false);
           } else if (result.error) {
