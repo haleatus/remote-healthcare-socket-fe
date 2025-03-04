@@ -27,14 +27,16 @@ const UpdatePatientApplicationClient = ({
   accessToken,
   docId,
   patientsNote,
+  patientsTitle,
 }: {
   applicationId: number;
   accessToken: string;
   docId: number;
   patientsNote: string;
+  patientsTitle: string;
 }) => {
   const [date, setDate] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(patientsTitle);
   const [note, setNote] = useState(patientsNote);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -90,6 +92,13 @@ const UpdatePatientApplicationClient = ({
     [date, docId, note, title, accessToken, router, applicationId]
   );
 
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTitle(e.target.value);
+    },
+    []
+  );
+
   const handleNoteChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setNote(e.target.value);
@@ -139,6 +148,22 @@ const UpdatePatientApplicationClient = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="title">Application Title</Label>
+            <Input
+              id="title"
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              required
+              disabled={isLoading}
+              className={errors.title ? "border-red-500" : ""}
+              placeholder="Enter your title here"
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+            )}
+          </div>
           <div>
             <Label htmlFor="note">Application Note</Label>
             <Input
